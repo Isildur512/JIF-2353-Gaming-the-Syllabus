@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public float followSpeed = 2f;
+    public float followSpeed = 10f;
     public Transform playerPos;
 
     // Update is called once per frame
