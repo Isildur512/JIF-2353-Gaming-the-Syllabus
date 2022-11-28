@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
+    public string curLevel;
 
     // Update is called once per frame
     void Update()
@@ -17,8 +18,11 @@ public class LevelLoader : MonoBehaviour
     }
 
     public void LoadNextLevel() {
-        StartCoroutine(LoadLevel("TestLevel"));
-
+        if (curLevel == "SampleScene") {
+            StartCoroutine(LoadLevel("TestLevel"));
+        } else if (curLevel == "TestLevel") {
+            StartCoroutine(LoadLevel("Combat"));
+        }
     }
 
     IEnumerator LoadLevel(string LevelName) {
