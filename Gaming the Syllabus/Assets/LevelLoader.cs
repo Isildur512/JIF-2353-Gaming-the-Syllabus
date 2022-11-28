@@ -22,6 +22,8 @@ public class LevelLoader : MonoBehaviour
             StartCoroutine(LoadLevel("TestLevel"));
         } else if (curLevel == "TestLevel") {
             StartCoroutine(LoadLevel("Combat"));
+        } else if (curLevel == "Combat") {
+            StartCoroutine(LoadLevel("TestLevel (NoEnemy)"));
         }
     }
 

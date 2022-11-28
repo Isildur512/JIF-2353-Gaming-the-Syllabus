@@ -9,7 +9,7 @@ public class CombatHUD : MonoBehaviour
     public Slider hpSlider;
 
     public void setHUD(Unit unit) {
-        nameText.text = unit.unitName;
+        //nameText.text = unit.unitName;
         hpSlider.maxValue = unit.maxHP;
         hpSlider.value = unit.curHP;
     }
