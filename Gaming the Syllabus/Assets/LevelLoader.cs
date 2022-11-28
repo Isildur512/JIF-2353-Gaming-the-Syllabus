@@ -8,6 +8,7 @@ using UnityEngine.Tilemaps;
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
+    public string curLevel;
 
 
     // Update is called once per frame
@@ -25,8 +26,13 @@ public class LevelLoader : MonoBehaviour
     }
 
     public void LoadNextLevel() {
-        StartCoroutine(LoadLevel("TestLevel"));
-
+        if (curLevel == "SampleScene") {
+            StartCoroutine(LoadLevel("TestLevel"));
+        } else if (curLevel == "TestLevel") {
+            StartCoroutine(LoadLevel("Combat"));
+        } else if (curLevel == "Combat") {
+            StartCoroutine(LoadLevel("TestLevel (NoEnemy)"));
+        }
     }
     private void OnCollision2D(Collision2D tile){
         if(tile.gameObject.name == "Portal"){
