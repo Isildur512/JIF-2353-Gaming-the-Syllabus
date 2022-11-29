@@ -21,7 +21,15 @@ public class LevelLoader : MonoBehaviour
         */
         if(GameObject.Find("Portal").transform.position.y <=GameObject.Find("Player").transform.position.y ){
             LoadNextLevel();
+        
+            
+            
         }
+        if (GameObject.Find("Player").transform.position.y  > 22){
+            SceneManager.LoadScene("TestLevel");
+        }
+        Debug.Log("Y position" + GameObject.Find("Player").transform.position.y);  
+        
 
     }
 
