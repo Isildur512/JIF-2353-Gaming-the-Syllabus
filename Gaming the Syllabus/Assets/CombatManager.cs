@@ -13,8 +13,8 @@ public class CombatManager : MonoBehaviour
     public GameObject playerPrefab;
     public GameObject enemyPrefab;
     public GameObject levelLoader;
-    Unit playerUnit;
-    Unit enemyUnit;
+    Player playerInfo;
+    Enemy enemyInfo;
     public Text dialogueText;
     public CombatHUD playerHUD;
     public CombatHUD enemyHUD;
@@ -23,72 +23,72 @@ public class CombatManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        state = combatState.START;
+        state = combatState.PLAYERTURN;
         setupCombat();
     }
 
     void setupCombat() {
         GameObject playerGO = Instantiate(playerPrefab);
-        playerUnit = playerGO.GetComponent<Unit>();
+        playerInfo = playerGO.GetComponent<Player>();
         GameObject enemyGO = Instantiate(enemyPrefab);
-        enemyUnit = enemyGO.GetComponent<Unit>();
+        enemyInfo = enemyGO.GetComponent<Enemy>();
 
-        //dialogueText.text = enemyUnit.unitName + " approahces.";
-
-        playerHUD.setHUD(playerUnit);
-        enemyHUD.setHUD(enemyUnit);
-
-        state = combatState.PLAYERTURN;
-        PlayerTurn();
-    }
-
-    void PlayerTurn() {
+        Debug.Log(playerInfo.getHealth());
 
     }
 
-    IEnumerator PlayerAttack() {
-        bool isDead = enemyUnit.TakeDamage(playerUnit.dmg);
-
-        enemyHUD.setHp(enemyUnit.curHP);
-
-        yield return new WaitForSeconds(2f);
-
-        if (isDead) {
-            state = combatState.WIN;
-            EndBattle();
-        } else {
+    void switchTurn() {
+        if (state == combatState.PLAYERTURN) {
             state = combatState.ENEMYTURN;
-            StartCoroutine(EnemyTurn());        
-        }
-    }
-
-    void EndBattle() {
-        if(state == combatState.WIN) {
-            SceneManager.LoadScene("TestLevel (NoEnemy)");
-        } else {
-            //Load menu
-        }
-    }
-
-    IEnumerator EnemyTurn() {
-        bool isDead = playerUnit.TakeDamage(enemyUnit.dmg);
-        playerHUD.setHp(playerUnit.curHP);
-
-        yield return new WaitForSeconds(1f);
-
-        if (isDead) {
-            state = combatState.LOST;
-        } else {
+            AIController.generateAITimer();
+        } else if (state == combatState.ENEMYTURN) {
             state = combatState.PLAYERTURN;
-            PlayerTurn();
         }
     }
 
-    public void OnAttackButton() {
-        if (state != combatState.PLAYERTURN){
-            return;
+    public void attackEnemy() {
+        if (state == combatState.PLAYERTURN) {
+            enemyInfo.setHealth(enemyInfo.getHealth() - playerInfo.getDamage());
+            switchTurn();
+        } else {
+            Debug.Log("IT IS NOT YOUR TURN!");
         }
-        StartCoroutine(PlayerAttack());
+        Debug.Log(enemyInfo.getHealth());
     }
+
+    public void attackPlayer() {
+        if (state == combatState.ENEMYTURN) {
+            
+        }
+    }
+
+    // void EndBattle() {
+    //     if(state == combatState.WIN) {
+    //         SceneManager.LoadScene("TestLevel (NoEnemy)");
+    //     } else {
+    //         //Load menu
+    //     }
+    // }
+
+    // IEnumerator EnemyTurn() {
+    //     bool isDead = playerUnit.TakeDamage(enemyInfo.stats.health);
+    //     playerHUD.setHp(playerInfo.stats.health);
+
+    //     yield return new WaitForSeconds(1f);
+
+    //     if (isDead) {
+    //         state = combatState.LOST;
+    //     } else {
+    //         state = combatState.PLAYERTURN;
+    //         PlayerTurn();
+    //     }
+    // }
+
+    // public void OnAttackButton() {
+    //     if (state != combatState.PLAYERTURN){
+    //         return;
+    //     }
+    //     StartCoroutine(PlayerAttack());
+    // }
 
 }
