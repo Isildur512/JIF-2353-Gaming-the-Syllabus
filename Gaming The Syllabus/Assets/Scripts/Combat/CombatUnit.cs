@@ -21,6 +21,7 @@ public class CombatUnit : IXmlSerializable
 
     public void PerformTurn()
     {
+        // Debug.Log("Turned performed successfully");
         actions[0].Execute();
     }
 

@@ -8,8 +8,8 @@ using UnityEngine;
 /// </summary>
 public class NewCombatManager : Singleton<NewCombatManager>
 {
-    private CombatUnit player;
-    private CombatUnit[] enemies;
+    public CombatUnit player;
+    public CombatUnit[] enemies;
 
     [SerializeField] private CombatUnit testEnemy;
     [SerializeField] private CombatUnit testPlayer; // This should probly not be a CombatUnit... make player a separate class (or maybe inherit from CombatUnit?)
@@ -21,21 +21,19 @@ public class NewCombatManager : Singleton<NewCombatManager>
 
     private void Start()
     {
-        player = new CombatUnit();
-        player.currentHealth = 10;
+        // player = new CombatUnit();
+        player = XmlUtilities.Deserialize<CombatUnit>("Scripts/Player/Player.xml");
+        testEnemy = XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Enemy.xml");
+        enemies = new CombatUnit[1];
+        enemies[0] = testEnemy;
 
-        testEnemy = new CombatUnit();
-        testEnemy.currentHealth = 5;
-        testEnemy.maximumHealth = 10;
-        testEnemy.unitName = "Me";
+        // List<UnitAction> unitActions = new List<UnitAction>();
+        // unitActions.Add(new UnitAction(new DamageTarget(5, TargetType.Player)));
+        // testEnemy.actions = unitActions;
 
-        List<UnitAction> unitActions = new List<UnitAction>();
-        unitActions.Add(new UnitAction(new DamageTarget(5, TargetType.Player)));
-        testEnemy.actions = unitActions;
-
-        XmlUtilities.Serialize(testEnemy, "test.xml");
-        CombatUnit testEnemy2 = XmlUtilities.Deserialize<CombatUnit>("test.xml");
-        testEnemy2.PerformTurn();
+        // XmlUtilities.Serialize(testEnemy, "test.xml");
+        // CombatUnit testEnemy2 = XmlUtilities.Deserialize<CombatUnit>("test.xml");
+        // testEnemy2.PerformTurn();
 
         Debug.Log("Player HP after enemy turn: " + player.currentHealth);
 
@@ -53,6 +51,8 @@ public class NewCombatManager : Singleton<NewCombatManager>
         {
             case TargetType.Player:
                 return new CombatUnit[1] { _instance.player };
+            case TargetType.AnyEnemy:
+                return _instance.enemies;
             default:
                 return null;
         }
