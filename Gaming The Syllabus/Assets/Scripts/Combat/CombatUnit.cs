@@ -9,8 +9,11 @@ using System.Xml;
 /// A unit participating in combat. Used by <see cref="CombatManager"/>.
 /// </summary>
 [XmlRoot("CombatUnit")]
+
+
 public class CombatUnit : IXmlSerializable
 {
+
     [XmlAttribute("name")]
     public string unitName;
 
@@ -19,9 +22,14 @@ public class CombatUnit : IXmlSerializable
 
     public List<UnitAction> actions;
 
-    public void PerformTurn(PlayerActions playerAction = PlayerActions.basicAttack)
+    public void PerformTurn(Action action) 
     {
-        actions[(int) playerAction].Execute();
+        if (CombatManager.turnQueue.Peek().Equals(this)) {
+            actions[action.Value].Execute();
+            CombatManager.nextTurn();
+        } else {
+            Debug.Log("IT IS NOT YOUR TURN");
+        }
     }
 
     public void ApplyDamage(int amount)

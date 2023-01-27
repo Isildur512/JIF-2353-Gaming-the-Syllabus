@@ -3,30 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Player : MonoBehaviour
+
+public class Player : CombatUnit
 {
-    [System.Serializable]
-    public struct PlayerStats {
-        public int health;
-        public int damage;
-    }
+    public class Actions {
+        public static Action basicAttack {get;} = new Action(0, "basicAttack");
+        public static Action rest {get;} = new Action(1, "rest");
 
-    [SerializeField]
-    private PlayerStats stats;
-
-    public int getHealth() {
-        return stats.health;
-    }
-
-    public void setHealth(int amt) {
-        stats.health = amt;
-    }
-
-    public int getDamage() {
-        return stats.damage;
-    }
-
-    public void setDamage(int amt) {
-        stats.damage = amt;
+        public Actions() {}
     }
 }
