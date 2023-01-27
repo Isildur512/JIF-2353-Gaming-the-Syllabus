@@ -1,3 +1,4 @@
+using System.Data.SqlTypes;
 using System.Diagnostics.Tracing;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,10 +10,10 @@ using UnityEngine;
 /// </summary>
 public class CombatManager : Singleton<CombatManager>
 {
-    public PlayerUnit player;
+    public Player player;
     public CombatUnit[] enemies;
     
-    public Queue<CombatUnit> turnQueue;
+    public static Queue<CombatUnit> turnQueue;
 
     public bool isInitialized {get; private set;} // Checks if CombatManager is loaded. I want CombatManager loaded in before AIController.
 
@@ -27,8 +28,8 @@ public class CombatManager : Singleton<CombatManager>
     private void Start()
     {
         // player = new CombatUnit();
-        player = XmlUtilities.Deserialize<PlayerUnit>("Scripts/Player/Player.xml");
-        testEnemy = XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Enemy.xml");
+        player = XmlUtilities.Deserialize<Player>("Scripts/Player/Player.xml");
+        testEnemy = XmlUtilities.Deserialize<Enemy>("Scripts/Enemy/Enemy.xml");
         enemies = new CombatUnit[1];
         enemies[0] = testEnemy;
 
@@ -49,13 +50,17 @@ public class CombatManager : Singleton<CombatManager>
         // CombatUnit testEnemy2 = XmlUtilities.Deserialize<CombatUnit>("test.xml");
         // testEnemy2.PerformTurn();
 
-        Debug.Log("Player HP after enemy turn: " + player.currentHealth);
+        // Debug.Log("Player HP after enemy turn: " + player.currentHealth);
 
         //StartCombat(testPlayer, testEnemy);
     }
 
-    public void nextTurn() {
+    public static void nextTurn() {
         turnQueue.Enqueue(turnQueue.Dequeue()); // Puts current turn to end of queue. Basically ends the current turn.
+        if (turnQueue.Peek() is not Player) {
+            CountdownController.generateAITimer();
+        }
+        CountdownController.resetTimer();
     }
 
 
@@ -69,7 +74,7 @@ public class CombatManager : Singleton<CombatManager>
         switch (targetType)
         {
             case TargetType.Player:
-                return new PlayerUnit[1] { _instance.player };
+                return new Player[1] { _instance.player };
             case TargetType.AnyEnemy:
                 return new CombatUnit[1] { _instance.enemies[Random.Range(0, _instance.enemies.Length)] };
             default:
@@ -77,12 +82,10 @@ public class CombatManager : Singleton<CombatManager>
         }
     }
 
-    public static void StartCombat(PlayerUnit player, params CombatUnit[] enemies)
+    public static void StartCombat(Player player, params CombatUnit[] enemies)
     {
         _instance.enemies = enemies;
         _instance.player = player;
-
-        _instance.enemies[0].PerformTurn();
     }
 }
 

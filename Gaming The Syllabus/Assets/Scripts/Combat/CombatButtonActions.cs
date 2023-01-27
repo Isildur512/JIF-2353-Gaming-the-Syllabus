@@ -10,11 +10,10 @@ public class CombatButtonActions : MonoBehaviour
     [SerializeField] CombatManager combatManager;
 
     public void attack() {
-        combatManager.player.PerformTurn(PlayerActions.basicAttack);
-        Debug.Log(combatManager.turnQueue.Count);
+        combatManager.player.PerformTurn(Player.Actions.basicAttack);
     }
 
     public void rest() {
-        combatManager.player.PerformTurn(PlayerActions.rest);
+        combatManager.player.PerformTurn(Player.Actions.rest);
     }
 }
