@@ -8,6 +8,12 @@ using UnityEngine;
 /// <summary>
 /// Singleton class for handling everything related to combat.
 /// </summary>
+
+public enum GameState {
+    ONGOING,
+    WIN,
+    LOSE
+}
 public class CombatManager : Singleton<CombatManager>
 {
     public Player player;
@@ -23,6 +29,10 @@ public class CombatManager : Singleton<CombatManager>
     private void Awake()
     {
         InitializeSingleton();
+    }
+
+    public void Update() {
+        
     }
 
     private void Start()
@@ -41,26 +51,20 @@ public class CombatManager : Singleton<CombatManager>
         }
 
         isInitialized = true;
-
-        // List<UnitAction> unitActions = new List<UnitAction>();
-        // unitActions.Add(new UnitAction(new DamageTarget(5, TargetType.Player)));
-        // testEnemy.actions = unitActions;
-
-        // XmlUtilities.Serialize(testEnemy, "test.xml");
-        // CombatUnit testEnemy2 = XmlUtilities.Deserialize<CombatUnit>("test.xml");
-        // testEnemy2.PerformTurn();
-
-        // Debug.Log("Player HP after enemy turn: " + player.currentHealth);
-
-        //StartCombat(testPlayer, testEnemy);
     }
 
     public static void nextTurn() {
-        turnQueue.Enqueue(turnQueue.Dequeue()); // Puts current turn to end of queue. Basically ends the current turn.
-        if (turnQueue.Peek() is not Player) {
-            CountdownController.generateAITimer();
+        if (turnQueue.Peek().currentHealth <= 0) { // Keep dequeing dead enemies/characters until we find an alive one.
+            turnQueue.Dequeue();
+            nextTurn();
+        } else {
+            CombatUnit unit = turnQueue.Dequeue();
+            turnQueue.Enqueue(unit); // Puts current turn to end of queue. Basically ends the current turn.
+            if (turnQueue.Peek() is not Player) {
+                CountdownController.generateAITimer();
+            }
+            CountdownController.resetTimer();
         }
-        CountdownController.resetTimer();
     }
 
 

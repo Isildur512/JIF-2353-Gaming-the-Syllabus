@@ -1,3 +1,5 @@
+using System.Linq;
+using System.Reflection.Emit;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +14,12 @@ public class AIController : MonoBehaviour
     }
 
     void Update() {
-        
+        if (CombatManager.turnQueue.Peek() is not Player) {
+            // Once currentTime is less than aiTimer, then the enemy performs their action. This is to add a smooth experience.
+            if (CountdownController.currentTime <= CountdownController.aiTimer) {                               
+                CombatManager.turnQueue.Peek().PerformTurn(Enemy.Actions.basicAttack);
+            }
+        }
     }
 
     // public static void resetTimer() {

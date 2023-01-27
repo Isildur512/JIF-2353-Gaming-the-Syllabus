@@ -60,9 +60,9 @@ public class UnitAction : IXmlSerializable
 
     public void ReadXml(XmlReader reader)
     {
-        Debug.Log("Reading action");
-        reader.ReadToDescendant("action");
-        actionName = reader.GetAttribute("name");
+        // Debug.Log("Reading action");
+        // reader.ReadToDescendant("action");
+        // actionName = reader.GetAttribute("name");
 
         effects = new List<ActionEffect>();
 
