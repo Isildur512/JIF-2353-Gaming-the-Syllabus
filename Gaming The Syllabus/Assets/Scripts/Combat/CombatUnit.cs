@@ -19,15 +19,14 @@ public class CombatUnit : IXmlSerializable
 
     public List<UnitAction> actions;
 
-    public void PerformTurn()
+    public void PerformTurn(PlayerActions playerAction = PlayerActions.basicAttack)
     {
-        // Debug.Log("Turned performed successfully");
-        actions[0].Execute();
+        actions[(int) playerAction].Execute();
     }
 
     public void ApplyDamage(int amount)
     {
-        currentHealth -= amount;
+        currentHealth = (currentHealth - amount < 0) ? 0 : currentHealth - amount;
     }
 
     public XmlSchema GetSchema()

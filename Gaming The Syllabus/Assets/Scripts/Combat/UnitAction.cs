@@ -11,7 +11,7 @@ public class UnitAction : IXmlSerializable
 {
     private string actionName;
 
-    private List<ActionEffect> effects;
+    public List<ActionEffect> effects;
 
     private CombatUnit[] currentTargets;
 
@@ -46,7 +46,7 @@ public class UnitAction : IXmlSerializable
             }
             else
             {
-                currentTargets = NewCombatManager.GetTargetsByType(effect.Target);
+                currentTargets = CombatManager.GetTargetsByType(effect.Target);
             }
 
             effect.Apply(currentTargets);

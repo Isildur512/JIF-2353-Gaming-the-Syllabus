@@ -1,8 +1,10 @@
 <?xml version="1.0"?>
-<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Player" maximumHealth="20" currentHealth="20">
+<PlayerUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Player" maximumHealth="20" currentHealth="20">
   <actions>
     <action name="basicAttack">
-      <effect type="DamageTarget" target="AnyEnemy" damageAmount="5" />
+      <effect type="DamageTarget" target="AnyEnemy" damageAmount="5">
+    <action name="rest">
+      <effect type="heal" target="Player" healAmount="5">
     </action>
   </actions>
-</CombatUnit>
+</PlayerUnit>

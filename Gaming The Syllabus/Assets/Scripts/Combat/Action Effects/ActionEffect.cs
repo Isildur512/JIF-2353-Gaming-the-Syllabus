@@ -9,7 +9,9 @@ using System;
 public abstract class ActionEffect : IXmlSerializable
 {
     [SerializeField] protected TargetType _target;
+    [SerializeField] protected int _damageAmount;
     public TargetType Target { get => _target; }
+    public int DamageAmount { get => _damageAmount; }
 
     /// <summary>
     /// The behavior to apply to the given targets when the effect occurs.
@@ -29,6 +31,7 @@ public abstract class ActionEffect : IXmlSerializable
     public virtual void ReadXml(XmlReader reader)
     {
         _target = (TargetType)Enum.Parse(typeof(TargetType), reader.GetAttribute("target"));
+        _damageAmount = int.Parse(reader.GetAttribute("damageAmount"));
     }
 
     public XmlSchema GetSchema()
