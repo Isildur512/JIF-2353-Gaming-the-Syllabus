@@ -24,7 +24,8 @@ public class CombatUnit : IXmlSerializable
 
     public void PerformTurn(Action action) 
     {
-        if (CombatManager.turnQueue.Peek().Equals(this)) {
+        // Can only perform an action if it the requesters turn and the requester is not dead.
+        if (CombatManager.turnQueue.Peek().Equals(this) && currentHealth > 0) {
             actions[action.Value].Execute();
             CombatManager.nextTurn();
         } else {
@@ -34,7 +35,7 @@ public class CombatUnit : IXmlSerializable
 
     public void ApplyDamage(int amount)
     {
-        currentHealth = (currentHealth - amount < 0) ? 0 : currentHealth - amount;
+        currentHealth = (currentHealth - amount < 0) ? 0 : currentHealth - amount; // If health would go below 0, then just set to 0.
     }
 
     public XmlSchema GetSchema()
