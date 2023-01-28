@@ -4,38 +4,60 @@ using UnityEngine;
 using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Xml;
+using System;
 
 /// <summary>
 /// A unit participating in combat. Used by <see cref="CombatManager"/>.
 /// </summary>
 [XmlRoot("CombatUnit")]
-
-
 public class CombatUnit : IXmlSerializable
 {
+    public string UnitName { get; private set; }
+    public int MaximumHealth { get; private set; }
+    public int CurrentHealth { get; private set; }
 
-    [XmlAttribute("name")]
-    public string unitName;
+    private List<UnitAction> actions;
 
-    public int maximumHealth;
-    public int currentHealth;
+    public bool IsAlive { get; private set; } = true;
 
-    public List<UnitAction> actions;
-
-    public void PerformTurn(Action action) 
+    public void PerformAction(int actionIndex) 
     {
-        // Can only perform an action if it the requesters turn and the requester is not dead.
-        if (CombatManager.turnQueue.Peek().Equals(this) && currentHealth > 0) {
-            actions[action.Value].Execute();
-            CombatManager.nextTurn();
-        } else {
-            Debug.Log("IT IS NOT YOUR TURN");
+        if (IsAlive) {
+            if (actionIndex < actions.Count)
+            {
+                actions[actionIndex].Execute();
+            }
+            else
+            {
+                Debug.LogError("Action index was outside of list of actions");
+            }
+            
+            CombatManager.NextTurn();
         }
+    }
+
+    public void PerformRandomAction()
+    {
+        if (IsAlive)
+        {
+            CombatManager.StartCombatCoroutine(IExecuteAction());
+        }
+    }
+
+    private IEnumerator IExecuteAction()
+    {
+        // TODO: Make this delay customizable to the particular action later
+        yield return new WaitForSeconds(1.5f);
+        actions[UnityEngine.Random.Range(0, actions.Count)].Execute();
+        yield return new WaitForSeconds(1.5f);
+        CombatManager.NextTurn();
     }
 
     public void ApplyDamage(int amount)
     {
-        currentHealth = (currentHealth - amount < 0) ? 0 : currentHealth - amount; // If health would go below 0, then just set to 0.
+        CurrentHealth = Mathf.Clamp(CurrentHealth - amount, 0, MaximumHealth);
+        IsAlive = CurrentHealth > 0;
+        CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
     }
 
     public XmlSchema GetSchema()
@@ -45,28 +67,43 @@ public class CombatUnit : IXmlSerializable
 
     public void ReadXml(XmlReader reader)
     {
-        unitName = reader.GetAttribute("name");
-        maximumHealth = int.Parse(reader.GetAttribute("maximumHealth"));
-        currentHealth = int.Parse(reader.GetAttribute("currentHealth"));
-
-        Debug.Log($"Name: {unitName}, Max HP: {maximumHealth}, Current: {currentHealth}");
+        UnitName = reader.GetAttribute("name");
+        MaximumHealth = int.Parse(reader.GetAttribute("maximumHealth"));
+        CurrentHealth = int.Parse(reader.GetAttribute("currentHealth"));
 
         // TODO: Make this work for any number of actions, not just 1
         actions = new List<UnitAction>();
         reader.ReadToDescendant("actions");
 
-        UnitAction action = new UnitAction();
-        action.ReadXml(reader);
-        actions.Add(action);
+        int numberOfExpectedActions = 0;
+        try
+        {
+            numberOfExpectedActions = int.Parse(reader.GetAttribute("numberOfActions"));
+        } catch (Exception)
+        {
+            numberOfExpectedActions = 1;
+        }
+
+        reader.ReadToDescendant("action");
+        for (int i = 0; i < numberOfExpectedActions; i++)
+        {
+            UnitAction action = new UnitAction();
+            action.ReadXml(reader);
+            actions.Add(action);
+
+            // This looks bad and probably is but we need to read to the closing tag and then read to the next opening tag
+            reader.ReadToNextSibling("action");
+            reader.ReadToNextSibling("action");
+        }
     }
 
     public void WriteXml(XmlWriter writer)
     {
         writer.WriteAttributeString("xmlns:xsd", "http://www.w3.org/2001/XMLSchema");
         writer.WriteAttributeString("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance");
-        writer.WriteAttributeString("name", unitName);
-        writer.WriteAttributeString("maximumHealth", maximumHealth.ToString());
-        writer.WriteAttributeString("currentHealth", currentHealth.ToString());
+        writer.WriteAttributeString("name", UnitName);
+        writer.WriteAttributeString("maximumHealth", MaximumHealth.ToString());
+        writer.WriteAttributeString("currentHealth", CurrentHealth.ToString());
 
         writer.WriteStartElement("actions");
 
