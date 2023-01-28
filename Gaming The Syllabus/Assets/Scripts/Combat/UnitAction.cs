@@ -76,20 +76,6 @@ public class UnitAction : IXmlSerializable
         effect.ReadXml(effectsReader);
 
         effects.Add(effect);
-
-        /*while (effectsReader.Read())
-        {
-            Debug.Log(effectsReader.AttributeCount);
-            if (effectsReader.AttributeCount > 0)
-            {
-                string typeString = effectsReader.GetAttribute("type");
-                ActionEffects effectType = Enum.Parse<ActionEffects>(typeString);
-                ActionEffect effect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
-                effect.ReadXml(effectsReader);
-            }
-
-            effectsReader.MoveToElement();
-        }*/
     }
 
     public void WriteXml(XmlWriter writer)

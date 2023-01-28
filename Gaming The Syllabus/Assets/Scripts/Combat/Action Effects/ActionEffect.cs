@@ -8,10 +8,8 @@ using System;
 
 public abstract class ActionEffect : IXmlSerializable
 {
-    [SerializeField] protected TargetType _target;
-    [SerializeField] protected int _damageAmount;
+    [SerializeField] protected TargetType _target = TargetType.None;
     public TargetType Target { get => _target; }
-    public int DamageAmount { get => _damageAmount; }
 
     /// <summary>
     /// The behavior to apply to the given targets when the effect occurs.
@@ -30,8 +28,14 @@ public abstract class ActionEffect : IXmlSerializable
 
     public virtual void ReadXml(XmlReader reader)
     {
-        _target = (TargetType)Enum.Parse(typeof(TargetType), reader.GetAttribute("target"));
-        _damageAmount = int.Parse(reader.GetAttribute("damageAmount"));
+        // Default to None if no target is specified in the XML
+        if (!string.IsNullOrEmpty(reader.GetAttribute("target")))
+        {
+            _target = (TargetType)Enum.Parse(typeof(TargetType), reader.GetAttribute("target"));
+        } else
+        {
+            _target = TargetType.None;
+        }
     }
 
     public XmlSchema GetSchema()
@@ -40,16 +44,24 @@ public abstract class ActionEffect : IXmlSerializable
     }
 }
 
+/// <summary>
+/// This needs to contain every ActionEffect that exists. When you create new ones, make sure to add them here and to AllActionEffects.
+/// </summary>
 public enum ActionEffects
 {
-    DamageTarget
+    DamageTarget,
+    LogMessage
 }
 
+/// <summary>
+/// This needs to contain every ActionEffect that exists. When you create new ones, make sure to add them here and to ActionEffects.
+/// </summary>
 public static class AllActionEffects
 {
     public static Type GetActionEffect(this ActionEffects effect) => effect switch
     {
         ActionEffects.DamageTarget => typeof(DamageTarget),
+        ActionEffects.LogMessage => typeof(LogMessage),
         _ => throw new NotImplementedException(),
     };
 }

@@ -24,7 +24,6 @@ public class DamageTarget : ActionEffect
     {
         foreach (CombatUnit target in targets)
         {
-            Debug.Log($"Dealing {damageAmount} damage to {target}");
             target.ApplyDamage(damageAmount);
         }
     }

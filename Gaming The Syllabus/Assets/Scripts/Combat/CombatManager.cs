@@ -1,70 +1,93 @@
-using System.Data.SqlTypes;
-using System.Diagnostics.Tracing;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml;
 using UnityEngine;
 
 /// <summary>
 /// Singleton class for handling everything related to combat.
 /// </summary>
-
 public enum GameState {
-    ONGOING,
-    WIN,
-    LOSE
+    Ongoing,
+    Win,
+    Lose
 }
+
 public class CombatManager : Singleton<CombatManager>
 {
-    public Player player;
-    public CombatUnit[] enemies;
-    
-    public static Queue<CombatUnit> turnQueue;
+    private static CombatUnit player;
+    private static CombatUnit[] enemies;
 
-    public bool isInitialized {get; private set;} // Checks if CombatManager is loaded. I want CombatManager loaded in before AIController.
+    private static List<CombatUnit> allCombatants;
 
-    [SerializeField] private CombatUnit testEnemy;
-    [SerializeField] private CombatUnit testPlayer; // This should probly not be a CombatUnit... make player a separate class (or maybe inherit from CombatUnit?)
+    private static int actingCombatantIndex;
+
+    public static bool IsPlayerTurn { get; private set; }
 
     private void Awake()
     {
         InitializeSingleton();
     }
 
-    public void Update() {
-        
+    /// <summary>
+    /// Use this to run coroutines related to combat in classes that don't inherit from MonoBehaviour.
+    /// </summary>
+    /// <param name="methodName"></param>
+    public static void StartCombatCoroutine(IEnumerator coroutine)
+    {
+        _instance.StartCoroutine(coroutine);
     }
 
     private void Start()
     {
-        // player = new CombatUnit();
-        player = XmlUtilities.Deserialize<Player>("Scripts/Player/Player.xml");
-        testEnemy = XmlUtilities.Deserialize<Enemy>("Scripts/Enemy/Enemy.xml");
-        enemies = new CombatUnit[1];
-        enemies[0] = testEnemy;
+        StartCombat(XmlUtilities.Deserialize<CombatUnit>("Scripts/Player/Player.xml"), 
+                    XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Enemy.xml"),
+                    XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Goblin.xml"));
 
-        turnQueue = new Queue<CombatUnit>();
-        turnQueue.Enqueue(player);
-
+        allCombatants = new List<CombatUnit>();
+        allCombatants.Add(player);
         foreach (CombatUnit enemy in enemies) {
-            turnQueue.Enqueue(enemy);
+            allCombatants.Add(enemy);
         }
 
-        isInitialized = true;
+        // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
+        actingCombatantIndex = -1;
+        NextTurn();
     }
 
-    public static void nextTurn() {
-        if (turnQueue.Peek().currentHealth <= 0) { // Keep dequeing dead enemies/characters until we find an alive one.
-            turnQueue.Dequeue();
-            nextTurn();
-        } else {
-            CombatUnit unit = turnQueue.Dequeue();
-            turnQueue.Enqueue(unit); // Puts current turn to end of queue. Basically ends the current turn.
-            if (turnQueue.Peek() is not Player) {
-                CountdownController.generateAITimer();
-            }
-            CountdownController.resetTimer();
+    public static void PerformPlayerAction(PlayerAction playerAction)
+    {
+        if (IsPlayerTurn)
+        {
+            player.PerformAction((int)playerAction);
+            IsPlayerTurn = false;
         }
+    }
+
+    public static void NextTurn() {
+        // Move to next unit
+        AdvanceCurrentTurnIndex();
+
+        // Skip over dead combatants
+        while (!allCombatants[actingCombatantIndex].IsAlive)
+        {
+            AdvanceCurrentTurnIndex();
+        }
+
+        CombatUnit unitWithCurrentTurn = allCombatants[actingCombatantIndex];
+        CombatUIManager.MarkUnitAsTakingTurn(unitWithCurrentTurn);
+        Debug.Log($"Taking Turn: {unitWithCurrentTurn.UnitName}");
+
+        if (unitWithCurrentTurn.Equals(player))
+        {
+            IsPlayerTurn = true;
+        } else
+        {
+            unitWithCurrentTurn.PerformRandomAction();
+        }
+    }
+
+    private static void AdvanceCurrentTurnIndex()
+    {
+        actingCombatantIndex = (actingCombatantIndex + 1) % allCombatants.Count;
     }
 
 
@@ -78,24 +101,40 @@ public class CombatManager : Singleton<CombatManager>
         switch (targetType)
         {
             case TargetType.Player:
-                return new Player[1] { _instance.player };
+                return new CombatUnit[1] { player };
             case TargetType.AnyEnemy:
-                return new CombatUnit[1] { _instance.enemies[Random.Range(0, _instance.enemies.Length)] };
+                return new CombatUnit[1] { enemies[Random.Range(0, enemies.Length)] };
+            case TargetType.AllEnemies:
+                CombatUnit[] copy = new CombatUnit[enemies.Length];
+                enemies.CopyTo(copy, 0);
+                return copy;
             default:
                 return null;
         }
     }
 
-    public static void StartCombat(Player player, params CombatUnit[] enemies)
+    public static void StartCombat(CombatUnit player, params CombatUnit[] enemies)
     {
-        _instance.enemies = enemies;
-        _instance.player = player;
+        CombatManager.enemies = enemies;
+        CombatManager.player = player;
+
+        CombatUIManager.InitializeHealthbars(player, enemies);
     }
 }
 
-public enum TargetType
+public enum PlayerAction
 {
-    Current, // Use whatever target we already have
+    Attack,
+    Defend,
+    Rest
+}
+
+public enum TargetType
+{ 
+    None,
+    // Use whatever target we already have.
+    // This might be useful for player abilities with multiple effects where we want them to only select a target once.
+    Current, 
     Player,
     AnyEnemy,
     AllEnemies
