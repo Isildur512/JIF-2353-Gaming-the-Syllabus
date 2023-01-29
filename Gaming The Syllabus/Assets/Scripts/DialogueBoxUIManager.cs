@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
+
+/// <summary>
+/// Singleton UI manager that specifically manages the Dialogue Box within the UI.
+/// </summary>
 public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
 {
     // Start is called before the first frame update
@@ -14,6 +18,10 @@ public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
         InitializeSingleton();
     }
 
+    /// <summary>
+    /// Adds a string (strToAdd) to the dialogue box within the UI.
+    /// </summary>
+    /// <param name="strToAdd">The string to be added to the dialogue box</param>
     public static void addStringToDialogueBox(string strToAdd) {
         if (dialogueStrings.Count >= 5) {
             dialogueStrings.RemoveFirst();
@@ -22,7 +30,11 @@ public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
         _instance.UpdateDialogueBox();
     }
 
-    public void UpdateDialogueBox() {
+    /// <summary>
+    /// Loops through the LinkedList of strings and concatenates them together and then updates
+    /// the actual dialogue box text mesh pro text.
+    /// </summary>
+    private void UpdateDialogueBox() {
         string newText = "";
         foreach (string str in dialogueStrings) {
             newText += str + "\n";

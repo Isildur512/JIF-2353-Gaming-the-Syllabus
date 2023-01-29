@@ -34,13 +34,19 @@ public class Healthbar : MonoBehaviour
         unitName.text = newText;
     }
 
-    public void UpdateHealthChangeText(string newText)
+
+    /// <summary>
+    /// Updates the text seen below a Combat Unit's health bar. For example, if a combat unit
+    /// takes 5 damage then a 5 will popup on screen below their health.
+    /// </summary>
+    /// <param name="amtChanged">Make sure you pass in a string represented integer. For example, "5" or "-5"</param>
+    public void UpdateHealthChangeText(string amtChanged)
     {
-        if (int.Parse(newText) < 0) {
+        if (int.Parse(amtChanged) < 0) {
             healthChangeText.color = Color.red;
-            healthChangeText.text = newText;
-        } else if (int.Parse(newText) > 0) {
-            healthChangeText.text = "+" + newText;
+            healthChangeText.text = amtChanged;
+        } else if (int.Parse(amtChanged) > 0) {
+            healthChangeText.text = "+" + amtChanged;
             healthChangeText.color = Color.green;
         }
     }
