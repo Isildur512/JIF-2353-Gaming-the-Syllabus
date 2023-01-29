@@ -38,9 +38,9 @@ public class CombatManager : Singleton<CombatManager>
 
     private void Start()
     {
-        StartCombat(XmlUtilities.Deserialize<CombatUnit>("Scripts/Player/Player.xml"), 
-                    XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Enemy.xml"),
-                    XmlUtilities.Deserialize<CombatUnit>("Scripts/Enemy/Goblin.xml"));
+        StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
+                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
+                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
 
         allCombatants = new List<CombatUnit>();
         allCombatants.Add(player);
@@ -102,6 +102,7 @@ public class CombatManager : Singleton<CombatManager>
     /// <returns></returns>
     public static CombatUnit[] GetTargetsByType(TargetType targetType)
     {
+        // TODO: Fix bug where AnyEnemy sometimes returns an enemy that is already dead
         switch (targetType)
         {
             case TargetType.Player:

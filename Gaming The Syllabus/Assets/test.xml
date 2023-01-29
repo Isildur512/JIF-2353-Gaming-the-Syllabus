@@ -1,8 +1,0 @@
-<?xml version="1.0"?>
-<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Goblin" maximumHealth="20" currentHealth="15">
-  <actions>
-    <action name="stab">
-      <effect type="DamageTarget" target="Player" damageAmount="5" />
-    </action>
-  </actions>
-</CombatUnit>

@@ -12,7 +12,7 @@ public class DamageTarget : ActionEffect
     public DamageTarget(int damageAmount, TargetType target)
     {
         this.damageAmount = damageAmount;
-        _target = target;
+        Target = target;
     }
 
     public DamageTarget()

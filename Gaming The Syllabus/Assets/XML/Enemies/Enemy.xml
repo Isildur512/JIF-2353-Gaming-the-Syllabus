@@ -3,7 +3,7 @@
     dialogueColor="orange" currentHealth="10">
   <actions>
     <action name="basicAttack">
-      <effect type="DamageTarget" target="Player" damageAmount="5" />
+      <effect delayInSecondsBeforeEffects="2.0" delayInSecondsAfterEffects="2.0" type="DamageTarget" target="Player" damageAmount="5"/>
     </action>
   </actions>
 </CombatUnit>

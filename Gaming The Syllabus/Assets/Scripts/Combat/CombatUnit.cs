@@ -27,15 +27,15 @@ public class CombatUnit : IXmlSerializable
         if (IsAlive) {
             if (actionIndex < actions.Count)
             {
-                actions[actionIndex].Execute();
-                Debug.Log($"{this.UnitName}");
+                actions[actionIndex].Execute(onActionCompleted: CombatManager.NextTurn);
             }
             else
             {
                 Debug.LogError("Action index was outside of list of actions");
+                CombatManager.NextTurn();
             }
             
-            CombatManager.NextTurn();
+            //CombatManager.NextTurn();
         }
     }
 
@@ -43,18 +43,18 @@ public class CombatUnit : IXmlSerializable
     {
         if (IsAlive)
         {
-            CombatManager.StartCombatCoroutine(IExecuteAction());
+            actions[UnityEngine.Random.Range(0, actions.Count)].Execute(onActionCompleted: CombatManager.NextTurn);
         }
     }
 
-    private IEnumerator IExecuteAction()
+    /*private IEnumerator IExecuteAction()
     {
         // TODO: Make this delay customizable to the particular action later
-        yield return new WaitForSeconds(1.5f);
-        actions[UnityEngine.Random.Range(0, actions.Count)].Execute();
-        yield return new WaitForSeconds(1.5f);
-        CombatManager.NextTurn();
-    }
+        //yield return new WaitForSeconds(1.5f);
+        actions[UnityEngine.Random.Range(0, actions.Count)].Execute(onActionCompleted: CombatManager.NextTurn);
+        //yield return new WaitForSeconds(1.5f);
+        //CombatManager.NextTurn();
+    }*/
 
     public void ApplyDamage(int amount)
     {
@@ -84,18 +84,10 @@ public class CombatUnit : IXmlSerializable
         CurrentHealth = int.Parse(reader.GetAttribute("currentHealth"));
         dialogueColor = reader.GetAttribute("dialogueColor");
 
-        // TODO: Make this work for any number of actions, not just 1
         actions = new List<UnitAction>();
         reader.ReadToDescendant("actions");
 
-        int numberOfExpectedActions = 0;
-        try
-        {
-            numberOfExpectedActions = int.Parse(reader.GetAttribute("numberOfActions"));
-        } catch (Exception)
-        {
-            numberOfExpectedActions = 1;
-        }
+        int numberOfExpectedActions = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "numberOfActions", "1"));
 
         reader.ReadToDescendant("action");
         for (int i = 0; i < numberOfExpectedActions; i++)
@@ -119,6 +111,7 @@ public class CombatUnit : IXmlSerializable
         writer.WriteAttributeString("currentHealth", CurrentHealth.ToString());
 
         writer.WriteStartElement("actions");
+        writer.WriteAttributeString("numberOfActions", actions.Count.ToString());
 
         foreach (UnitAction action in actions)
         {
