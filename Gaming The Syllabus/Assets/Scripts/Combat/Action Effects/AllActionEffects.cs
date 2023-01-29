@@ -9,7 +9,8 @@ using UnityEngine;
 public enum ActionEffects
 {
     DamageTarget,
-    LogMessage
+    LogMessage,
+    Heal
 }
 
 /// <summary>
@@ -21,6 +22,7 @@ public static class AllActionEffects
     {
         ActionEffects.DamageTarget => typeof(DamageTarget),
         ActionEffects.LogMessage => typeof(LogMessage),
+        ActionEffects.Heal => typeof(HealTarget),
         _ => throw new NotImplementedException(),
     };
 }

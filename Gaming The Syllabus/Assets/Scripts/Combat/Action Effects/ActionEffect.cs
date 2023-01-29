@@ -42,27 +42,3 @@ public abstract class ActionEffect : IXmlSerializable
         return (null);
     }
 }
-
-/// <summary>
-/// This needs to contain every ActionEffect that exists. When you create new ones, make sure to add them here and to AllActionEffects.
-/// </summary>
-public enum ActionEffects
-{
-    DamageTarget,
-    Heal,
-    LogMessage
-}
-
-/// <summary>
-/// This needs to contain every ActionEffect that exists. When you create new ones, make sure to add them here and to ActionEffects.
-/// </summary>
-public static class AllActionEffects
-{
-    public static Type GetActionEffect(this ActionEffects effect) => effect switch
-    {
-        ActionEffects.DamageTarget => typeof(DamageTarget),
-        ActionEffects.Heal => typeof(HealTarget),
-        ActionEffects.LogMessage => typeof(LogMessage),
-        _ => throw new NotImplementedException(),
-    };
-}

@@ -12,7 +12,7 @@ public class HealTarget : ActionEffect
     public HealTarget(int healAmount, TargetType target)
     {
         this.healAmount = healAmount;
-        _target = target;
+        Target = target;
     }
 
     public HealTarget()
