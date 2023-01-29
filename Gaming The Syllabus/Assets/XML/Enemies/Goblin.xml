@@ -2,7 +2,7 @@
 <CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Goblin" maximumHealth="20" currentHealth="15">
   <actions>
     <action name="basicAttack">
-      <effect type="DamageTarget" target="Player" damageAmount="2" />
+      <effect delayInSecondsBeforeEffects="1.0" delayInSecondsAfterEffects="1.0" type="DamageTarget" target="Player" damageAmount="2" />
     </action>
   </actions>
 </CombatUnit>
