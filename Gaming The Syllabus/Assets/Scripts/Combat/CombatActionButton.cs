@@ -12,4 +12,5 @@ public class CombatActionButton : MonoBehaviour
     {
         CombatManager.PerformPlayerAction(playerAction);
     }
+
 }

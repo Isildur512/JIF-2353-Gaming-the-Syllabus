@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Currently handles displaying player and enemy healthbars in combat.
@@ -41,6 +42,12 @@ public class CombatUIManager : Singleton<CombatUIManager>
         combatUnitToHealthbar[unit].UpdateHealthbarValue(currentHealth, maximumHealth);
     }
 
+    public static void UpdateHealthbarText(CombatUnit unit, int amount) {
+        combatUnitToHealthbar[unit].UpdateHealthChangeText(amount.ToString());
+        combatUnitToHealthbar[unit].ShowHealthChangeText();
+    }
+
+
     /// <summary>
     /// Visually indicates on the UI that this unit is currently taking their turn. 
     /// All other units will be updated to no longer be displayed as taking their turn.
@@ -54,6 +61,7 @@ public class CombatUIManager : Singleton<CombatUIManager>
         }
     }
 
+
     private static Healthbar CreateHealthbar(CombatUnit unit, Vector2 position)
     {
         GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.transform);
@@ -66,6 +74,8 @@ public class CombatUIManager : Singleton<CombatUIManager>
         healthbar.UpdateUnitName(unit.UnitName);
         healthbar.UpdateHealthbarValue(unit.CurrentHealth, unit.MaximumHealth);
 
+
         return healthbarGameObject.GetComponent<Healthbar>();
     }
+
 }

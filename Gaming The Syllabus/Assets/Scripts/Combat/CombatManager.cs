@@ -74,7 +74,7 @@ public class CombatManager : Singleton<CombatManager>
 
         CombatUnit unitWithCurrentTurn = allCombatants[actingCombatantIndex];
         CombatUIManager.MarkUnitAsTakingTurn(unitWithCurrentTurn);
-        Debug.Log($"Taking Turn: {unitWithCurrentTurn.UnitName}");
+        // Debug.Log($"Taking Turn: {unitWithCurrentTurn.UnitName}");
 
         if (unitWithCurrentTurn.Equals(player))
         {
@@ -88,6 +88,10 @@ public class CombatManager : Singleton<CombatManager>
     private static void AdvanceCurrentTurnIndex()
     {
         actingCombatantIndex = (actingCombatantIndex + 1) % allCombatants.Count;
+    }
+
+    public static CombatUnit getCurrentCombatant() {
+        return allCombatants[actingCombatantIndex];
     }
 
 

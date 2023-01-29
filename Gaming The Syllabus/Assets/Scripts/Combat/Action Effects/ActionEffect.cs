@@ -50,6 +50,7 @@ public abstract class ActionEffect : IXmlSerializable
 public enum ActionEffects
 {
     DamageTarget,
+    Heal,
     LogMessage
 }
 
@@ -61,6 +62,7 @@ public static class AllActionEffects
     public static Type GetActionEffect(this ActionEffects effect) => effect switch
     {
         ActionEffects.DamageTarget => typeof(DamageTarget),
+        ActionEffects.Heal => typeof(HealTarget),
         ActionEffects.LogMessage => typeof(LogMessage),
         _ => throw new NotImplementedException(),
     };

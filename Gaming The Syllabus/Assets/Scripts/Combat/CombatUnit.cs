@@ -16,6 +16,8 @@ public class CombatUnit : IXmlSerializable
     public int MaximumHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
+    public string dialogueColor { get; private set; }
+
     private List<UnitAction> actions;
 
     public bool IsAlive { get; private set; } = true;
@@ -26,6 +28,7 @@ public class CombatUnit : IXmlSerializable
             if (actionIndex < actions.Count)
             {
                 actions[actionIndex].Execute();
+                Debug.Log($"{this.UnitName}");
             }
             else
             {
@@ -58,6 +61,15 @@ public class CombatUnit : IXmlSerializable
         CurrentHealth = Mathf.Clamp(CurrentHealth - amount, 0, MaximumHealth);
         IsAlive = CurrentHealth > 0;
         CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
+        CombatUIManager.UpdateHealthbarText(this, -amount);
+    }
+
+    public void HealUnit(int amount) {
+        if (IsAlive) {
+            CurrentHealth = Mathf.Clamp(CurrentHealth + amount, MaximumHealth, 0);
+            CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
+            CombatUIManager.UpdateHealthbarText(this, amount);
+        }
     }
 
     public XmlSchema GetSchema()
@@ -70,6 +82,7 @@ public class CombatUnit : IXmlSerializable
         UnitName = reader.GetAttribute("name");
         MaximumHealth = int.Parse(reader.GetAttribute("maximumHealth"));
         CurrentHealth = int.Parse(reader.GetAttribute("currentHealth"));
+        dialogueColor = reader.GetAttribute("dialogueColor");
 
         // TODO: Make this work for any number of actions, not just 1
         actions = new List<UnitAction>();
