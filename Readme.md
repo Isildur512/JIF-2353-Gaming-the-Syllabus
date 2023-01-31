@@ -8,6 +8,7 @@ Gaming the Syllabus is an effort at making course syllabi more engaging and inte
 * Enemies can now be created and modified via XML files 
 * Health bars are now generated for enemies with their corresponding name and placeholder icons
 * Support for multiple actions from units
+* Implemented level layouts 
 
 #### Bug Fixes
 * Improved combat cycling 
@@ -15,5 +16,5 @@ Gaming the Syllabus is an effort at making course syllabi more engaging and inte
 * Updated the .gitignore file  
 
 #### Known Issues
-* At the moment there’s no issue to report
+* Current level loader needs to be fix in order to correctly connect the level layouts
 ---
