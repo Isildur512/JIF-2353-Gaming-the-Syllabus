@@ -8,8 +8,10 @@ using System;
 
 public abstract class ActionEffect : IXmlSerializable
 {
-    [SerializeField] protected TargetType _target;
-    public TargetType Target { get => _target; }
+    public TargetType Target { get; protected set; } = TargetType.None;
+
+    public float DelayInSecondsBeforeEffects { get; private set; }
+    public float DelayInSecondsAfterEffects { get; private set; }
 
     /// <summary>
     /// The behavior to apply to the given targets when the effect occurs.
@@ -23,30 +25,20 @@ public abstract class ActionEffect : IXmlSerializable
     public virtual void WriteXml(XmlWriter writer)
     {
         writer.WriteAttributeString("type", GetType().Name);
-        writer.WriteAttributeString("target", _target.ToString());
+        writer.WriteAttributeString("target", Target.ToString());
+        writer.WriteAttributeString("delayInSecondsBeforeEffects", DelayInSecondsBeforeEffects.ToString());
+        writer.WriteAttributeString("delayInSecondsAfterEffects", DelayInSecondsAfterEffects.ToString());
     }
 
     public virtual void ReadXml(XmlReader reader)
     {
-        _target = (TargetType)Enum.Parse(typeof(TargetType), reader.GetAttribute("target"));
+        Target = Enum.Parse<TargetType>(XmlUtilities.GetAttributeOrDefault(reader, "target", "None"));
+        DelayInSecondsBeforeEffects = float.Parse(XmlUtilities.GetAttributeOrDefault(reader, "delayInSecondsBeforeEffects", "0.0"));
+        DelayInSecondsAfterEffects = float.Parse(XmlUtilities.GetAttributeOrDefault(reader, "delayInSecondsAfterEffects", "0.0"));
     }
 
     public XmlSchema GetSchema()
     {
         return (null);
     }
-}
-
-public enum ActionEffects
-{
-    DamageTarget
-}
-
-public static class AllActionEffects
-{
-    public static Type GetActionEffect(this ActionEffects effect) => effect switch
-    {
-        ActionEffects.DamageTarget => typeof(DamageTarget),
-        _ => throw new NotImplementedException(),
-    };
 }

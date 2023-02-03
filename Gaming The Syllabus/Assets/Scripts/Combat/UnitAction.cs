@@ -11,7 +11,7 @@ public class UnitAction : IXmlSerializable
 {
     private string actionName;
 
-    private List<ActionEffect> effects;
+    public List<ActionEffect> effects;
 
     private CombatUnit[] currentTargets;
 
@@ -32,7 +32,12 @@ public class UnitAction : IXmlSerializable
     /// <summary>
     /// The behavior to occur when the action is performed. 
     /// </summary>
-    public void Execute()
+    public void Execute(System.Action onActionCompleted)
+    {
+        CombatManager.StartCombatCoroutine(IExecute(onActionCompleted));
+    }
+
+    private IEnumerator IExecute(System.Action onActionCompleted)
     {
         foreach (ActionEffect effect in effects)
         {
@@ -41,16 +46,18 @@ public class UnitAction : IXmlSerializable
                 if (currentTargets == null)
                 {
                     Debug.LogError("Effect in UnitAction tried to use current target but current target was null");
-                    return;
+                    yield break;
                 }
             }
             else
             {
-                currentTargets = NewCombatManager.GetTargetsByType(effect.Target);
+                currentTargets = CombatManager.GetTargetsByType(effect.Target);
             }
-
+            yield return new WaitForSeconds(effect.DelayInSecondsBeforeEffects);
             effect.Apply(currentTargets);
+            yield return new WaitForSeconds(effect.DelayInSecondsAfterEffects);
         }
+        onActionCompleted?.Invoke();
     }
 
     public XmlSchema GetSchema()
@@ -60,42 +67,37 @@ public class UnitAction : IXmlSerializable
 
     public void ReadXml(XmlReader reader)
     {
-        Debug.Log("Reading action");
-        reader.ReadToDescendant("action");
-        actionName = reader.GetAttribute("name");
-
         effects = new List<ActionEffect>();
 
         XmlReader effectsReader = reader.ReadSubtree();
-        
-        // TODO: Make this work for any number of effects, not just 1
+        effectsReader.Read();
+
+        int numberOfExpectedEffects = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "numberOfEffects", "1"));
+
         effectsReader.ReadToDescendant("effect");
-        string typeString = effectsReader.GetAttribute("type");
-        ActionEffects effectType = Enum.Parse<ActionEffects>(typeString);
-        ActionEffect effect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
-        effect.ReadXml(effectsReader);
-
-        effects.Add(effect);
-
-        /*while (effectsReader.Read())
+        for (int i = 0; i < numberOfExpectedEffects; i++)
         {
-            Debug.Log(effectsReader.AttributeCount);
-            if (effectsReader.AttributeCount > 0)
-            {
-                string typeString = effectsReader.GetAttribute("type");
-                ActionEffects effectType = Enum.Parse<ActionEffects>(typeString);
-                ActionEffect effect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
-                effect.ReadXml(effectsReader);
-            }
+            string typeString = effectsReader.GetAttribute("type");
+            ActionEffects effectType = Enum.Parse<ActionEffects>(typeString);
+            ActionEffect effect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
+            effect.ReadXml(effectsReader);
 
-            effectsReader.MoveToElement();
-        }*/
+            effects.Add(effect);
+
+            // If we don't do this we end up moving to the end of the file after reading the last effect...
+            // This sucks but I can't think of a better way to do it at the moment
+            if (i < numberOfExpectedEffects - 1)
+            {
+                effectsReader.ReadToNextSibling("effect");
+            }
+        }
     }
 
     public void WriteXml(XmlWriter writer)
     {
         Debug.Log("Writing action");
-        writer.WriteAttributeString("name", "actionName");
+        writer.WriteAttributeString("name", actionName);
+        writer.WriteAttributeString("numberOfEffects", effects.Count.ToString());
         foreach (ActionEffect effect in effects)
         {
             writer.WriteStartElement("effect");

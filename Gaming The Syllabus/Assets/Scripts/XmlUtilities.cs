@@ -1,4 +1,5 @@
 using System.IO;
+using System.Xml;
 using System.Xml.Serialization;
 using UnityEngine;
 
@@ -21,5 +22,21 @@ public class XmlUtilities
         reader.Close();
         Debug.Log($"Deserialized XML file at {filePath}");
         return deserialized;
+    }
+
+    /// <summary>
+    /// Returns the default value if the attribute is not found or the value of the attribute is an empty string.
+    /// Otherwise, returns the value of the attribute.
+    /// </summary>
+    public static string GetAttributeOrDefault(XmlReader reader, string attribute, string defaultValue)
+    {
+        string attributeValue = reader.GetAttribute(attribute);
+        if (!string.IsNullOrEmpty(attributeValue))
+        {
+            return attributeValue;
+        } else
+        {
+            return defaultValue;
+        }
     }
 }

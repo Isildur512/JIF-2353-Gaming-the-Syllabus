@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Player" maximumHealth="30" currentHealth="30">
+	<actions numberOfActions="3">
+		<action name="attack" numberOfEffects="2">
+			<effect type="DamageTarget" target="AnyEnemy" damageAmount="5" />
+			<effect type="LogMessage" message="Player used Attack" loggingLevel="Warning"/>
+		</action>
+		<action name="defend">
+			<effect type="LogMessage" message="Player used Defend" loggingLevel="Warning"/>
+		</action>
+		<action name="rest">
+			<effect type="DamageTarget" target="Player" damageAmount="-5" />
+		</action>
+	</actions>
+</CombatUnit>

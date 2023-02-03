@@ -12,7 +12,7 @@ public class DamageTarget : ActionEffect
     public DamageTarget(int damageAmount, TargetType target)
     {
         this.damageAmount = damageAmount;
-        _target = target;
+        Target = target;
     }
 
     public DamageTarget()
@@ -24,7 +24,6 @@ public class DamageTarget : ActionEffect
     {
         foreach (CombatUnit target in targets)
         {
-            Debug.Log($"Dealing {damageAmount} damage to {target}");
             target.ApplyDamage(damageAmount);
         }
     }
