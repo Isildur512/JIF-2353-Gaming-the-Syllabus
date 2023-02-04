@@ -61,7 +61,6 @@ public class CombatUIManager : Singleton<CombatUIManager>
         }
     }
 
-
     private static Healthbar CreateHealthbar(CombatUnit unit, Vector2 position)
     {
         GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.transform);
