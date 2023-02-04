@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Enemy" maximumHealth="10"
+    dialogueColor="orange" currentHealth="10">
+  <actions>
+    <action name="basicAttack">
+      <effect delayInSecondsBeforeEffects="2.0" delayInSecondsAfterEffects="2.0" type="DamageTarget" target="Player" damageAmount="5"/>
+    </action>
+  </actions>
+</CombatUnit>
