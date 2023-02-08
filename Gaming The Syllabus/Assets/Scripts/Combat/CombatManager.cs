@@ -49,6 +49,9 @@ public class CombatManager : Singleton<CombatManager>
             allCombatants.Add(enemy);
         }
 
+
+        XmlUtilities.Serialize(player.actions[0], "XML/PlayerAbility.xml");
+
         // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();

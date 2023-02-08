@@ -16,7 +16,7 @@ public class CombatUnit : IXmlSerializable
     public int MaximumHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
-    private List<UnitAction> actions;
+    public List<UnitAction> actions;
 
     public bool IsAlive { get; private set; } = true;
 

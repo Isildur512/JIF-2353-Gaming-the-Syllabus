@@ -5,14 +5,18 @@ using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Xml;
 using System;
-using System.Reflection;
 
 public class UnitAction : IXmlSerializable
 {
+    /// <summary>
+    /// Using this ability consumes a charge and at least one charge is required to use this ability.
+    /// A value of -1 (default) indicates that this ability does not require or consume charges.
+    /// </summary>
+    public int CurrentCharges { get; private set; }
+
     private string actionName;
-
-    public List<ActionEffect> effects;
-
+    private string actionDescription;
+    private List<ActionEffect> effects;
     private CombatUnit[] currentTargets;
 
     public UnitAction(params ActionEffect[] effects)
@@ -34,7 +38,15 @@ public class UnitAction : IXmlSerializable
     /// </summary>
     public void Execute(System.Action onActionCompleted)
     {
-        CombatManager.StartCombatCoroutine(IExecute(onActionCompleted));
+        if (CurrentCharges == 0)
+        {
+            Debug.Log("Unit attempted to use action but did not have sufficient charges");
+        } 
+        else
+        {
+            CombatManager.StartCombatCoroutine(IExecute(onActionCompleted));
+        }
+        
     }
 
     private IEnumerator IExecute(System.Action onActionCompleted)
@@ -67,6 +79,10 @@ public class UnitAction : IXmlSerializable
 
     public void ReadXml(XmlReader reader)
     {
+        actionName = reader.GetAttribute("name");
+        actionDescription = reader.GetAttribute("description");
+        CurrentCharges = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "charges", "-1"));
+
         effects = new List<ActionEffect>();
 
         XmlReader effectsReader = reader.ReadSubtree();
@@ -97,7 +113,9 @@ public class UnitAction : IXmlSerializable
     {
         Debug.Log("Writing action");
         writer.WriteAttributeString("name", actionName);
+        writer.WriteAttributeString("description", actionDescription);
         writer.WriteAttributeString("numberOfEffects", effects.Count.ToString());
+        writer.WriteAttributeString("charges", CurrentCharges.ToString());
         foreach (ActionEffect effect in effects)
         {
             writer.WriteStartElement("effect");
