@@ -10,6 +10,9 @@ public class CombatActionButton : MonoBehaviour
 
     public void OnClick()
     {
-        CombatManager.PerformPlayerAction(playerAction);
+        // CombatManager.PerformPlayerAction(playerAction);
+        PowerUp damagePowerUp = new DamagePowerUp();
+        Debug.Log(((DamagePowerUp)damagePowerUp).damageIncreaseAmt);
+        // CombatManager.PerformPlayerAction(playerAction);
     }
 }

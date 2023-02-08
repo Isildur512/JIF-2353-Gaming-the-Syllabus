@@ -18,7 +18,9 @@ public class CombatUnit : IXmlSerializable
 
     public string dialogueColor { get; private set; }
 
-    private List<UnitAction> actions;
+    public List<UnitAction> actions;
+
+    public List<PowerUp> powerUps;
 
     public bool IsAlive { get; private set; } = true;
 
@@ -72,6 +74,12 @@ public class CombatUnit : IXmlSerializable
         }
     }
 
+
+    public void AddPowerUp(PowerUp powerUpType) {
+        powerUps.Add(powerUpType);
+    }
+
+
     public XmlSchema GetSchema()
     {
         return (null);
@@ -85,6 +93,8 @@ public class CombatUnit : IXmlSerializable
         dialogueColor = reader.GetAttribute("dialogueColor");
 
         actions = new List<UnitAction>();
+        powerUps = new List<PowerUp>();
+
         reader.ReadToDescendant("actions");
 
         int numberOfExpectedActions = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "numberOfActions", "1"));

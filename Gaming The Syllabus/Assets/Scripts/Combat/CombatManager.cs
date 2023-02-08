@@ -42,7 +42,6 @@ public class CombatManager : Singleton<CombatManager>
         StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
-
         allCombatants = new List<CombatUnit>();
         allCombatants.Add(player);
         foreach (CombatUnit enemy in enemies) {
