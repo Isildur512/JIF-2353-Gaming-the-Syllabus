@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<UnitAction name="HealthPotion" description="Drink a potion to heal yourself." charges="3" numberOfEffects="2">
+  <effect type="DamageTarget" target="Player" delayInSecondsBeforeEffects="0" delayInSecondsAfterEffects="0" damageAmount="-5" />
+  <effect type="LogMessage" target="None" delayInSecondsBeforeEffects="0" delayInSecondsAfterEffects="0" message="Player used Health Potion" level="Warning" />
+</UnitAction>
