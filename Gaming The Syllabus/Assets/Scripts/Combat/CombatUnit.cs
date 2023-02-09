@@ -20,7 +20,7 @@ public class CombatUnit : IXmlSerializable
 
     public List<UnitAction> actions;
 
-    public List<PowerUp> powerUps;
+    public List<UnitAction> abilities;
 
     public bool IsAlive { get; private set; } = true;
 
@@ -38,6 +38,21 @@ public class CombatUnit : IXmlSerializable
             }
             
             //CombatManager.NextTurn();
+        }
+    }
+
+    public void PerformAbility(int abilityIndex) 
+    {
+        if (IsAlive) {
+            if (abilityIndex < abilities.count)
+            {
+                abilities[abilityIndex].Execute(onActionCompleted: CombatManager.NextTurn);
+            }
+            else 
+            {
+                Debug.Log("Ability index was outside of list of abilities");
+                CombatManager.NextTurn();
+            }
         }
     }
 
@@ -75,11 +90,6 @@ public class CombatUnit : IXmlSerializable
     }
 
 
-    public void AddPowerUp(PowerUp powerUpType) {
-        powerUps.Add(powerUpType);
-    }
-
-
     public XmlSchema GetSchema()
     {
         return (null);
@@ -93,13 +103,12 @@ public class CombatUnit : IXmlSerializable
         dialogueColor = reader.GetAttribute("dialogueColor");
 
         actions = new List<UnitAction>();
-        powerUps = new List<PowerUp>();
+        abilities = new List<UnitAction>();
 
         reader.ReadToDescendant("actions");
 
         int numberOfExpectedActions = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "numberOfActions", "1"));
 
-        reader.ReadToDescendant("action");
         for (int i = 0; i < numberOfExpectedActions; i++)
         {
             UnitAction action = new UnitAction();
@@ -110,7 +119,13 @@ public class CombatUnit : IXmlSerializable
             reader.ReadToNextSibling("action");
             reader.ReadToNextSibling("action");
         }
+
+        for (int i = 0; i < )
+
+        
     }
+
+
 
     public void WriteXml(XmlWriter writer)
     {

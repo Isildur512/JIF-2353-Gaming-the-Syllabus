@@ -16,7 +16,7 @@ public class UnitAction : IXmlSerializable
 
     private string actionName;
     private string actionDescription;
-    private List<ActionEffect> effects;
+    public List<ActionEffect> effects;
     private CombatUnit[] currentTargets;
 
     public UnitAction(params ActionEffect[] effects)
