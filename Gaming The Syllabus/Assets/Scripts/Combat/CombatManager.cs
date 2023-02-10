@@ -65,6 +65,14 @@ public class CombatManager : Singleton<CombatManager>
         }
     }
 
+    public static void PerformPlayerAbility(PlayerAbility playerAbility)
+    {
+        if (IsPlayerTurn)
+        {
+            player.PerformAbility((int) playerAbility);
+        }
+    }
+
     public static void NextTurn() {
         // Move to next unit
         AdvanceCurrentTurnIndex();
@@ -142,6 +150,11 @@ public enum PlayerAction
     Attack,
     Defend,
     Rest
+}
+
+public enum PlayerAbility
+{
+    SlashAttack
 }
 
 public enum TargetType

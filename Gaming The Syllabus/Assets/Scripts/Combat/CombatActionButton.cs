@@ -7,12 +7,15 @@ using UnityEngine;
 public class CombatActionButton : MonoBehaviour
 {
     [SerializeField] private PlayerAction playerAction;
+    [SerializeField] private PlayerAbility playerAbility;
 
-    public void OnClick()
+    public void AttackOnClick()
     {
-        // CombatManager.PerformPlayerAction(playerAction);
-        PowerUp damagePowerUp = new DamagePowerUp();
-        Debug.Log(((DamagePowerUp)damagePowerUp).damageIncreaseAmt);
-        // CombatManager.PerformPlayerAction(playerAction);
+        CombatManager.PerformPlayerAction(playerAction);
     }
+
+    public void AbilityOnClick()
+     {
+        CombatManager.PerformPlayerAbility(playerAbility);
+     }
 }
