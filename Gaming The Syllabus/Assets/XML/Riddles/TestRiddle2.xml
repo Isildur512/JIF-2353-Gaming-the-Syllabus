@@ -1,0 +1,8 @@
+<Riddle xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TestRiddle2" question="2 + 2?" reward="XML/UnlockableAbilities/HealthPotion.xml">
+	<answers numberOfAnswers="4">
+		<answer text="4" isCorrect="true"/>
+		<answer text="2^2" isCorrect="true"/>
+		<answer text="2 * 2" isCorrect="true"/>
+		<answer text="-1" isCorrect="false"/>
+	</answers>
+</Riddle>
