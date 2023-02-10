@@ -12,6 +12,7 @@ using System;
 [XmlRoot("CombatUnit")]
 public class CombatUnit : IXmlSerializable
 {
+
     public string UnitName { get; private set; }
     public int MaximumHealth { get; private set; }
     public int CurrentHealth { get; private set; }
@@ -20,7 +21,7 @@ public class CombatUnit : IXmlSerializable
 
     public List<UnitAction> actions;
 
-    public List<UnitAction> abilities;
+    public List<PlayerAbility> abilities;
 
     public bool IsAlive { get; private set; } = true;
 
@@ -38,21 +39,6 @@ public class CombatUnit : IXmlSerializable
             }
             
             //CombatManager.NextTurn();
-        }
-    }
-
-    public void PerformAbility(int abilityIndex) 
-    {
-        if (IsAlive) {
-            if (abilityIndex < abilities.count)
-            {
-                abilities[abilityIndex].Execute(onActionCompleted: CombatManager.NextTurn);
-            }
-            else 
-            {
-                Debug.Log("Ability index was outside of list of abilities");
-                CombatManager.NextTurn();
-            }
         }
     }
 
@@ -103,7 +89,7 @@ public class CombatUnit : IXmlSerializable
         dialogueColor = reader.GetAttribute("dialogueColor");
 
         actions = new List<UnitAction>();
-        abilities = new List<UnitAction>();
+        abilities = new List<PlayerAbility>();
 
         reader.ReadToDescendant("actions");
 
@@ -119,8 +105,6 @@ public class CombatUnit : IXmlSerializable
             reader.ReadToNextSibling("action");
             reader.ReadToNextSibling("action");
         }
-
-        for (int i = 0; i < )
 
         
     }

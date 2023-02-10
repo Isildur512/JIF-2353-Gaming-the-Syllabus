@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<PlayerAbilities>
+  <PlayerAbility name="SlashAttack" type="attack" default="true">
+    <AbilityDesc> This is a slash attack that deals deals more accurate but less overall damage. </AbilityDesc>
+    <minDamage>2</minDamage>
+    <maxDamage>5</maxDamage>
+    <hitChance>80</hitChance>
+    <hitMessage> Used a Slash Attack and dealt </hitMessage>
+    <missMessage> Tried using Slash Attack but missed! </missMessage>
+  </PlayerAbility>
+  <PlayerAbility name="SuperAttack" type="attack" default="false">
+    <AbilityDesc> This is a super attack that deals high damage but at the cost of some of your HP.</AbilityDesc>
+  </PlayerAbility>
+</PlayerAbilities>

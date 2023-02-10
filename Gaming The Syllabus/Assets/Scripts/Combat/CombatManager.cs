@@ -14,12 +14,14 @@ public enum GameState {
 
 public class CombatManager : Singleton<CombatManager>
 {
-    private static CombatUnit player;
+    public static CombatUnit player;
     private static CombatUnit[] enemies;
 
     private static List<CombatUnit> allCombatants;
 
     private static int indexOfCombatantWithCurrentTurn;
+
+    public static bool isDone = false; // Checks if this script is done running.
 
     public static bool IsPlayerTurn { get; private set; }
 
@@ -44,16 +46,15 @@ public class CombatManager : Singleton<CombatManager>
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
         allCombatants = new List<CombatUnit>();
         allCombatants.Add(player);
+        AbilityController.GiveDefaultAbilities(player);
         foreach (CombatUnit enemy in enemies) {
             allCombatants.Add(enemy);
         }
 
-
-        XmlUtilities.Serialize(player.actions[0], "XML/PlayerAbility.xml");
-
         // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();
+        isDone = true;
     }
 
     public static void PerformPlayerAction(PlayerAction playerAction)
@@ -65,13 +66,6 @@ public class CombatManager : Singleton<CombatManager>
         }
     }
 
-    public static void PerformPlayerAbility(PlayerAbility playerAbility)
-    {
-        if (IsPlayerTurn)
-        {
-            player.PerformAbility((int) playerAbility);
-        }
-    }
 
     public static void NextTurn() {
         // Move to next unit
@@ -150,11 +144,6 @@ public enum PlayerAction
     Attack,
     Defend,
     Rest
-}
-
-public enum PlayerAbility
-{
-    SlashAttack
 }
 
 public enum TargetType

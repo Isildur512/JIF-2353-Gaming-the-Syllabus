@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<UnitAction name="SlashAttack" 
-    description="This is a slash attack. Deals" numberOfEffects="2" charges="1">
-  <effect type="DamageTarget" target="AnyEnemy" delayInSecondsBeforeEffects="0" delayInSecondsAfterEffects="0" damageAmount="5" />
-</UnitAction>
