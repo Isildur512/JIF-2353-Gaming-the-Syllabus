@@ -14,6 +14,7 @@ public enum GameState {
 
 public class CombatManager : Singleton<CombatManager>
 {
+    public static GameState gameStatus;
     public static CombatUnit player;
     private static CombatUnit[] enemies;
 
@@ -41,6 +42,7 @@ public class CombatManager : Singleton<CombatManager>
 
     private void Start()
     {
+
         StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
@@ -51,11 +53,14 @@ public class CombatManager : Singleton<CombatManager>
             allCombatants.Add(enemy);
         }
 
+        gameStatus = GameState.Ongoing;
+
         // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();
         isDone = true;
     }
+
 
     public static void PerformPlayerAction(PlayerAction playerAction)
     {
@@ -79,7 +84,6 @@ public class CombatManager : Singleton<CombatManager>
 
         CombatUnit unitWithCurrentTurn = allCombatants[indexOfCombatantWithCurrentTurn];
         CombatUIManager.MarkUnitAsTakingTurn(unitWithCurrentTurn);
-        Debug.Log($"Taking Turn: {unitWithCurrentTurn.UnitName}");
 
         if (unitWithCurrentTurn.Equals(player))
         {

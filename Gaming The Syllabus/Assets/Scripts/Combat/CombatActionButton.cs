@@ -7,10 +7,16 @@ using UnityEngine;
 public class CombatActionButton : MonoBehaviour
 {
     [SerializeField] private PlayerAction playerAction;
+    [SerializeField] private GameObject abilityPage;
 
     public void OnClick()
     {
         CombatManager.PerformPlayerAction(playerAction);
+    }
+
+    public void ShowAbilityPage()
+    {
+        abilityPage.SetActive(!abilityPage.activeSelf);
     }
 
 }

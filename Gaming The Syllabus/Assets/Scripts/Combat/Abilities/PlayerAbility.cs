@@ -16,6 +16,7 @@ public class PlayerAbility
     public string abilityDesc { get; private set; }
     public XmlNode abilityNode { get; private set; }
 
+
     public PlayerAbility(XmlNode curItemNode) 
     {
         abilityName = curItemNode.Attributes["name"].Value;
@@ -23,23 +24,27 @@ public class PlayerAbility
         isDefaultAbility = bool.Parse(curItemNode.Attributes["default"].Value);
         abilityDesc = curItemNode["AbilityDesc"].InnerText;
         abilityNode = curItemNode;
-        Debug.Log($"{abilityName} {abilityType}");
     }
 
 
     public void PerformAttackAbility(params CombatUnit[] targets)
     {
         CombatUnit attacker = CombatManager.getCurrentCombatant();
-        foreach (CombatUnit target in targets)
-        {
-            if (calculateHitChance(abilityNode))
+        if (calculateHitChance(abilityNode)) {
+            foreach (CombatUnit target in targets)
             {
+                if (!target.IsAlive) {
+                    continue;
+                }
+                
                 int damageAmt = calculateDamage(abilityNode);
                 target.ApplyDamage(damageAmt);
-                DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["hitMessage"]} {damageAmt} damage to {target.UnitName}");
-            } else {
-                DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["missMessage"]}");
+                DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
             }
+        }
+        else 
+        {
+            DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["missMessage"].InnerText}");
         }
     }
 

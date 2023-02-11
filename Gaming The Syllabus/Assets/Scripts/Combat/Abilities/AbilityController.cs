@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using System.Xml;
+using UnityEngine.Events;
 
 public class AbilityController : MonoBehaviour
 {
@@ -41,8 +42,12 @@ public class AbilityController : MonoBehaviour
         }
     }
 
-    public void UseAttackAbility(PlayerAbility ability)
+    public static void UseAttackAbility(PlayerAbility ability)
     {
-        
+        if (CombatManager.getCurrentCombatant().UnitName == "Player")
+        {
+            ability.PerformAttackAbility(CombatManager.GetTargetsByType(TargetType.AllEnemies));
+            CombatManager.NextTurn();
+        }
     }
 }
