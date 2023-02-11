@@ -42,6 +42,36 @@ public class AbilityController : MonoBehaviour
         }
     }
 
+
+    // This is case sensitive for abilityName. Be sure to pass in the string as the "name" attribute within PlayerAbilites.xml
+    public static void GiveAbility(CombatUnit target, string abilityName)
+    {
+        foreach (PlayerAbility ability in target.abilities)
+        {
+            if (abilityName == ability.abilityName)
+            {
+                Debug.Log($"{target.UnitName} already has {abilityName}");
+                return;
+            }
+        }
+
+        XmlNodeList abilityNode = abilityDataXml.SelectNodes($"/PlayerAbilities/PlayerAbility");
+        foreach (XmlNode ability in abilityNode)
+        {
+            if (ability.Attributes["name"].Value == abilityName)
+            {
+                PlayerAbility newAbility = new PlayerAbility(ability);
+                target.abilities.Add(newAbility);
+                AbilityPageUIManager.AppendAbilityToPage(newAbility);
+            }
+            else
+            {
+                Debug.Log($"Could not find {abilityName} in PlayerAbilities.xml!");
+            }
+        }
+    }
+
+
     public static void UseAttackAbility(PlayerAbility ability)
     {
         if (CombatManager.getCurrentCombatant().UnitName == "Player")

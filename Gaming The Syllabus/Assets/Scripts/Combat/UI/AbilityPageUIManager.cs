@@ -13,6 +13,7 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
     public GameObject abilitiesGameObject;
 
 
+
     private void Awake()
     {
         InitializeSingleton();
@@ -39,5 +40,17 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
         abilityPage.SetActive(false);
     }
 
+    public static void AppendAbilityToPage(PlayerAbility ability)
+    {
+        GameObject abilityButton = Instantiate(_instance.abilityButtonPrefab, _instance.abilitiesGameObject.transform);
+        abilityButton.name = ability.abilityName;
+        
+        Button button = abilityButton.GetComponent<Button>();
+        button.onClick.AddListener(() => {AbilityController.UseAttackAbility(ability);
+                                            _instance.abilityPage.SetActive(false);});
+
+        abilityButton.GetComponent<Tooltip>().message = ability.abilityDesc;
+        abilityButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+    }
 
 }
