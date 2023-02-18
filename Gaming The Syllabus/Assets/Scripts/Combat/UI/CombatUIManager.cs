@@ -42,9 +42,9 @@ public class CombatUIManager : Singleton<CombatUIManager>
         combatUnitToHealthbar[unit].UpdateHealthbarValue(currentHealth, maximumHealth);
     }
 
-    public static void UpdateHealthbarText(CombatUnit unit, int amount) {
-        combatUnitToHealthbar[unit].UpdateHealthChangeText(amount.ToString());
-        combatUnitToHealthbar[unit].ShowHealthChangeText();
+    public static void UpdateHealthbarText(CombatUnit unit, int healthAmount)
+    {
+        combatUnitToHealthbar[unit].UpdateHealthChangeText(healthAmount.ToString());
     }
 
 

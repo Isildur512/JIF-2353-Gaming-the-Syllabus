@@ -7,10 +7,10 @@ using TMPro;
 public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
 {
 
-    public GameObject abilityPage;
-    public GameObject abilityButtonPrefab;
+    [SerializeField] private GameObject abilityPage;
+    [SerializeField] private GameObject abilityButtonPrefab;
 
-    public GameObject abilitiesGameObject;
+    [SerializeField] private GameObject abilitiesGameObject;
 
 
 
@@ -27,14 +27,15 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
         foreach (PlayerAbility ability in CombatManager.player.abilities)
         {
             GameObject abilityButton = Instantiate(abilityButtonPrefab, abilitiesGameObject.transform);
-            abilityButton.name = ability.abilityName;
+            abilityButton.name = ability.AbilityName;
             
             Button button = abilityButton.GetComponent<Button>();
             button.onClick.AddListener(() => {AbilityController.UseAttackAbility(ability);
+                                                TooltipManager.HideToolTip();
                                                 abilityPage.SetActive(false);});
 
-            abilityButton.GetComponent<Tooltip>().message = ability.abilityDesc;
-            abilityButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+            abilityButton.GetComponent<Tooltip>().setMessage(ability.AbilityDesc);
+            abilityButton.GetComponentInChildren<TMP_Text>().text = ability.AbilityName;
         }
 
         abilityPage.SetActive(false);
@@ -43,14 +44,16 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
     public static void AppendAbilityToPage(PlayerAbility ability)
     {
         GameObject abilityButton = Instantiate(_instance.abilityButtonPrefab, _instance.abilitiesGameObject.transform);
-        abilityButton.name = ability.abilityName;
-        
-        Button button = abilityButton.GetComponent<Button>();
-        button.onClick.AddListener(() => {AbilityController.UseAttackAbility(ability);
-                                            _instance.abilityPage.SetActive(false);});
+        abilityButton.name = ability.AbilityName;
 
-        abilityButton.GetComponent<Tooltip>().message = ability.abilityDesc;
-        abilityButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+        abilityButton.GetComponent<Tooltip>().setMessage(ability.AbilityDesc);
+        abilityButton.GetComponentInChildren<TMP_Text>().text = ability.AbilityName;
+
+
+        Button button = abilityButton.GetComponent<Button>();        
+        button.onClick.AddListener(() => {AbilityController.UseAttackAbility(ability);
+                                            TooltipManager.HideToolTip();
+                                            _instance.abilityPage.SetActive(false);});
     }
 
 }

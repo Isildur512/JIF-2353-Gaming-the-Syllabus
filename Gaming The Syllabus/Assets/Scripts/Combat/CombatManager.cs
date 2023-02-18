@@ -14,20 +14,23 @@ public enum GameState {
 
 public class CombatManager : Singleton<CombatManager>
 {
-    public static GameState gameStatus;
-    public static CombatUnit player;
+    public static GameState gameStatus { get; private set; }
+    public static CombatUnit player { get; private set; }
     private static CombatUnit[] enemies;
 
     private static List<CombatUnit> allCombatants;
 
+    public static CombatUnit currentCombatant { get; private set; }
+
     private static int indexOfCombatantWithCurrentTurn;
 
-    public static bool isDone = false; // Checks if this script is done running.
+    public static bool isDone { get; private set; } // Checks if this script is done running.
 
     public static bool IsPlayerTurn { get; private set; }
 
     private void Awake()
     {
+        isDone = false;
         InitializeSingleton();
     }
 
@@ -42,7 +45,6 @@ public class CombatManager : Singleton<CombatManager>
 
     private void Start()
     {
-
         StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
@@ -84,12 +86,15 @@ public class CombatManager : Singleton<CombatManager>
 
         CombatUnit unitWithCurrentTurn = allCombatants[indexOfCombatantWithCurrentTurn];
         CombatUIManager.MarkUnitAsTakingTurn(unitWithCurrentTurn);
+        currentCombatant = allCombatants[indexOfCombatantWithCurrentTurn];
 
         if (unitWithCurrentTurn.Equals(player))
         {
             IsPlayerTurn = true;
-        } else
+        } 
+        else
         {
+            IsPlayerTurn = false;
             unitWithCurrentTurn.PerformRandomAction();
         }
     }
@@ -97,11 +102,6 @@ public class CombatManager : Singleton<CombatManager>
     private static void AdvanceCurrentTurnIndex()
     {
         indexOfCombatantWithCurrentTurn = (indexOfCombatantWithCurrentTurn + 1) % allCombatants.Count;
-    }
-
-    public static CombatUnit getCurrentCombatant()
-    {
-        return allCombatants[indexOfCombatantWithCurrentTurn];
     }
 
 

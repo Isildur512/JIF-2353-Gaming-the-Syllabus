@@ -25,8 +25,8 @@ public class HealTarget : ActionEffect
         foreach (CombatUnit target in targets)
         {
             target.HealUnit(healAmount);
-            CombatUnit caller = CombatManager.getCurrentCombatant();
-            DialogueBoxUIManager.addStringToDialogueBox
+            CombatUnit caller = CombatManager.currentCombatant;
+            DialogueBoxUIManager.AddStringToDialogueBox
             ($"<color=\"{caller.dialogueColor}\">{caller.UnitName}</color>"
             + $" rested and healed for <color=\"green\">+{healAmount}</color>");
         }

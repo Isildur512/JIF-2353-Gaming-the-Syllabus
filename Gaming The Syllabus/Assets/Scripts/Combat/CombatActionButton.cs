@@ -16,7 +16,10 @@ public class CombatActionButton : MonoBehaviour
 
     public void ShowAbilityPage()
     {
-        abilityPage.SetActive(!abilityPage.activeSelf);
+        if (CombatManager.IsPlayerTurn)
+        {
+            abilityPage.SetActive(!abilityPage.activeInHierarchy);
+        }
     }
 
 }

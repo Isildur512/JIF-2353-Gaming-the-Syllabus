@@ -49,9 +49,10 @@ public class Healthbar : MonoBehaviour
             healthChangeText.text = "+" + amtChanged;
             healthChangeText.color = Color.green;
         }
+        ShowHealthChangeText();
     }
 
-    public void ShowHealthChangeText() {
+    private void ShowHealthChangeText() {
         healthChangeText.alpha = 1f;
     }
 

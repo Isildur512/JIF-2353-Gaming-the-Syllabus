@@ -9,20 +9,24 @@ using UnityEngine.Events;
 public class AbilityController : MonoBehaviour
 {
 
-    public static XmlDocument abilityDataXml = new XmlDocument();
-    public TextAsset abilitiesXML;
+    [SerializeField] private TextAsset abilitiesXML;
 
     
-    public List<PlayerAbility> allAbilities;
+    private static List<PlayerAbility> allAbilities;
     private void Awake()
     {
-        abilityDataXml.LoadXml(abilitiesXML.text);
         allAbilities = new List<PlayerAbility>();
-        FindAllAbilities();
+        LoadAllAbilities();
+        Debug.Log($"ability count: {allAbilities.Count}");
     }
 
-    public void FindAllAbilities()
+
+    /// This adds every ability from PlayerAbilities to the allAbilities list. 
+    public void LoadAllAbilities()
     {
+        XmlDocument abilityDataXml = new XmlDocument();
+        abilityDataXml.LoadXml(abilitiesXML.text);
+
         XmlNodeList abilities = abilityDataXml.SelectNodes("/PlayerAbilities/PlayerAbility");
         foreach (XmlNode ability in abilities)
         {
@@ -33,36 +37,33 @@ public class AbilityController : MonoBehaviour
 
     public static void GiveDefaultAbilities(CombatUnit target)
     {
-        XmlNodeList abilities = abilityDataXml.SelectNodes("/PlayerAbilities/PlayerAbility[@default='true']");
-        foreach (XmlNode ability in abilities)
+        // XmlNodeList abilities = abilityDataXml.SelectNodes("/PlayerAbilities/PlayerAbility[@default='true']");
+        foreach (PlayerAbility ability in allAbilities)
         {
-            Debug.Log($"Abilities length: {abilities.Count}");
-            PlayerAbility newAbility = new PlayerAbility(ability);
-            CombatManager.player.abilities.Add(newAbility);
+            if (ability.IsDefaultAbility)
+            CombatManager.player.abilities.Add(ability);
         }
     }
 
 
-    // This is case sensitive for abilityName. Be sure to pass in the string as the "name" attribute within PlayerAbilites.xml
+    /// This is case sensitive for abilityName. Be sure to pass in the string as the "name" attribute within PlayerAbilites.xml
     public static void GiveAbility(CombatUnit target, string abilityName)
     {
         foreach (PlayerAbility ability in target.abilities)
         {
-            if (abilityName == ability.abilityName)
+            if (abilityName == ability.AbilityName)
             {
                 Debug.Log($"{target.UnitName} already has {abilityName}");
                 return;
             }
         }
 
-        XmlNodeList abilityNode = abilityDataXml.SelectNodes($"/PlayerAbilities/PlayerAbility");
-        foreach (XmlNode ability in abilityNode)
+        foreach (PlayerAbility ability in allAbilities)
         {
-            if (ability.Attributes["name"].Value == abilityName)
+            if (ability.AbilityName == abilityName)
             {
-                PlayerAbility newAbility = new PlayerAbility(ability);
-                target.abilities.Add(newAbility);
-                AbilityPageUIManager.AppendAbilityToPage(newAbility);
+                target.abilities.Add(ability);
+                AbilityPageUIManager.AppendAbilityToPage(ability);
             }
             else
             {
@@ -74,7 +75,7 @@ public class AbilityController : MonoBehaviour
 
     public static void UseAttackAbility(PlayerAbility ability)
     {
-        if (CombatManager.getCurrentCombatant().UnitName == "Player")
+        if (CombatManager.IsPlayerTurn)
         {
             ability.PerformAttackAbility(CombatManager.GetTargetsByType(TargetType.AllEnemies));
             CombatManager.NextTurn();

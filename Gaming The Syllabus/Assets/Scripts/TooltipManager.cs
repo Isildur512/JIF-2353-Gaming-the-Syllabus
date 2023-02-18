@@ -4,27 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class TooltipManager : MonoBehaviour
+public class TooltipManager : Singleton<TooltipManager>
 {
-    public static TooltipManager _instance;
-
-    public TextMeshProUGUI textComponent;
+    [SerializeField] private TextMeshProUGUI textComponent;
 
     void Awake()
     {
-        if (_instance != null && _instance != this)
-        {
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-        }
+        InitializeSingleton();
     }
-    // Start is called before the first frame update
+
     void Start()
     {
-        Cursor.visible = true;
         gameObject.SetActive(false);
     }
 
@@ -34,15 +24,16 @@ public class TooltipManager : MonoBehaviour
         transform.position = Mouse.current.position.ReadValue();
     }
 
-    public void SetAndShowTooltip(string message)
+
+    public static void SetAndShowTooltip(string message)
     {
-        gameObject.SetActive(true);
-        textComponent.text = message;
+        _instance.gameObject.SetActive(true);
+        _instance.textComponent.text = message;
     }
 
-    public void HideToolTip()
+    public static void HideToolTip()
     {
-        gameObject.SetActive(false);
-        textComponent.text = string.Empty;
+        _instance.gameObject.SetActive(false);
+        _instance.textComponent.text = string.Empty;
     }
 }

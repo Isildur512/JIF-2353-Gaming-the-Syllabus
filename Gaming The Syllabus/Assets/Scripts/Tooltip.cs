@@ -5,15 +5,20 @@ using UnityEngine.EventSystems;
 
 public class Tooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public string message;
+    [SerializeField] private string message;
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TooltipManager._instance.SetAndShowTooltip(message);
+        TooltipManager.SetAndShowTooltip(message);
     }
 
     public void OnPointerExit(PointerEventData eventData) 
     {
-        TooltipManager._instance.HideToolTip();
+        TooltipManager.HideToolTip();
+    }
+
+    public void setMessage(string message)
+    {
+        this.message = message;
     }
 }

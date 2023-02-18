@@ -10,41 +10,41 @@ using System.Xml;
 public class PlayerAbility
 { 
     [SerializeField] private string Name;
-    public string abilityName { get => Name; private set => Name = value; }
-    public string abilityType { get; private set; }
-    public bool isDefaultAbility { get; private set; }
-    public string abilityDesc { get; private set; }
-    public XmlNode abilityNode { get; private set; }
+    public string AbilityName { get => Name; private set => Name = value; }
+    public string AbilityType { get; private set; }
+    public bool IsDefaultAbility { get; private set; }
+    public string AbilityDesc { get; private set; }
+    public XmlNode AbilityNode { get; private set; }
 
 
     public PlayerAbility(XmlNode curItemNode) 
     {
-        abilityName = curItemNode.Attributes["name"].Value;
-        abilityType = curItemNode.Attributes["type"].Value;
-        isDefaultAbility = bool.Parse(curItemNode.Attributes["default"].Value);
-        abilityDesc = curItemNode["AbilityDesc"].InnerText;
-        abilityNode = curItemNode;
+        AbilityName = curItemNode.Attributes["name"].Value;
+        AbilityType = curItemNode.Attributes["type"].Value;
+        IsDefaultAbility = bool.Parse(curItemNode.Attributes["default"].Value);
+        AbilityDesc = curItemNode["AbilityDesc"].InnerText;
+        AbilityNode = curItemNode;
     }
 
 
     public void PerformAttackAbility(params CombatUnit[] targets)
     {
-        CombatUnit attacker = CombatManager.getCurrentCombatant();
-        if (calculateHitChance(abilityNode)) {
+        CombatUnit attacker = CombatManager.currentCombatant;
+        if (calculateHitChance(AbilityNode)) {
             foreach (CombatUnit target in targets)
             {
                 if (!target.IsAlive) {
                     continue;
                 }
                 
-                int damageAmt = calculateDamage(abilityNode);
+                int damageAmt = calculateDamage(AbilityNode);
                 target.ApplyDamage(damageAmt);
-                DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
+                DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
             }
         }
         else 
         {
-            DialogueBoxUIManager.addStringToDialogueBox($"{attacker.UnitName} {abilityNode["missMessage"].InnerText}");
+            DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["missMessage"].InnerText}");
         }
     }
 

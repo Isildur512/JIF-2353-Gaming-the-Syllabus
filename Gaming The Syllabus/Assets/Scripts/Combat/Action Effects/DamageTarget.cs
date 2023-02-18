@@ -7,7 +7,7 @@ using System.Xml;
 
 public class DamageTarget : ActionEffect
 {
-    public int damageAmount;
+    public int damageAmount { get; private set; }
 
     public DamageTarget(int damageAmount, TargetType target)
     {
@@ -25,10 +25,11 @@ public class DamageTarget : ActionEffect
         foreach (CombatUnit target in targets)
         {
             target.ApplyDamage(damageAmount);
-            CombatUnit attacker = CombatManager.getCurrentCombatant();
-            DialogueBoxUIManager.addStringToDialogueBox
-            ($"<color=\"{attacker.dialogueColor}\">{attacker.UnitName}</color>"
-            + $" dealt <color=\"red\">{damageAmount}</color> damage to <color=\"{target.dialogueColor}\">{target.UnitName}!</color>");
+            CombatUnit attacker = CombatManager.currentCombatant;
+            DialogueBoxUIManager.AddStringToDialogueBox
+            ($"{DialogueBoxUIManager.FormatCombatUnitColor(attacker)}"
+            + $" dealt {DialogueBoxUIManager.FormatDamageColor(damageAmount)} damage to "
+            + $"{DialogueBoxUIManager.FormatCombatUnitColor(target)}");
         }
     }
 

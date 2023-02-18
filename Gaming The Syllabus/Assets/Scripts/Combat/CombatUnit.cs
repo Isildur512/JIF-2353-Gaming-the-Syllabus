@@ -19,9 +19,9 @@ public class CombatUnit : IXmlSerializable
 
     public string dialogueColor { get; private set; }
 
-    public List<UnitAction> actions;
+    public List<UnitAction> actions { get; private set; }
 
-    public List<PlayerAbility> abilities;
+    public List<PlayerAbility> abilities { get; private set; }
 
     public bool IsAlive { get; private set; } = true;
 

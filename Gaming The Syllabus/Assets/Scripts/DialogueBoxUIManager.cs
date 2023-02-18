@@ -22,7 +22,7 @@ public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
     /// Adds a string (strToAdd) to the dialogue box within the UI.
     /// </summary>
     /// <param name="strToAdd">The string to be added to the dialogue box</param>
-    public static void addStringToDialogueBox(string strToAdd) {
+    public static void AddStringToDialogueBox(string strToAdd) {
         if (dialogueStrings.Count >= 5) {
             dialogueStrings.RemoveFirst();
         }
@@ -30,10 +30,21 @@ public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
         _instance.UpdateDialogueBox();
     }
 
-    /// <summary>
-    /// Loops through the LinkedList of strings and concatenates them together and then updates
-    /// the actual dialogue box text mesh pro text.
-    /// </summary>
+
+    public static string FormatCombatUnitColor(CombatUnit target)
+    {
+        return $"<color=\"{target.dialogueColor}\">{target.UnitName}</color>";
+    }
+
+    public static string FormatDamageColor(int damageAmount)
+    {
+        return $"<color=\"red\">{damageAmount}</color>";
+    }
+
+
+    /* Loops through the LinkedList of strings and concatenates them together and then updates
+     the actual dialogue box text mesh pro text. 
+     */
     private void UpdateDialogueBox() {
         string newText = "";
         foreach (string str in dialogueStrings) {
