@@ -30,6 +30,7 @@ public class PlayerAbility
 
         AbilityActionEffects = new List<ActionEffect>();
 
+        // This adds all the effects to the PlayerAbility
         foreach(XmlNode effect in AbilityNode["Effects"])
         {
             ActionEffects effectType = Enum.Parse<ActionEffects>(effect.Attributes["type"].Value);
@@ -54,10 +55,7 @@ public class PlayerAbility
                 {
                     effect.Apply(target);
                 }
-
-                int damageAmt = calculateDamage(AbilityNode);
-                // target.ApplyDamage(damageAmt);
-                // DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
+        
             }
         }
         else 

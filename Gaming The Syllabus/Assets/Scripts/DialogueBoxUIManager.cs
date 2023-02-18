@@ -38,7 +38,11 @@ public class DialogueBoxUIManager : Singleton<DialogueBoxUIManager>
 
     public static string FormatDamageColor(int damageAmount)
     {
-        return $"<color=\"red\">{damageAmount}</color>";
+        if (damageAmount < 0) {
+            return $"<color=\"red\">{damageAmount}</color>";
+        } else {
+            return $"<color=\"green\">{damageAmount}</color>";
+        }
     }
 
 

@@ -22,13 +22,25 @@ public class HealTarget : ActionEffect
 
     public override void Apply(params CombatUnit[] targets)
     {
+
+        CombatUnit caller = CombatManager.currentCombatant;
+
         foreach (CombatUnit target in targets)
         {
-            target.HealUnit(healAmount);
-            CombatUnit caller = CombatManager.currentCombatant;
+
+            if (AbilityCaller != null) // If this is not null, then this means a PlayerAbility is using this effect.
+            {
+                healAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);
+                caller.HealUnit(healAmount);
+            } 
+            else
+            {           
+                target.HealUnit(healAmount);
+            }
+
             DialogueBoxUIManager.AddStringToDialogueBox
-            ($"<color=\"{caller.dialogueColor}\">{caller.UnitName}</color>"
-            + $" rested and healed for <color=\"green\">+{healAmount}</color>");
+            ($"{DialogueBoxUIManager.FormatCombatUnitColor(caller)}"
+            + $"{DialogueBoxUIManager.FormatDamageColor(healAmount)}");
         }
     }
 
