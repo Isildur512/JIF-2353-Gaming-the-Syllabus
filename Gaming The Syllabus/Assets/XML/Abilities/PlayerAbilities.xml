@@ -7,6 +7,7 @@
     <hitChance>100</hitChance>
     <Effects>
         <effect type="DamageTarget" target="AnyEnemy" damageAmount="5"/>
+        <effect type="Heal" target="Player" healAmount="5"/>
     </Effects>
     <hitMessage> Used Whirldwhind and dealt </hitMessage>
     <missMessage> Tried using Whirldwhind but missed! </missMessage>

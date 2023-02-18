@@ -54,10 +54,7 @@ public class PlayerAbility
                 {
                     effect.Apply(target);
                 }
-
-                int damageAmt = calculateDamage(AbilityNode);
-                // target.ApplyDamage(damageAmt);
-                // DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
+        
             }
         }
         else 
