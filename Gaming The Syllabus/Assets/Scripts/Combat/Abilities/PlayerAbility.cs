@@ -1,3 +1,4 @@
+using System;
 using System.Net.NetworkInformation;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,6 +17,8 @@ public class PlayerAbility
     public string AbilityDesc { get; private set; }
     public XmlNode AbilityNode { get; private set; }
 
+    public List<ActionEffect> AbilityActionEffects { get; private set; }
+
 
     public PlayerAbility(XmlNode curItemNode) 
     {
@@ -24,6 +27,16 @@ public class PlayerAbility
         IsDefaultAbility = bool.Parse(curItemNode.Attributes["default"].Value);
         AbilityDesc = curItemNode["AbilityDesc"].InnerText;
         AbilityNode = curItemNode;
+
+        AbilityActionEffects = new List<ActionEffect>();
+
+        foreach(XmlNode effect in AbilityNode["Effects"])
+        {
+            ActionEffects effectType = Enum.Parse<ActionEffects>(effect.Attributes["type"].Value);
+            ActionEffect newEffect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
+            newEffect.AbilityCaller = this;
+            AbilityActionEffects.Add(newEffect);
+        }
     }
 
 
@@ -37,9 +50,14 @@ public class PlayerAbility
                     continue;
                 }
                 
+                foreach(ActionEffect effect in AbilityActionEffects)
+                {
+                    effect.Apply(target);
+                }
+
                 int damageAmt = calculateDamage(AbilityNode);
-                target.ApplyDamage(damageAmt);
-                DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
+                // target.ApplyDamage(damageAmt);
+                // DialogueBoxUIManager.AddStringToDialogueBox($"{attacker.UnitName} {AbilityNode["hitMessage"].InnerText} {damageAmt} damage to {target.UnitName}");
             }
         }
         else 
@@ -49,16 +67,17 @@ public class PlayerAbility
     }
 
 
-    private bool calculateHitChance(XmlNode ability)
+    public bool calculateHitChance(XmlNode ability)
     {
-        int rollChance = Random.Range(0, 100);
+        System.Random random = new System.Random();
+        int rollChance = random.Next(0, 100);
         return int.Parse(ability["hitChance"].InnerText) >= rollChance;
     }
 
 
-    private int calculateDamage(XmlNode ability)
+    public int calculateDamage(XmlNode ability)
     {
-        return Random.Range(int.Parse(ability["minDamage"].InnerText), int.Parse(ability["maxDamage"].InnerText));
+        System.Random num = new System.Random();
+        return num.Next(int.Parse(ability["minDamage"].InnerText), int.Parse(ability["maxDamage"].InnerText));
     }
-
 }

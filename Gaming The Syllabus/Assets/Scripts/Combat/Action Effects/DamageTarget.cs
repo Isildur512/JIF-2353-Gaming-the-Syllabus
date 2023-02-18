@@ -1,3 +1,4 @@
+using System.Runtime.Versioning;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,9 @@ public class DamageTarget : ActionEffect
     {
         foreach (CombatUnit target in targets)
         {
+            if (AbilityCaller != null)
+                damageAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);
+                
             target.ApplyDamage(damageAmount);
             CombatUnit attacker = CombatManager.currentCombatant;
             DialogueBoxUIManager.AddStringToDialogueBox
@@ -43,5 +47,7 @@ public class DamageTarget : ActionEffect
     {
         base.ReadXml(reader);
         damageAmount = int.Parse(reader.GetAttribute("damageAmount"));
+        Debug.Log($"Damage Amount: {damageAmount}");
     }
+
 }

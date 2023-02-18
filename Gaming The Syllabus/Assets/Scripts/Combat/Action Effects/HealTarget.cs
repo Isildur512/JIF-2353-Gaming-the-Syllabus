@@ -43,4 +43,5 @@ public class HealTarget : ActionEffect
         base.ReadXml(reader);
         healAmount = int.Parse(reader.GetAttribute("healAmount"));
     }
+
 }

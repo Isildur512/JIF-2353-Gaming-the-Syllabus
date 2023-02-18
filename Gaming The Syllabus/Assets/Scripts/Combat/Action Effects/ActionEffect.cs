@@ -10,6 +10,12 @@ public abstract class ActionEffect : IXmlSerializable
 {
     public TargetType Target { get; protected set; } = TargetType.None;
 
+    private PlayerAbility _AbilityCaller;
+    public PlayerAbility AbilityCaller {get {return _AbilityCaller;}
+                                        set { if (_AbilityCaller == null)
+                                                    _AbilityCaller = value;
+                                                else return;}}
+
     public float DelayInSecondsBeforeEffects { get; private set; }
     public float DelayInSecondsAfterEffects { get; private set; }
 
@@ -40,5 +46,10 @@ public abstract class ActionEffect : IXmlSerializable
     public XmlSchema GetSchema()
     {
         return (null);
+    }
+
+    public virtual void SetValues()
+    {
+
     }
 }
