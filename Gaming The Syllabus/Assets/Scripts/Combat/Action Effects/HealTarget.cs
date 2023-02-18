@@ -39,8 +39,8 @@ public class HealTarget : ActionEffect
             }
 
             DialogueBoxUIManager.AddStringToDialogueBox
-            ($"<color=\"{caller.dialogueColor}\">{caller.UnitName}</color>"
-            + $" rested and healed for <color=\"green\">+{healAmount}</color>");
+            ($"{DialogueBoxUIManager.FormatCombatUnitColor(caller)}"
+            + $"{DialogueBoxUIManager.FormatDamageColor(healAmount)}");
         }
     }
 

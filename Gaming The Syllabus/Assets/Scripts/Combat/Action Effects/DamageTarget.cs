@@ -32,7 +32,7 @@ public class DamageTarget : ActionEffect
             CombatUnit attacker = CombatManager.currentCombatant;
             DialogueBoxUIManager.AddStringToDialogueBox
             ($"{DialogueBoxUIManager.FormatCombatUnitColor(attacker)}"
-            + $" dealt {DialogueBoxUIManager.FormatDamageColor(damageAmount)} damage to "
+            + $" dealt {DialogueBoxUIManager.FormatDamageColor(-damageAmount)} damage to "
             + $"{DialogueBoxUIManager.FormatCombatUnitColor(target)}");
         }
     }
