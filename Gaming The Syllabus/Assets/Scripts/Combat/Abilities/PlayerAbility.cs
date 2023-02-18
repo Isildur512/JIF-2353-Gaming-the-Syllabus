@@ -30,6 +30,7 @@ public class PlayerAbility
 
         AbilityActionEffects = new List<ActionEffect>();
 
+        // This adds all the effects to the PlayerAbility
         foreach(XmlNode effect in AbilityNode["Effects"])
         {
             ActionEffects effectType = Enum.Parse<ActionEffects>(effect.Attributes["type"].Value);

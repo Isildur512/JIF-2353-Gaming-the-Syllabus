@@ -25,7 +25,7 @@ public class DamageTarget : ActionEffect
     {
         foreach (CombatUnit target in targets)
         {
-            if (AbilityCaller != null)
+            if (AbilityCaller != null) // If this is not null, then this means a PlayerAbility is using this effect.
                 damageAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);
                 
             target.ApplyDamage(damageAmount);
