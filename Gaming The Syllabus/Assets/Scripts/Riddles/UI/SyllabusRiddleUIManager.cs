@@ -30,12 +30,12 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
     private void Awake()
     {
         InitializeSingleton();
-        DisplayRiddle(SyllabusRiddleManager.Riddles[0]);
     }
 
     public static void SetUIActive(bool isActive)
     {
         _instance.uiPanel.SetActive(isActive);
+        Player.CanMove = !isActive;
     }
 
     public static void DisplayRiddle(Riddle riddle)
@@ -51,10 +51,10 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         }
         for (int i = 0; i < riddle.Answers.Length; i++)
         {
-            //_instance.riddleAnswerUIElements[i].Initialize(riddle, riddle.Answers[i]);
             CreateAnswerElement
             (
                 _instance.buttonAnswerElementPrefab,
+                _instance.uiPanel.transform,
                 _instance.firstAnswerPosition + new Vector2(0, -(_instance.yDistanceBetweenAnswerElements * i)),
                 riddle,
                 riddle.Answers[i]
@@ -62,12 +62,19 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         }
     }
 
-    private static void CreateAnswerElement(GameObject prefab, Vector2 position, Riddle riddle, RiddleAnswer answer)
+    public static void DisplayRiddle(int indexOfRiddle)
+    {
+        DisplayRiddle(SyllabusRiddleManager.Riddles[indexOfRiddle]);
+    }
+
+    private static void CreateAnswerElement(GameObject prefab, Transform containingPanel, Vector2 position, Riddle riddle, RiddleAnswer answer)
     {
         GameObject answerElement = Instantiate(prefab, _instance.transform);
         answerElement.GetComponent<IRiddleAnswerUIElement>().Initialize(riddle, answer);
 
         RectTransform answerElementTransform = answerElement.GetComponent<RectTransform>();
         answerElementTransform.anchoredPosition = position;
+
+        answerElement.transform.SetParent(containingPanel);
     }
 }
