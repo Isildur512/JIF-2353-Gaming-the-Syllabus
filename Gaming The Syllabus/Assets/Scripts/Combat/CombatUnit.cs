@@ -25,9 +25,10 @@ public class CombatUnit : IXmlSerializable
 
     public bool IsAlive { get; private set; } = true;
 
-    public void PerformAction(int actionIndex) 
+    public void PerformAction(int actionIndex)
     {
-        if (IsAlive) {
+        if (IsAlive)
+        {
             if (actionIndex < actions.Count)
             {
                 actions[actionIndex].Execute(onActionCompleted: CombatManager.NextTurn);
@@ -37,7 +38,7 @@ public class CombatUnit : IXmlSerializable
                 Debug.LogError("Action index was outside of list of actions");
                 CombatManager.NextTurn();
             }
-            
+
             //CombatManager.NextTurn();
         }
     }
