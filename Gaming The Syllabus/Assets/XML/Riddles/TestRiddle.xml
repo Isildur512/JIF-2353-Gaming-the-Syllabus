@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<Riddle xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TestRiddle" question="What is the meaning of life?" reward="XML/UnlockableAbilities/HealthPotion.xml">
-	<answers numberOfAnswers="4">
-		<answer text="21" isCorrect="false"/>
-		<answer text="42" isCorrect="true"/>
-		<answer text="69" isCorrect="false"/>
-		<answer text="27" isCorrect="false"/>
-	</answers>
-</Riddle>
