@@ -10,6 +10,18 @@ public abstract class ActionEffect : IXmlSerializable
 {
     public TargetType Target { get; protected set; } = TargetType.None;
 
+    private PlayerAbility _AbilityCaller;
+
+    /* 
+    This is a bit scuffed, but this is for abilities implementation currently.
+    If AbilityCaller is null, this means that this action effect is not being called
+    by a PlayerAbility.
+    */
+    public PlayerAbility AbilityCaller {get {return _AbilityCaller;}
+                                        set { if (_AbilityCaller == null)
+                                                    _AbilityCaller = value;
+                                                else return;}}
+
     public float DelayInSecondsBeforeEffects { get; private set; }
     public float DelayInSecondsAfterEffects { get; private set; }
 
@@ -40,5 +52,10 @@ public abstract class ActionEffect : IXmlSerializable
     public XmlSchema GetSchema()
     {
         return (null);
+    }
+
+    public virtual void SetValues()
+    {
+
     }
 }

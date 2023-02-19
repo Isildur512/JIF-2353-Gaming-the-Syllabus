@@ -1,3 +1,4 @@
+using System.Runtime.Versioning;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,7 +8,7 @@ using System.Xml;
 
 public class DamageTarget : ActionEffect
 {
-    private int damageAmount;
+    public int damageAmount { get; private set; }
 
     public DamageTarget(int damageAmount, TargetType target)
     {
@@ -24,7 +25,15 @@ public class DamageTarget : ActionEffect
     {
         foreach (CombatUnit target in targets)
         {
+            if (AbilityCaller != null) // If this is not null, then this means a PlayerAbility is using this effect.
+                damageAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);
+                
             target.ApplyDamage(damageAmount);
+            CombatUnit attacker = CombatManager.currentCombatant;
+            DialogueBoxUIManager.AddStringToDialogueBox
+            ($"{DialogueBoxUIManager.FormatCombatUnitColor(attacker)}"
+            + $" dealt {DialogueBoxUIManager.FormatDamageColor(-damageAmount)} damage to "
+            + $"{DialogueBoxUIManager.FormatCombatUnitColor(target)}");
         }
     }
 
@@ -38,5 +47,7 @@ public class DamageTarget : ActionEffect
     {
         base.ReadXml(reader);
         damageAmount = int.Parse(reader.GetAttribute("damageAmount"));
+        Debug.Log($"Damage Amount: {damageAmount}");
     }
+
 }

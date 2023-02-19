@@ -12,11 +12,16 @@ using System;
 [XmlRoot("CombatUnit")]
 public class CombatUnit : IXmlSerializable
 {
+
     public string UnitName { get; private set; }
     public int MaximumHealth { get; private set; }
     public int CurrentHealth { get; private set; }
 
-    private List<UnitAction> actions;
+    public string dialogueColor { get; private set; }
+
+    public List<UnitAction> actions { get; private set; }
+
+    public List<PlayerAbility> abilities { get; private set; }
 
     public bool IsAlive { get; private set; } = true;
 
@@ -60,7 +65,17 @@ public class CombatUnit : IXmlSerializable
         CurrentHealth = Mathf.Clamp(CurrentHealth - amount, 0, MaximumHealth);
         IsAlive = CurrentHealth > 0;
         CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
+        CombatUIManager.UpdateHealthbarText(this, -amount);
     }
+
+    public void HealUnit(int amount) {
+        if (IsAlive) {
+            CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaximumHealth);
+            CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
+            CombatUIManager.UpdateHealthbarText(this, amount);
+        }
+    }
+
 
     public XmlSchema GetSchema()
     {
@@ -72,13 +87,15 @@ public class CombatUnit : IXmlSerializable
         UnitName = reader.GetAttribute("name");
         MaximumHealth = int.Parse(reader.GetAttribute("maximumHealth"));
         CurrentHealth = int.Parse(reader.GetAttribute("currentHealth"));
+        dialogueColor = reader.GetAttribute("dialogueColor");
 
         actions = new List<UnitAction>();
+        abilities = new List<PlayerAbility>();
+
         reader.ReadToDescendant("actions");
 
         int numberOfExpectedActions = int.Parse(XmlUtilities.GetAttributeOrDefault(reader, "numberOfActions", "1"));
 
-        reader.ReadToDescendant("action");
         for (int i = 0; i < numberOfExpectedActions; i++)
         {
             UnitAction action = new UnitAction();
@@ -89,7 +106,11 @@ public class CombatUnit : IXmlSerializable
             reader.ReadToNextSibling("action");
             reader.ReadToNextSibling("action");
         }
+
+        
     }
+
+
 
     public void WriteXml(XmlWriter writer)
     {

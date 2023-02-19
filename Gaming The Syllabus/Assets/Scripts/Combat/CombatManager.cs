@@ -14,17 +14,23 @@ public enum GameState {
 
 public class CombatManager : Singleton<CombatManager>
 {
-    private static CombatUnit player;
+    public static GameState gameStatus { get; private set; }
+    public static CombatUnit player { get; private set; }
     private static CombatUnit[] enemies;
 
     private static List<CombatUnit> allCombatants;
 
+    public static CombatUnit currentCombatant { get; private set; }
+
     private static int indexOfCombatantWithCurrentTurn;
+
+    public static bool isDone { get; private set; } // Checks if this script is done running.
 
     public static bool IsPlayerTurn { get; private set; }
 
     private void Awake()
     {
+        isDone = false;
         InitializeSingleton();
     }
 
@@ -42,17 +48,21 @@ public class CombatManager : Singleton<CombatManager>
         StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
-
         allCombatants = new List<CombatUnit>();
         allCombatants.Add(player);
+        AbilityController.GiveDefaultAbilities(player);
         foreach (CombatUnit enemy in enemies) {
             allCombatants.Add(enemy);
         }
 
+        gameStatus = GameState.Ongoing;
+
         // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();
+        isDone = true;
     }
+
 
     public static void PerformPlayerAction(PlayerAction playerAction)
     {
@@ -62,6 +72,7 @@ public class CombatManager : Singleton<CombatManager>
             IsPlayerTurn = false;
         }
     }
+
 
     public static void NextTurn() {
         // Move to next unit
@@ -75,13 +86,15 @@ public class CombatManager : Singleton<CombatManager>
 
         CombatUnit unitWithCurrentTurn = allCombatants[indexOfCombatantWithCurrentTurn];
         CombatUIManager.MarkUnitAsTakingTurn(unitWithCurrentTurn);
-        Debug.Log($"Taking Turn: {unitWithCurrentTurn.UnitName}");
+        currentCombatant = allCombatants[indexOfCombatantWithCurrentTurn];
 
         if (unitWithCurrentTurn.Equals(player))
         {
             IsPlayerTurn = true;
-        } else
+        } 
+        else
         {
+            IsPlayerTurn = false;
             unitWithCurrentTurn.PerformRandomAction();
         }
     }
@@ -99,7 +112,6 @@ public class CombatManager : Singleton<CombatManager>
     /// <returns></returns>
     public static CombatUnit[] GetTargetsByType(TargetType targetType)
     {
-
         switch (targetType)
         {
             case TargetType.Player:

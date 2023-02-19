@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<PlayerAbilities>
+  <PlayerAbility name="Whirldwind" type="attack" default="true">
+    <AbilityDesc> Cast a Whirldwind upon your enemies dealing low but very accurate damage ability. </AbilityDesc>
+    <minDamage>2</minDamage>
+    <maxDamage>5</maxDamage>
+    <hitChance>80</hitChance>
+    <Effects>
+        <effect type="DamageTarget" target="AnyEnemy" damageAmount="5"/>
+        <effect type="Heal" target="Player" healAmount="5"/>
+    </Effects>
+    <hitMessage> Used Whirldwhind and dealt </hitMessage>
+    <missMessage> Tried using Whirldwhind but missed! </missMessage>
+  </PlayerAbility>
+  <PlayerAbility name="Fire Blast" type="attack" default="true">
+    <AbilityDesc> Send your enemy into a blaze with this low accuracy but very high damage ability. </AbilityDesc>
+    <minDamage>8</minDamage>
+    <maxDamage>16</maxDamage>
+    <hitChance>60</hitChance>
+    <Effects>
+        <effect type="DamageTarget" target="AnyEnemy" damageAmount="5"/>
+    </Effects>
+    <hitMessage> Used Fire Blast and dealt </hitMessage>
+    <missMessage> Tried using Fire Blast but missed! </missMessage>
+  </PlayerAbility>
+  <PlayerAbility name="Super Attack" type="attack" default="false">
+    <AbilityDesc> This is a super attack that deals high damage but at the cost of some of your HP.</AbilityDesc>
+  </PlayerAbility>
+</PlayerAbilities>
