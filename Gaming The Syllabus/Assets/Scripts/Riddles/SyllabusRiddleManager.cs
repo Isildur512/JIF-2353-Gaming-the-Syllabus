@@ -21,6 +21,11 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         } 
     }
 
+    private void Awake()
+    {
+        LoadRiddlesFromXML("Assets/XML/Riddles");
+    }
+
     public static bool AttemptAnswer(Riddle riddle, RiddleAnswer answer)
     {
         // TODO: Make this give the player the ability reward
@@ -41,10 +46,5 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
             // is the path to the Assets folder, so we just remove it here.
             riddles.Add(XmlUtilities.Deserialize<Riddle>(riddlePath.Replace("Assets/", "")));
         }
-    }
-
-    private void Start()
-    {
-        //LoadRiddlesFromXML("Assets/XML/Riddles");
     }
 }

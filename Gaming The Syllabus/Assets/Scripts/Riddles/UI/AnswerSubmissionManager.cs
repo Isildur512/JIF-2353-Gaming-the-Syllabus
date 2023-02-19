@@ -35,5 +35,6 @@ public class AnswerSubmissionManager : Singleton<AnswerSubmissionManager>
     public void SubmitAnswer()
     {
         selectedAnswers.ForEach((answerElement) => SyllabusRiddleManager.AttemptAnswer(answerElement.AssociatedRiddle, answerElement.GetAnswer()));
+        SyllabusRiddleUIManager.SetUIActive(false);
     }
 }
