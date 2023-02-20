@@ -45,22 +45,9 @@ public class CombatManager : Singleton<CombatManager>
 
     private void Start()
     {
-        StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
+        /*StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
                     XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
-                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));
-        allCombatants = new List<CombatUnit>();
-        allCombatants.Add(player);
-        AbilityController.GiveDefaultAbilities(player);
-        foreach (CombatUnit enemy in enemies) {
-            allCombatants.Add(enemy);
-        }
-
-        gameStatus = GameState.Ongoing;
-
-        // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
-        indexOfCombatantWithCurrentTurn = -1;
-        NextTurn();
-        isDone = true;
+                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));*/
     }
 
 
@@ -134,12 +121,37 @@ public class CombatManager : Singleton<CombatManager>
 
     }
 
-    public static void StartCombat(CombatUnit player, params CombatUnit[] enemies)
+    public static void StartCombat(CombatUnit player = null, params CombatUnit[] enemies)
     {
         CombatManager.enemies = enemies;
         CombatManager.player = player;
 
-        CombatUIManager.InitializeHealthbars(player, enemies);
+        if (CombatManager.player == null)
+        {
+            CombatManager.player = XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml");
+        }
+
+        allCombatants = new List<CombatUnit>();
+        allCombatants.Add(CombatManager.player);
+        foreach (CombatUnit enemy in CombatManager.enemies)
+        {
+            allCombatants.Add(enemy);
+        }
+
+        CombatUIManager.CombatUIActive = true;
+        CombatUIManager.InitializeHealthbars(CombatManager.player, CombatManager.enemies);
+
+        AbilityController.GiveDefaultAbilities(CombatManager.player);
+        AbilityPageUIManager.SetupAbilitiesUI();
+
+        Player.CanMove = false;
+
+        gameStatus = GameState.Ongoing;
+
+        // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
+        indexOfCombatantWithCurrentTurn = -1;
+        NextTurn();
+        isDone = true;
     }
 }
 

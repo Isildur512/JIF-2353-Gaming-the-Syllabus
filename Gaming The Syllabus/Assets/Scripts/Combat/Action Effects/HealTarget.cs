@@ -25,9 +25,10 @@ public class HealTarget : ActionEffect
 
         CombatUnit caller = CombatManager.currentCombatant;
 
+        Debug.Log(targets);
+
         foreach (CombatUnit target in targets)
         {
-
             if (AbilityCaller != null) // If this is not null, then this means a PlayerAbility is using this effect.
             {
                 healAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);

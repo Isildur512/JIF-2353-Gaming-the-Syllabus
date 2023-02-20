@@ -6,27 +6,26 @@ using UnityEditor;
 using System.Xml;
 using UnityEngine.Events;
 
-public class AbilityController : MonoBehaviour
+public class AbilityController : Singleton<AbilityController>
 {
 
     [SerializeField] private TextAsset abilitiesXML;
 
-    
     private static List<PlayerAbility> allAbilities;
+
     private void Awake()
     {
-        allAbilities = new List<PlayerAbility>();
+        InitializeSingleton();
         LoadAllAbilities();
-        Debug.Log($"ability count: {allAbilities.Count}");
     }
 
-
     /// This adds every ability from PlayerAbilities to the allAbilities list. 
-    public void LoadAllAbilities()
+    public static void LoadAllAbilities()
     {
         XmlDocument abilityDataXml = new XmlDocument();
-        abilityDataXml.LoadXml(abilitiesXML.text);
+        abilityDataXml.LoadXml(_instance.abilitiesXML.text);
 
+        allAbilities = new();
         XmlNodeList abilities = abilityDataXml.SelectNodes("/PlayerAbilities/PlayerAbility");
         foreach (XmlNode ability in abilities)
         {
@@ -41,7 +40,7 @@ public class AbilityController : MonoBehaviour
         foreach (PlayerAbility ability in allAbilities)
         {
             if (ability.IsDefaultAbility)
-            CombatManager.player.abilities.Add(ability);
+                CombatManager.player.abilities.Add(ability);
         }
     }
 
