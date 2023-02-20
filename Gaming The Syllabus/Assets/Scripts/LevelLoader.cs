@@ -9,6 +9,7 @@ public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
     public string curLevel;
+    public Scene toLoad;
 
 
     // Update is called once per frame
@@ -19,34 +20,33 @@ public class LevelLoader : MonoBehaviour
             LoadNextLevel();
         }
         */
-        if(GameObject.Find("Portal").transform.position.y <=GameObject.Find("Player").transform.position.y ){
-            LoadNextLevel();
-        
-            
-            
+        if(transform.position == GameObject.Find("Player").transform.position) {
+            LoadLevel();
         }
-        if (GameObject.Find("Player").transform.position.y  > 22){
+        /*if (GameObject.Find("Player").transform.position.y  > 22){
             SceneManager.LoadScene("TestLevel");
         }
-        Debug.Log("Y position" + GameObject.Find("Player").transform.position.y);  
+        Debug.Log("Y position" + GameObject.Find("Player").transform.position.y);  */
         
 
     }
 
-    public void LoadNextLevel() {
-        if (curLevel == "SampleScene") {
+    public void LoadLevel() {
+        /*if (curLevel == "SampleScene") {
             StartCoroutine(LoadLevel("TestLevel"));
         } else if (curLevel == "TestLevel") {
             StartCoroutine(LoadLevel("Combat"));
         } else if (curLevel == "Combat") {
             StartCoroutine(LoadLevel("TestLevel (NoEnemy)"));
-        }
+        }*/
+        string sceneName = toLoad.name;
+        SceneManager.LoadScene(sceneName);
     }
-    private void OnCollision2D(Collision2D tile){
+   /* private void OnCollision2D(Collision2D tile){
         if(tile.gameObject.name == "Portal"){
             LoadNextLevel();
         }
-    }
+    }*/
 
     IEnumerator LoadLevel(string LevelName) {
         //Play animation
