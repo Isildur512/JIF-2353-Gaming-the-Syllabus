@@ -19,7 +19,6 @@ Gaming the Syllabus is an effort at making course syllabi more engaging and inte
 #### Known Issue
 * Riddle submission is occasionally inconsistent
 
-## Release Notes
 ### Version 0.1.0
 
 #### New Features
