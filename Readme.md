@@ -5,6 +5,24 @@ Gaming the Syllabus is an effort at making course syllabi more engaging and inte
 ### Version 0.1.0
 
 #### New Features
+* Syllabus riddles can now be created and modified via XML files
+* Combat UI is cleaner, and now displays abilities
+* Abilities now have functionality in combat
+* Combat now triggers on collision with enemies
+* Level layouts have been designed and implemented
+
+#### Bug Fixes
+* Updated combat logic to run without loading a new scene
+* Improved the loading system
+* Fixed various visual glitches.
+
+#### Known Issue
+* Riddle submission is occasionally inconsistent
+
+## Release Notes
+### Version 0.1.0
+
+#### New Features
 * Enemies can now be created and modified via XML files 
 * Health bars are now generated for enemies with their corresponding name and placeholder icons
 * Support for multiple actions from units
