@@ -8,6 +8,7 @@ public class CombatActionButton : MonoBehaviour
 {
     [SerializeField] private PlayerAction playerAction;
     [SerializeField] private GameObject abilityPage;
+    [SerializeField] private GameObject actionBox;
 
     public void OnClick()
     {
@@ -18,7 +19,7 @@ public class CombatActionButton : MonoBehaviour
     {
         if (CombatManager.IsPlayerTurn)
         {
-            abilityPage.SetActive(!abilityPage.activeInHierarchy);
+            CombatUIManager.ToggleAbilityPageActive();
         }
     }
 

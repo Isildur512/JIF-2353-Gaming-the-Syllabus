@@ -1,3 +1,4 @@
+using System.Runtime.Serialization;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,18 @@ public class CombatUIManager : Singleton<CombatUIManager>
 {
     [SerializeField] private GameObject healthbarPrefab;
 
+    [SerializeField] private GameObject actionBox;
+    [SerializeField] private GameObject abilityPage;
+
+    [SerializeField] private GameObject combatUIObject;
+    public static bool CombatUIActive { 
+        get => _instance.combatUIObject.activeInHierarchy; 
+        set
+        {
+            _instance.combatUIObject.SetActive(value);
+        } 
+    }
+
     [SerializeField] private Vector2 firstEnemyHealthbarPosition;
     [SerializeField] private float xDistanceBetweenEnemyHealthbars = 225;
     [SerializeField] private Vector2 playerHealthbarPosition;
@@ -22,6 +35,8 @@ public class CombatUIManager : Singleton<CombatUIManager>
     {
         InitializeSingleton();
         nextHealthbarPosition = firstEnemyHealthbarPosition;
+
+        combatUIObject.SetActive(false);
     }
 
     public static void InitializeHealthbars(CombatUnit player, params CombatUnit[] allEnemies)
@@ -63,7 +78,8 @@ public class CombatUIManager : Singleton<CombatUIManager>
 
     private static Healthbar CreateHealthbar(CombatUnit unit, Vector2 position)
     {
-        GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.transform);
+        //GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.transform);
+        GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.combatUIObject.transform);
         healthbarGameObject.name = $"{unit.UnitName}Healthbar";
 
         RectTransform healthbarTransform = healthbarGameObject.GetComponent<RectTransform>();
@@ -73,8 +89,13 @@ public class CombatUIManager : Singleton<CombatUIManager>
         healthbar.UpdateUnitName(unit.UnitName);
         healthbar.UpdateHealthbarValue(unit.CurrentHealth, unit.MaximumHealth);
 
-
         return healthbarGameObject.GetComponent<Healthbar>();
     }
 
+    public static void ToggleAbilityPageActive()
+    {
+        bool abilityPageIsActive = _instance.abilityPage.activeInHierarchy;
+        _instance.abilityPage.SetActive(!abilityPageIsActive);
+        _instance.actionBox.SetActive(abilityPageIsActive);
+    }
 }

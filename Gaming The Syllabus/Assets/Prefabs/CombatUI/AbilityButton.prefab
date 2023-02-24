@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4915243935136405653}
   - component: {fileID: 2726843018304495884}
   - component: {fileID: 7916986094647742237}
+  - component: {fileID: 7339535113080588475}
   m_Layer: 5
   m_Name: AbilityButton
   m_TagString: Untagged
@@ -125,9 +126,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3831419980263154357}
-        m_TargetAssemblyTypeName: AbilityController, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 7339535113080588475}
+        m_TargetAssemblyTypeName: CombatUIDisplayer, Assembly-CSharp
+        m_MethodName: DisplayActionBox
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -136,6 +137,18 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 7093053818030002347, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
 --- !u!114 &4915243935136405653
 MonoBehaviour:
@@ -197,6 +210,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &7339535113080588475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3831419980263154357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de71c801de8d51c4b80c802acf4e5fc4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  combatUIGameObject: {fileID: 7093053818030002347, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
+  actionBoxGameObject: {fileID: 0}
 --- !u!1 &3831419980590904975
 GameObject:
   m_ObjectHideFlags: 0
