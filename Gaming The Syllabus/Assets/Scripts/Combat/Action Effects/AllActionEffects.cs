@@ -11,7 +11,8 @@ public enum ActionEffects
     DamageTarget,
     LogMessage,
     Heal,
-    RandomDamageTarget
+    RandomDamageTarget,
+    RandomHealTarget
 }
 
 /// <summary>
@@ -25,6 +26,7 @@ public static class AllActionEffects
         ActionEffects.LogMessage => typeof(LogMessage),
         ActionEffects.Heal => typeof(HealTarget),
         ActionEffects.RandomDamageTarget => typeof(RandomDamageTarget),
+        ActionEffects.RandomHealTarget => typeof(RandomHealTarget),
         _ => throw new NotImplementedException(),
     };
 }

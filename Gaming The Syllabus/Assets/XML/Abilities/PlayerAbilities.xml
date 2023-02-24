@@ -18,4 +18,14 @@
     <hitMessage> Used Fire Blast and dealt </hitMessage>
     <missMessage> Tried using Fire Blast but missed! </missMessage>
   </PlayerAbility>
+  <PlayerAbility name="Damaging Regeneration" type="attack" default="true">
+    <AbilityDesc> Unleash a lethal low accuracy but high damage attack that also heals you. </AbilityDesc>
+    <hitChance>30</hitChance>
+    <Effects>
+      <effect type="RandomDamageTarget" target="AnyEnemy" minDamage="5" maxDamage="10"/>
+      <effect type="RandomHealTarget" target="Player" minHeal="5" maxHeal="10"/>
+    </Effects>
+    <hitMessage> Used Damaging Regeneration and dealt </hitMessage>
+    <missMessage> Tried using Damaging Regeneration but missed! </missMessage>
+  </PlayerAbility>
 </PlayerAbilities>

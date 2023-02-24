@@ -53,7 +53,7 @@ public class PlayerAbility
                 
                 foreach(ActionEffect effect in AbilityActionEffects)
                 {
-                    effect.Apply(target);
+                    effect.Apply(CombatManager.GetTargetsByType(effect.Target));
                 }
         
             }
