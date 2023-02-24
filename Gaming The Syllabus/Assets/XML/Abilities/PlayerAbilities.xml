@@ -23,7 +23,7 @@
     <hitMessage> Used Fire Blast and dealt </hitMessage>
     <missMessage> Tried using Fire Blast but missed! </missMessage>
   </PlayerAbility>
-  <PlayerAbility name="Super Attack" type="attack" default="false">
+  <!-- <PlayerAbility name="Super Attack" type="attack" default="false">
     <AbilityDesc> This is a super attack that deals high damage but at the cost of some of your HP.</AbilityDesc>
-  </PlayerAbility>
+  </PlayerAbility> -->
 </PlayerAbilities>
