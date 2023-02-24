@@ -78,7 +78,6 @@ public class CombatUIManager : Singleton<CombatUIManager>
 
     private static Healthbar CreateHealthbar(CombatUnit unit, Vector2 position)
     {
-        //GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.transform);
         GameObject healthbarGameObject = Instantiate(_instance.healthbarPrefab, _instance.combatUIObject.transform);
         healthbarGameObject.name = $"{unit.UnitName}Healthbar";
 

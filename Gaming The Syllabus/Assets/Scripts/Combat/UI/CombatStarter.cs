@@ -4,7 +4,10 @@ using UnityEngine;
 
 public class CombatStarter : MonoBehaviour
 {
+    
     //[SerializeField] private GameObject combatUIGameObject;
+
+    [Header("DO NOT INCLUDE 'ASSETS/' IN THE PATH")]
     [SerializeField] private List<string> enemyFilePaths;
 
     void OnCollisionEnter2D(Collision2D col)
