@@ -17,10 +17,10 @@ public abstract class ActionEffect : IXmlSerializable
     If AbilityCaller is null, this means that this action effect is not being called
     by a PlayerAbility.
     */
-    public PlayerAbility AbilityCaller {get {return _AbilityCaller;}
-                                        set { if (_AbilityCaller == null)
-                                                    _AbilityCaller = value;
-                                                else return;}}
+    // public PlayerAbility AbilityCaller {get {return _AbilityCaller;}
+    //                                     set { if (_AbilityCaller == null)
+    //                                                 _AbilityCaller = value;
+    //                                             else return;}}
 
     public float DelayInSecondsBeforeEffects { get; private set; }
     public float DelayInSecondsAfterEffects { get; private set; }
@@ -49,13 +49,14 @@ public abstract class ActionEffect : IXmlSerializable
         DelayInSecondsAfterEffects = float.Parse(XmlUtilities.GetAttributeOrDefault(reader, "delayInSecondsAfterEffects", "0.0"));
     }
 
+    public virtual void ReadXml(XmlAttributeCollection attributes)
+    {
+        Target = Enum.Parse<TargetType>(attributes["target"].Value);
+    }
+
     public XmlSchema GetSchema()
     {
         return (null);
     }
 
-    public virtual void SetValues()
-    {
-
-    }
 }
