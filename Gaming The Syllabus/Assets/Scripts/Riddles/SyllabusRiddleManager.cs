@@ -10,7 +10,7 @@ using System.Linq;
 public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 {
     private static List<Riddle>? riddles;
-    public static HashSet<string>? solved_riddles;
+    private static HashSet<string>? solved_riddles;
     public static Riddle[]? Riddles { 
         get 
         {
