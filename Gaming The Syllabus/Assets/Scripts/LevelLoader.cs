@@ -8,8 +8,7 @@ using UnityEngine.Tilemaps;
 public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
-    public string curLevel;
-    public Scene toLoad;
+    [SerializeField] private string curLevel;
 
 
     // Update is called once per frame
@@ -20,9 +19,9 @@ public class LevelLoader : MonoBehaviour
             LoadNextLevel();
         }
         */
-        if(transform.position == GameObject.Find("Player").transform.position) {
+        /*if(transform.position == GameObject.Find("Player").transform.position) {
             LoadLevel();
-        }
+        }*/
         /*if (GameObject.Find("Player").transform.position.y  > 22){
             SceneManager.LoadScene("TestLevel");
         }
@@ -31,7 +30,7 @@ public class LevelLoader : MonoBehaviour
 
     }
 
-    public void LoadLevel() {
+    public void LoadLevel(Scene toLoad) {
         /*if (curLevel == "SampleScene") {
             StartCoroutine(LoadLevel("TestLevel"));
         } else if (curLevel == "TestLevel") {

@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Portal : MonoBehaviour
 {
-    public string levelName;
+    [SerializeField] private string levelName;
     // Update is called once per frame
     void OnTriggerEnter2D(Collider2D Player) {
         SceneManager.LoadScene(levelName); 
