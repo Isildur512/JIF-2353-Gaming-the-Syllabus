@@ -10,7 +10,7 @@ using System.Linq;
 public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 {
     private static List<Riddle>? riddles;
-    private static HashSet<string>? solved_riddles;
+    private static HashSet<Riddle> solvedRiddles = new HashSet<Riddle>();
     public static Riddle[]? Riddles { 
         get 
         {
@@ -34,9 +34,9 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         // TODO: Potentially properly support "select all correct answers" questions depending on if the client wants them
         Debug.Log($"Attempted answer to riddle {riddle.Question} with answer {answer.Answer} and result {riddle.CorrectAnswers.Contains(answer)}");
         bool result = riddle.CorrectAnswers.Contains(answer);
-        if (result && solved_riddles != null)
+        if (result && solvedRiddles != null)
         {
-            solved_riddles.Add(riddle.Question);
+            solvedRiddles.Add(riddle);
         }
         return result;
     }
@@ -44,7 +44,6 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
     private static void LoadRiddlesFromXML(string filePathToRiddlesFolder)
     {
         riddles = new List<Riddle>();
-        solved_riddles = new HashSet<string>();
         IEnumerable<string> riddlePaths = Directory.GetFiles(filePathToRiddlesFolder)
             .Where((path) => !path.Contains(".meta")); // Ignore meta files
         foreach (string riddlePath in riddlePaths)
@@ -57,11 +56,11 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 
     public static bool AreAllRiddlesCompleted()
     {
-        if (riddles != null && solved_riddles != null)
+        if (riddles != null && solvedRiddles != null)
         {
-            int num_of_riddles = riddles.Count;
-            int num_of_solved_riddles = solved_riddles.Count;
-            return num_of_riddles == num_of_solved_riddles;
+            int numOfRiddles = riddles.Count;
+            int numOfSolvedRiddles = solvedRiddles.Count;
+            return numOfRiddles == numOfSolvedRiddles;
         }
         return false;
     } 
