@@ -35,7 +35,7 @@ public class PlayerAbility
         {
             ActionEffects effectType = Enum.Parse<ActionEffects>(effect.Attributes["type"].Value);
             ActionEffect newEffect = (ActionEffect)Activator.CreateInstance(AllActionEffects.GetActionEffect(effectType));
-            newEffect.AbilityCaller = this;
+            newEffect.ReadXml(effect.Attributes);
             AbilityActionEffects.Add(newEffect);
         }
     }
@@ -53,7 +53,7 @@ public class PlayerAbility
                 
                 foreach(ActionEffect effect in AbilityActionEffects)
                 {
-                    effect.Apply(target);
+                    effect.Apply(CombatManager.GetTargetsByType(effect.Target));
                 }
         
             }
@@ -70,12 +70,5 @@ public class PlayerAbility
         System.Random random = new System.Random();
         int rollChance = random.Next(0, 100);
         return int.Parse(ability["hitChance"].InnerText) >= rollChance;
-    }
-
-
-    public int calculateDamage(XmlNode ability)
-    {
-        System.Random num = new System.Random();
-        return num.Next(int.Parse(ability["minDamage"].InnerText), int.Parse(ability["maxDamage"].InnerText));
     }
 }

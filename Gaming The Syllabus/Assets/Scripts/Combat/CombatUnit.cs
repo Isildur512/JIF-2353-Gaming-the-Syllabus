@@ -71,6 +71,7 @@ public class CombatUnit : IXmlSerializable
     public void HealUnit(int amount) {
         if (IsAlive) {
             CurrentHealth = Mathf.Clamp(CurrentHealth + amount, 0, MaximumHealth);
+            Debug.Log($"New Health: {CurrentHealth}");
             CombatUIManager.UpdateUnitHealthbar(this, CurrentHealth);
             CombatUIManager.UpdateHealthbarText(this, amount);
         }
