@@ -27,16 +27,8 @@ public class HealTarget : ActionEffect
 
         foreach (CombatUnit target in targets)
         {
-            if (AbilityCaller != null) // If this is not null, then this means a PlayerAbility is using this effect.
-            {
-                healAmount = AbilityCaller.calculateDamage(AbilityCaller.AbilityNode);
-                caller.HealUnit(healAmount);
-            } 
-            else
-            {           
-                target.HealUnit(healAmount);
-            }
 
+            target.HealUnit(healAmount);
             DialogueBoxUIManager.AddStringToDialogueBox
             ($"{DialogueBoxUIManager.FormatCombatUnitColor(caller)}"
             + $"{DialogueBoxUIManager.FormatDamageColor(healAmount)}");

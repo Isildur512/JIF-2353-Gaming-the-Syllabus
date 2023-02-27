@@ -10,6 +10,7 @@ using System.Linq;
 public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 {
     private static List<Riddle>? riddles;
+    private static HashSet<Riddle> solvedRiddles = new HashSet<Riddle>();
     public static Riddle[]? Riddles { 
         get 
         {
@@ -32,7 +33,12 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         // TODO: Make this punish the player for an incorrect answer
         // TODO: Potentially properly support "select all correct answers" questions depending on if the client wants them
         Debug.Log($"Attempted answer to riddle {riddle.Question} with answer {answer.Answer} and result {riddle.CorrectAnswers.Contains(answer)}");
-        return riddle.CorrectAnswers.Contains(answer);
+        bool result = riddle.CorrectAnswers.Contains(answer);
+        if (result && solvedRiddles != null)
+        {
+            solvedRiddles.Add(riddle);
+        }
+        return result;
     }
 
     private static void LoadRiddlesFromXML(string filePathToRiddlesFolder)
@@ -47,4 +53,17 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
             riddles.Add(XmlUtilities.Deserialize<Riddle>(riddlePath.Replace("Assets/", "")));
         }
     }
+
+    public static bool AreAllRiddlesCompleted()
+    {
+        if (riddles != null && solvedRiddles != null)
+        {
+            int numOfRiddles = riddles.Count;
+            int numOfSolvedRiddles = solvedRiddles.Count;
+            return numOfRiddles == numOfSolvedRiddles;
+        }
+        return false;
+    } 
+
+
 }
