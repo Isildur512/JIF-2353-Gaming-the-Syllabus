@@ -4082,7 +4082,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyFilePaths:
-  - StreamingAssets/XML/Goblin.xml
+  - Goblin.xml
 --- !u!1001 &1077234968
 PrefabInstance:
   m_ObjectHideFlags: 0

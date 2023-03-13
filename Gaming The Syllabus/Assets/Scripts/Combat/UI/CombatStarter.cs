@@ -17,9 +17,14 @@ public class CombatStarter : MonoBehaviour
 
     public void StartCombat()
     {
+        DatabaseManager.GetPlayerXmlFromDB("Player.xml");
         List<CombatUnit> combatUnits = new(enemyFilePaths.Count);
-        enemyFilePaths.ForEach((enemyFilePath) => combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(enemyFilePath)));
-        // enemyFilePaths.ForEach((enemyFilePath) => Debug.Log(enemyFilePath));
+        
+        foreach(string enemyFilePath in enemyFilePaths)
+        {
+            DatabaseManager.GetEnemyXmlFromDB(enemyFilePath);
+            combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>("XML/" + enemyFilePath));
+        }
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());
     }

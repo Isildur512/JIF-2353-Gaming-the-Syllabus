@@ -16,13 +16,10 @@ public class XmlUtilities
 
     public static T Deserialize<T>(string filePath)
     {
-        Debug.Log($"File Path: {filePath}");
-        Debug.Log(Application.persistentDataPath);
 
         XmlSerializer serializer = new XmlSerializer(typeof(T));
         // Worth remembering that Path.Combine will just return the 2nd filePath if it is absolute (starts with a /)
-        // StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, filePath));
-        StreamReader reader = new StreamReader(Path.Combine(Application.dataPath, filePath));
+        StreamReader reader = new StreamReader(Path.Combine(Application.persistentDataPath, filePath));
         T deserialized = (T)serializer.Deserialize(reader.BaseStream);
         reader.Close();
         Debug.Log($"Deserialized XML file at {filePath}");

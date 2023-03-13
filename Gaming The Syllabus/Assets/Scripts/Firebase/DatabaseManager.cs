@@ -22,8 +22,7 @@ public class DatabaseManager : MonoBehaviour
             if (!task.IsFaulted && !task.IsCanceled)
             {
                 Debug.Log("File downloaded.");
-                GetEnemyXmlFromDB("Goblin.xml");
-                // SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML");
+                SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML");
             }
             else
             {
@@ -46,14 +45,27 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
+
     public static void GetEnemyXmlFromDB(string enemyXmlFileName) {
         StorageReference enemyFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Enemies");
-        Debug.Log(Application.streamingAssetsPath + $"/XML/{enemyXmlFileName}");
-        enemyFolder.Child($"{enemyXmlFileName}").GetFileAsync(Application.streamingAssetsPath + $"/XML/{enemyXmlFileName}").ContinueWithOnMainThread(task => {
+        enemyFolder.Child($"{enemyXmlFileName}").GetFileAsync(Application.persistentDataPath + "/XML/" + enemyXmlFileName).ContinueWithOnMainThread(task => {
             if (!task.IsFaulted && !task.IsCanceled)
             {
-                Debug.Log("Enemy file downloaded");
-                // SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML");
+                Debug.Log($"{enemyXmlFileName} Downloaded");
+            }
+            else
+            {
+                Debug.Log(task.Exception);
+            }
+        });
+    }
+
+    public static void GetPlayerXmlFromDB(string playerXmlFileName) {
+        StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
+        playerFolder.Child($"{playerXmlFileName}").GetFileAsync(Application.persistentDataPath + "/XML/" + playerXmlFileName).ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                Debug.Log($"{playerXmlFileName} Downloaded");
             }
             else
             {

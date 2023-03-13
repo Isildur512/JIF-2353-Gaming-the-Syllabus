@@ -16,6 +16,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         {
             if (riddles == null)
             {
+                Debug.Log("RIDDLES WERE NULL");
                 LoadRiddlesFromXML("Assets/XML/Riddles");
             }
             return riddles?.ToArray();
@@ -54,7 +55,6 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
             riddles.Add(riddle);
         }
 
-        Debug.Log(riddles.Count);
 
         // SyllabusRiddleUIManager.DisplayRiddle(riddles[0]);
     }
