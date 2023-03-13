@@ -9,7 +9,7 @@ using Firebase.Extensions;
 public class DatabaseManager : MonoBehaviour
 {
     FirebaseStorage databaseStorage;
-    StorageReference rootDirectory;
+    static StorageReference rootDirectory;
 
     private void Start()
     {
@@ -22,7 +22,8 @@ public class DatabaseManager : MonoBehaviour
             if (!task.IsFaulted && !task.IsCanceled)
             {
                 Debug.Log("File downloaded.");
-                SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML/Test");
+                GetEnemyXmlFromDB("Goblin.xml");
+                // SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML");
             }
             else
             {
@@ -43,5 +44,21 @@ public class DatabaseManager : MonoBehaviour
             }
         });*/
 
+    }
+
+    public static void GetEnemyXmlFromDB(string enemyXmlFileName) {
+        StorageReference enemyFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Enemies");
+        Debug.Log(Application.streamingAssetsPath + $"/XML/{enemyXmlFileName}");
+        enemyFolder.Child($"{enemyXmlFileName}").GetFileAsync(Application.streamingAssetsPath + $"/XML/{enemyXmlFileName}").ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                Debug.Log("Enemy file downloaded");
+                // SyllabusRiddleManager.LoadRiddlesFromXML(Application.streamingAssetsPath + "/XML");
+            }
+            else
+            {
+                Debug.Log(task.Exception);
+            }
+        });
     }
 }

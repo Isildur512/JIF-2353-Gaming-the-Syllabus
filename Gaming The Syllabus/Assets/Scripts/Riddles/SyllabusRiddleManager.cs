@@ -56,7 +56,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 
         Debug.Log(riddles.Count);
 
-        SyllabusRiddleUIManager.DisplayRiddle(riddles[0]);
+        // SyllabusRiddleUIManager.DisplayRiddle(riddles[0]);
     }
 
     public static bool AreAllRiddlesCompleted()

@@ -19,6 +19,7 @@ public class CombatStarter : MonoBehaviour
     {
         List<CombatUnit> combatUnits = new(enemyFilePaths.Count);
         enemyFilePaths.ForEach((enemyFilePath) => combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(enemyFilePath)));
+        // enemyFilePaths.ForEach((enemyFilePath) => Debug.Log(enemyFilePath));
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());
     }
