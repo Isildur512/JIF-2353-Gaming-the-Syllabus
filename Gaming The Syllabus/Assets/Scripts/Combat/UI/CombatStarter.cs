@@ -4,26 +4,23 @@ using UnityEngine;
 
 public class CombatStarter : MonoBehaviour
 {
-    
-    //[SerializeField] private GameObject combatUIGameObject;
-
-    [Header("DO NOT INCLUDE 'ASSETS/' IN THE PATH")]
-    [SerializeField] private List<string> enemyFilePaths;
+    [SerializeField] private List<string> enemyFileNames;
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        StartCombat();
+        if (DatabaseManager.EnemiesHaveBeenLoaded)
+        {
+            StartCombat();
+        }
     }
 
     public void StartCombat()
     {
-        DatabaseManager.GetPlayerXmlFromDB("Player.xml");
-        List<CombatUnit> combatUnits = new(enemyFilePaths.Count);
+        List<CombatUnit> combatUnits = new(enemyFileNames.Count);
         
-        foreach(string enemyFilePath in enemyFilePaths)
+        foreach(string enemyFileName in enemyFileNames)
         {
-            DatabaseManager.GetEnemyXmlFromDB(enemyFilePath);
-            combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>("XML/" + enemyFilePath));
+            combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(System.IO.Path.Combine(Files.EnemiesFolder, enemyFileName)));
         }
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());

@@ -11,21 +11,11 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 {
     private static List<Riddle>? riddles;
     private static HashSet<Riddle> solvedRiddles = new HashSet<Riddle>();
-    public static Riddle[]? Riddles { 
-        get 
-        {
-            if (riddles == null)
-            {
-                Debug.Log("RIDDLES WERE NULL");
-                LoadRiddlesFromXML("Assets/XML/Riddles");
-            }
-            return riddles?.ToArray();
-        } 
-    }
+    public static Riddle[]? Riddles { get => riddles?.ToArray(); }
 
     private void Awake()
     {
-        //LoadRiddlesFromXML("Assets/XML/Riddles");
+        DatabaseManager.OnRiddlesLoaded += () => { LoadRiddlesFromXML(Files.RiddlesFolder); };
     }
 
     public static bool AttemptAnswer(Riddle riddle, RiddleAnswer answer)
@@ -49,14 +39,9 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
             .Where((path) => !path.Contains(".meta")); // Ignore meta files
         foreach (string riddlePath in riddlePaths)
         {
-            // We end up with the Assets folder in the path twice since our XmlUtilities class uses the app data path which
-            // is the path to the Assets folder, so we just remove it here.
-            Riddle riddle = XmlUtilities.DeserializeFromAbsolutePath<Riddle>(riddlePath);
+            Riddle riddle = XmlUtilities.Deserialize<Riddle>(riddlePath);
             riddles.Add(riddle);
         }
-
-
-        // SyllabusRiddleUIManager.DisplayRiddle(riddles[0]);
     }
 
     public static bool AreAllRiddlesCompleted()
@@ -69,6 +54,4 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         }
         return false;
     } 
-
-
 }
