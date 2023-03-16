@@ -24,7 +24,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 
     private void Awake()
     {
-        LoadRiddlesFromXML("Assets/XML/Riddles");
+        //LoadRiddlesFromXML("Assets/XML/Riddles");
     }
 
     public static bool AttemptAnswer(Riddle riddle, RiddleAnswer answer)
@@ -41,7 +41,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         return result;
     }
 
-    private static void LoadRiddlesFromXML(string filePathToRiddlesFolder)
+    public static void LoadRiddlesFromXML(string filePathToRiddlesFolder)
     {
         riddles = new List<Riddle>();
         IEnumerable<string> riddlePaths = Directory.GetFiles(filePathToRiddlesFolder)
@@ -50,8 +50,13 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         {
             // We end up with the Assets folder in the path twice since our XmlUtilities class uses the app data path which
             // is the path to the Assets folder, so we just remove it here.
-            riddles.Add(XmlUtilities.Deserialize<Riddle>(riddlePath.Replace("Assets/", "")));
+            Riddle riddle = XmlUtilities.DeserializeFromAbsolutePath<Riddle>(riddlePath);
+            riddles.Add(riddle);
         }
+
+        Debug.Log(riddles.Count);
+
+        SyllabusRiddleUIManager.DisplayRiddle(riddles[0]);
     }
 
     public static bool AreAllRiddlesCompleted()
