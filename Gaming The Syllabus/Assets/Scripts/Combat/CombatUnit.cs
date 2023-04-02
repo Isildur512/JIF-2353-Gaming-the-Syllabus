@@ -12,7 +12,6 @@ using System;
 [XmlRoot("CombatUnit")]
 public class CombatUnit : IXmlSerializable
 {
-
     public string UnitName { get; private set; }
     public int MaximumHealth { get; private set; }
     public int CurrentHealth { get; private set; }
@@ -38,8 +37,6 @@ public class CombatUnit : IXmlSerializable
                 Debug.LogError("Action index was outside of list of actions");
                 CombatManager.NextTurn();
             }
-
-            //CombatManager.NextTurn();
         }
     }
 
@@ -50,15 +47,6 @@ public class CombatUnit : IXmlSerializable
             actions[UnityEngine.Random.Range(0, actions.Count)].Execute(onActionCompleted: CombatManager.NextTurn);
         }
     }
-
-    /*private IEnumerator IExecuteAction()
-    {
-        // TODO: Make this delay customizable to the particular action later
-        //yield return new WaitForSeconds(1.5f);
-        actions[UnityEngine.Random.Range(0, actions.Count)].Execute(onActionCompleted: CombatManager.NextTurn);
-        //yield return new WaitForSeconds(1.5f);
-        //CombatManager.NextTurn();
-    }*/
 
     public void ApplyDamage(int amount)
     {
@@ -76,7 +64,6 @@ public class CombatUnit : IXmlSerializable
             CombatUIManager.UpdateHealthbarText(this, amount);
         }
     }
-
 
     public XmlSchema GetSchema()
     {
@@ -110,8 +97,6 @@ public class CombatUnit : IXmlSerializable
 
         
     }
-
-
 
     public void WriteXml(XmlWriter writer)
     {
