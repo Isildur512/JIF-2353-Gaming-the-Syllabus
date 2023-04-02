@@ -43,14 +43,6 @@ public class CombatManager : Singleton<CombatManager>
         _instance.StartCoroutine(coroutine);
     }
 
-    private void Start()
-    {
-        /*StartCombat(XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml"), 
-                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Enemy.xml"),
-                    XmlUtilities.Deserialize<CombatUnit>("XML/Enemies/Goblin.xml"));*/
-    }
-
-
     public static void PerformPlayerAction(PlayerAction playerAction)
     {
         if (IsPlayerTurn)
@@ -128,7 +120,7 @@ public class CombatManager : Singleton<CombatManager>
 
         if (CombatManager.player == null)
         {
-            CombatManager.player = XmlUtilities.Deserialize<CombatUnit>("XML/Player.xml");
+            CombatManager.player = XmlUtilities.Deserialize<CombatUnit>(Files.PlayerXml);
         }
 
         allCombatants = new List<CombatUnit>();
