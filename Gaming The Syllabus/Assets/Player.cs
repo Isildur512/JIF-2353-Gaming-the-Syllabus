@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Linq;
+using UnityEngine.InputSystem.EnhancedTouch;
+using UnityEngine.AI;
 
 public class Player : Singleton<Player>
 {
@@ -16,6 +18,33 @@ public class Player : Singleton<Player>
     private Vector2 movementDirection;
     private List<IInteractable> interactablesWithinRange = new();
 
+    private Vector2? destination;
+
+    void OnEnable()
+    {
+        TouchSimulation.Enable();
+        EnhancedTouchSupport.Enable();
+        UnityEngine.InputSystem.EnhancedTouch.Touch.onFingerDown += OnTap;
+    }
+
+    private void OnTap(Finger finger)
+    {
+        Vector2 tappedLocation = Camera.main.ScreenToWorldPoint(finger.screenPosition);
+
+        destination = tappedLocation;
+
+        Collider2D interactableCollider = Physics2D.OverlapPoint(tappedLocation, LayerMask.GetMask("Interactable"));
+
+        if (interactableCollider != null)
+        {
+            IInteractable interactable = interactableCollider.GetComponent<IInteractable>();
+            if (interactablesWithinRange.Contains(interactable))
+            {
+                interactable.Interact();
+            }
+        }
+    }
+
     private void Awake()
     {
         InitializeSingleton();
@@ -25,7 +54,13 @@ public class Player : Singleton<Player>
     {
         if (CanMove)
         {
-            rigidBody.MovePosition((Vector2)transform.position + movementDirection * movementSpeed * Time.deltaTime);
+            if (destination == null)
+            {
+                rigidBody.MovePosition((Vector2)transform.position + movementDirection * movementSpeed * Time.deltaTime);
+            } else
+            {
+                rigidBody.MovePosition(Vector2.MoveTowards(transform.position, (Vector2) destination, movementSpeed * Time.deltaTime));
+            }
         }
     }
 
@@ -41,6 +76,7 @@ public class Player : Singleton<Player>
 
     private void OnMove(InputValue inputValue)
     {
+        destination = null;
         movementDirection = inputValue.Get<Vector2>();
     }
 
