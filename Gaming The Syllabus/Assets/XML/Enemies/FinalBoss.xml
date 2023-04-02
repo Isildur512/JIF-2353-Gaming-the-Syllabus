@@ -3,7 +3,7 @@
     dialogueColor="orange" currentHealth="50">
   <actions>
     <action name="riddleAttack">
-      <effect delayInSecondsBeforeEffects="1.0" delayInSecondsAfterEffects="1.0" type="DamageTargetByRiddle" target="Player" damageAmount="3" />
+      <effect delayInSecondsBeforeEffects="1.0" delayInSecondsAfterEffects="1.0" type="DamageTargetByRiddle" target="Player" minDamage="2" maxDamage="10" />
     </action>
   </actions>
 </CombatUnit>

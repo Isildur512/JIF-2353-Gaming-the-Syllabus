@@ -12,7 +12,6 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
     private static List<Riddle>? riddles;
     private static HashSet<Riddle> solvedRiddles = new HashSet<Riddle>();
     public static Riddle[]? Riddles { get => riddles?.ToArray(); }
-
     private void Awake()
     {
         DatabaseManager.OnRiddlesLoaded += () => { LoadRiddlesFromXML(Files.RiddlesFolder); };
@@ -29,6 +28,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         {
             solvedRiddles.Add(riddle);
         }
+        AnswerSubmissionManager.isCorrect = result;
         return result;
     }
 

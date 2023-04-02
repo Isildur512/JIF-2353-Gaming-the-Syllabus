@@ -8,11 +8,16 @@ using UnityEngine;
 /// </summary>
 public class AnswerSubmissionManager : Singleton<AnswerSubmissionManager>
 {
+
+    public static bool isSubmitted;
+    public static bool isCorrect;
     private List<IRiddleAnswerUIElement> selectedAnswers = new();
 
     private void Awake()
     {
         InitializeSingleton();
+        isSubmitted = false;
+        isCorrect = false;
     }
 
     public static void SetAnswerElementSelected(IRiddleAnswerUIElement element, bool isSelected, bool deselectAllOthers = false)
@@ -35,6 +40,7 @@ public class AnswerSubmissionManager : Singleton<AnswerSubmissionManager>
     public void SubmitAnswer()
     {
         selectedAnswers.ForEach((answerElement) => SyllabusRiddleManager.AttemptAnswer(answerElement.AssociatedRiddle, answerElement.GetAnswer()));
+        isSubmitted = true;
         SyllabusRiddleUIManager.SetUIActive(false);
     }
 }
