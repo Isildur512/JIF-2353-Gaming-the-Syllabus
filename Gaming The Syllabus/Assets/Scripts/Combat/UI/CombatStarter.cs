@@ -21,6 +21,7 @@ public class CombatStarter : MonoBehaviour
         foreach(string enemyFileName in enemyFileNames)
         {
             combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(System.IO.Path.Combine(Files.EnemiesFolder, enemyFileName)));
+            Debug.Log($"Enemy file name: {enemyFileName}");
         }
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());
