@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>My Unity Game</title>
+  <script src="Build/UnityLoader.js"></script>
+</head>
+<body>
+  <div id="unity-container"></div>
+  <script>
+    var gameInstance = UnityLoader.instantiate("unity-container", "Build/MyUnityGame.json", {onProgress: UnityProgress});
+  </script>
+</body>
+</html>
