@@ -10,4 +10,8 @@ public class Portal : MonoBehaviour
     void OnTriggerEnter2D(Collider2D Player) {
         SceneManager.LoadScene(levelName); 
     }
+
+    public void buttonLoad() {
+        SceneManager.LoadScene(levelName);
+    }
 }
