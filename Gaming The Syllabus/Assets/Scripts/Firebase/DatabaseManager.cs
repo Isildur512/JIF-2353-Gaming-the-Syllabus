@@ -37,7 +37,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     private static IEnumerator LoadPlayerAndEnemies()
     {
         yield return _instance.StartCoroutine(GetPlayerXmlFromDB("Player.xml"));
-        yield return _instance.StartCoroutine(GetEnemyXmlFromDB("Goblin.xml"));
+        yield return _instance.StartCoroutine(GetEnemyXmlFromDB("FinalBoss.xml"));
 
         OnEnemiesLoaded?.Invoke();
         EnemiesHaveBeenLoaded = true;

@@ -2,6 +2,22 @@
 Gaming the Syllabus is an effort at making course syllabi more engaging and interactive for students. This will be done by presenting all the information from a syllabus in a minigame-like format. Students will be able to play minigames for each major section of a syllabus (course overview, grade components, etc.) and get the complete information from it. In addition, the project also allows for adaptability to different course syllabus. We are looking to build it in such a way that allows for other professors to be able to also use the project to create a more interactive syllabus. 
 
 ## Release Notes
+
+### Version 0.4.0
+
+#### New Features
+* Final boss fight is now in, meaning the game is completable
+* Enemies and riddles have now been placed in their finalized positions
+* Core game loop is in and functional
+
+#### Bug Fixes
+* The start menu is now functional, and will load the proper level
+* No more empty rooms on the map
+
+#### Known Issues
+* Progression is still somewhat buggy
+---
+
 ### Version 0.3.0
 
 #### New Features

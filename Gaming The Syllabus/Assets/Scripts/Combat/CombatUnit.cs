@@ -40,11 +40,15 @@ public class CombatUnit : IXmlSerializable
         }
     }
 
-    public void PerformRandomAction()
+    public async void PerformRandomAction()
     {
         if (IsAlive)
         {
-            actions[UnityEngine.Random.Range(0, actions.Count)].Execute(onActionCompleted: CombatManager.NextTurn);
+            int randomIndex = UnityEngine.Random.Range(0, actions.Count);
+            if (UnitName == "FinalBoss") {
+                await DamageTargetByRiddle.HandleRiddleResult();
+            }
+            actions[randomIndex].Execute(onActionCompleted: CombatManager.NextTurn);
         }
     }
 

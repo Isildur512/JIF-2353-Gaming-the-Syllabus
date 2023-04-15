@@ -14,7 +14,7 @@ public class UnitAction : IXmlSerializable
     /// </summary>
     public int CurrentCharges { get; private set; }
 
-    private string actionName;
+    public string actionName;
     private string actionDescription;
     public List<ActionEffect> effects;
     private CombatUnit[] currentTargets;
