@@ -10,7 +10,6 @@ public class LevelLoader : MonoBehaviour
     public Animator transition;
     [SerializeField] private string curLevel;
 
-
     // Update is called once per frame
     void Update()
     {

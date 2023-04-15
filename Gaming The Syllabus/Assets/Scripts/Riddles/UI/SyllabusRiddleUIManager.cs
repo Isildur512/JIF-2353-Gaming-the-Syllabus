@@ -59,7 +59,6 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
                 riddle,
                 riddle.Answers[i]
             );
-            Debug.Log("THIS WAS HIT");
         }
     }
 
