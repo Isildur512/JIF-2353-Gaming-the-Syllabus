@@ -109,7 +109,7 @@ public class CombatManager : Singleton<CombatManager>
     private static CombatUnit GetRandomLivingEnemy()
     {
         List<CombatUnit> livingEnemies = allCombatants.FindAll((enemy) => enemy.IsAlive);
-        return livingEnemies[Random.Range(0, livingEnemies.Count)];
+        return livingEnemies[Random.Range(1, livingEnemies.Count)];
 
     }
 

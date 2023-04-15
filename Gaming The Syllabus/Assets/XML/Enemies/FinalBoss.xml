@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="FinalBoss" maximumHealth="50" 
+    dialogueColor="orange" currentHealth="50">
+  <actions>
+    <action name="riddleAttack">
+      <effect delayInSecondsBeforeEffects="1.0" delayInSecondsAfterEffects="1.0" type="DamageTargetByRiddle" target="Player" damageAmount="3" />
+    </action>
+  </actions>
+</CombatUnit>
