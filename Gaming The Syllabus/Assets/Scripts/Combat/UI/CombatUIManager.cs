@@ -97,4 +97,8 @@ public class CombatUIManager : Singleton<CombatUIManager>
         _instance.abilityPage.SetActive(!abilityPageIsActive);
         _instance.actionBox.SetActive(abilityPageIsActive);
     }
+
+    public static void DeactivateCombatUI() {
+        _instance.combatUIObject.SetActive(false);
+    }
 }

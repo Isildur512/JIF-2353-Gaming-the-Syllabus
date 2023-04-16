@@ -25,4 +25,12 @@ public class CombatStarter : MonoBehaviour
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());
     }
+
+    void Update()
+    {
+        if (CombatManager.CheckCombatIsOver() && CombatManager.player.IsAlive)
+        {
+            gameObject.SetActive(false);
+        }
+    }
 }
