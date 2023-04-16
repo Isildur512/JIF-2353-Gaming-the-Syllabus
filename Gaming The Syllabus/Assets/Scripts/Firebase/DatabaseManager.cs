@@ -83,7 +83,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     }
 
     public static IEnumerator GetPlayerXmlFromDB(string playerXmlFileName) {
-        Task task = DownloadFromFirebase($"cs1332/fs29fh2d39823/Enemies/{playerXmlFileName}", Path.Combine(Files.PlayerXml).ToString());
+        Task task = DownloadFromFirebase($"cs1332/fs29fh2d39823/{playerXmlFileName}", Path.Combine(Files.PlayerXml).ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
     }
