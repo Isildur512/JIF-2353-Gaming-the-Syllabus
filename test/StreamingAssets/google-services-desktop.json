@@ -1,0 +1,37 @@
+{
+  "project_info": {
+    "project_number": "575623898016",
+    "firebase_url": "https://gamingthesyllabustest-default-rtdb.firebaseio.com",
+    "project_id": "gamingthesyllabustest",
+    "storage_bucket": "gamingthesyllabustest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:575623898016:ios:51daf5d9dbebffd08afac5",
+        "android_client_info": {
+          "package_name": "com.gamingthesyllabustest.firebasedb"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "575623898016-e15ti1nv1paa2o67395124hqqlkmp4u3.apps.googleusercontent.com"
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-vRiqVfQKPj18OfZOMol-BnsARDUqSk4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 0
+        },
+        "appinvite_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
