@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
-using Firebase;
-using Firebase.Storage;
-using Firebase.Extensions;
 using System.Threading.Tasks;
+using System.IO;
+
+using FirebaseBridge;
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
@@ -16,15 +15,9 @@ public class DatabaseManager : Singleton<DatabaseManager>
     public static bool RiddlesHaveBeenLoaded { get; private set; }
     public static bool EnemiesHaveBeenLoaded { get; private set; }
 
-    private static FirebaseStorage databaseStorage;
-    private static StorageReference rootDirectory;
-
     private void Awake()
     {
         InitializeSingleton();
-
-        databaseStorage = FirebaseStorage.DefaultInstance;
-        rootDirectory = databaseStorage.GetReferenceFromUrl("gs://gamingthesyllabustest.appspot.com/");
     }
 
     private void Start()
@@ -32,6 +25,35 @@ public class DatabaseManager : Singleton<DatabaseManager>
         // TODO: We need to load all the enemy and riddle files eventually. This is kind of a pain since there isn't just a "download folder" option.
         _instance.StartCoroutine(LoadRiddles());
         _instance.StartCoroutine(LoadPlayerAndEnemies());
+    }
+
+
+    private static bool downloadIsInProgress = false;
+    private static string currentPathToSaveTo = "";
+
+    public static async Task DownloadFromFirebase(string pathToDownloadFrom, string pathToSaveTo)
+    {
+        downloadIsInProgress = true;
+        currentPathToSaveTo = pathToSaveTo;
+        FirebaseBridge.FirebaseStorage.DownloadFile(pathToDownloadFrom, _instance.gameObject.name, "OnDownloadCompleted", "OnDownloadFailed");
+        while (downloadIsInProgress)
+        {
+            await Task.Delay(25);
+        }
+    }
+
+    private void OnDownloadCompleted(string base64Result)
+    {
+        File.WriteAllBytes(currentPathToSaveTo, Convert.FromBase64String(base64Result));
+        currentPathToSaveTo = "";
+        downloadIsInProgress = false;
+    }
+
+    private void OnDownloadFailed(string error)
+    {
+        Debug.LogError(error);
+        currentPathToSaveTo = "";
+        downloadIsInProgress = false;
     }
 
     private static IEnumerator LoadPlayerAndEnemies()
@@ -45,18 +67,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     private static IEnumerator LoadRiddles()
     {
-        StorageReference riddlesFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Riddles");
-
-        Task task = riddlesFolder.Child("TAs.xml").GetFileAsync(System.IO.Path.Combine(Files.RiddlesFolder, "TAs.xml").ToString()).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log("TAs.xml Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+        Task task = DownloadFromFirebase("cs1332/fs29fh2d39823/Riddles/TAs.xml", Path.Combine(Files.RiddlesFolder, "TAs.xml").ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
 
@@ -66,33 +77,13 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
 
     public static IEnumerator GetEnemyXmlFromDB(string enemyXmlFileName) {
-        StorageReference enemyFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Enemies");
-        Task task = enemyFolder.Child($"{enemyXmlFileName}").GetFileAsync(System.IO.Path.Combine(Files.EnemiesFolder, enemyXmlFileName).ToString()).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log($"{enemyXmlFileName} Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+        Task task = DownloadFromFirebase($"cs1332/fs29fh2d39823/Enemies/{enemyXmlFileName}", Path.Combine(Files.EnemiesFolder, enemyXmlFileName).ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
     }
 
     public static IEnumerator GetPlayerXmlFromDB(string playerXmlFileName) {
-        StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
-        Task task = playerFolder.Child($"{playerXmlFileName}").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log($"{playerXmlFileName} Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+        Task task = DownloadFromFirebase($"cs1332/fs29fh2d39823/Enemies/{playerXmlFileName}", Path.Combine(Files.PlayerXml).ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
     }

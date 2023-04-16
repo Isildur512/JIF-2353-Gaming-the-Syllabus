@@ -41,7 +41,10 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/Combat.unity
     guid: 6237a36702621004fad9ea039cd17b8b
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Dev/travis-riddles.unity
     guid: 7f78240168454f144bf573af9b13a75e
+  - enabled: 1
+    path: Assets/Scenes/Demos/Sprint3.unity
+    guid: 46eddc86570e092449e04cc4158c55c7
   m_configObjects: {}
