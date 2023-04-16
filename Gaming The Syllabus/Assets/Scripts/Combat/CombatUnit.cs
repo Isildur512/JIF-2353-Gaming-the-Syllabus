@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using System.Xml.Schema;
 using System.Xml;
 using System;
+using System.IO;
 
 /// <summary>
 /// A unit participating in combat. Used by <see cref="CombatManager"/>.
@@ -23,6 +24,8 @@ public class CombatUnit : IXmlSerializable
     public List<PlayerAbility> abilities { get; private set; }
 
     public bool IsAlive { get; private set; } = true;
+
+    public Sprite Sprite { get; private set; }
 
     public void PerformAction(int actionIndex)
     {
@@ -80,6 +83,11 @@ public class CombatUnit : IXmlSerializable
         MaximumHealth = int.Parse(reader.GetAttribute("maximumHealth"));
         CurrentHealth = int.Parse(reader.GetAttribute("currentHealth"));
         dialogueColor = reader.GetAttribute("dialogueColor");
+        if (reader.GetAttribute("sprite") != null)
+        {
+            // Don't forget we don't use file extensions when loading from the resources folder
+            Sprite = Resources.Load<Sprite>(Path.Combine(Files.SpritesFolder, reader.GetAttribute("sprite")));
+        }
 
         actions = new List<UnitAction>();
         abilities = new List<PlayerAbility>();

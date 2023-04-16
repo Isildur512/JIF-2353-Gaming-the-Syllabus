@@ -9,6 +9,11 @@ public class Files
     public static string PlayerXml { get => $"{CorrectDataPath}/XML/Player.xml"; }
 
     /// <summary>
+    /// This returns the relative path from the Resources folder.
+    /// </summary>
+    public static string SpritesFolder { get => $"Sprites"; }
+
+    /// <summary>
     /// If in editor, returns dataPath. Otherwise, returns persistentDataPath.
     /// This is necessary because we want to use the persistentDataPath in actual builds but this causes issues in the editor.
     /// </summary>

@@ -87,6 +87,7 @@ public class CombatUIManager : Singleton<CombatUIManager>
         Healthbar healthbar = healthbarGameObject.GetComponent<Healthbar>();
         healthbar.UpdateUnitName(unit.UnitName);
         healthbar.UpdateHealthbarValue(unit.CurrentHealth, unit.MaximumHealth);
+        healthbar.UpdateUnitSprite(unit.Sprite);
 
         return healthbarGameObject.GetComponent<Healthbar>();
     }
