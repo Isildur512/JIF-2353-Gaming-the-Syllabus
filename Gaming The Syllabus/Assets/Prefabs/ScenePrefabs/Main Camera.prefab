@@ -33,7 +33,7 @@ Transform:
   m_Children:
   - {fileID: 5104197227531731434}
   m_Father: {fileID: 5104197228079438472}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5104197227127937372
 MonoBehaviour:
@@ -222,7 +222,7 @@ Transform:
   m_Children:
   - {fileID: 5104197227127937375}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &5104197228079438473
 Camera:
