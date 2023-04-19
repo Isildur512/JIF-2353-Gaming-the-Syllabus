@@ -29,9 +29,15 @@ public class Healthbar : MonoBehaviour
         }
         bar.value = currentValue;
     }
+
     public void UpdateUnitName(string newText)
     {
         unitName.text = newText;
+    }
+
+    public void UpdateUnitSprite(Sprite sprite)
+    {
+        this.sprite.sprite = sprite;
     }
 
 
