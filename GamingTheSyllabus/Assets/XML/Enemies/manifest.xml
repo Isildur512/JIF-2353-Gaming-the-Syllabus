@@ -1,0 +1,5 @@
+<manifest>
+  <item>Enemy.xml</item>
+  <item>Goblin.xml</item>
+  <item>FinalBoss.xml</item>
+</manifest>

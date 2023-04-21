@@ -37,7 +37,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         Debug.Log("Riddles Loaded from XML");
         riddles = new List<Riddle>();
         IEnumerable<string> riddlePaths = Directory.GetFiles(filePathToRiddlesFolder)
-            .Where((path) => !path.Contains(".meta")); // Ignore meta files
+            .Where((path) => !path.Contains(".meta") && !path.Contains("manifest")); // Ignore meta and manifest files
         foreach (string riddlePath in riddlePaths)
         {
             Riddle riddle = XmlUtilities.Deserialize<Riddle>(riddlePath);
