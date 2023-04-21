@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton class for handling everything related to combat.
@@ -54,7 +55,12 @@ public class CombatManager : Singleton<CombatManager>
 
 
     public static void NextTurn() {
-        // Move to next unit
+
+        if (CheckCombatIsOver()) {
+            EndCombat();
+            return;
+        }
+         // Move to next unit
         AdvanceCurrentTurnIndex();
 
         // Skip over dead combatants
@@ -76,7 +82,9 @@ public class CombatManager : Singleton<CombatManager>
             IsPlayerTurn = false;
             unitWithCurrentTurn.PerformRandomAction();
         }
+
     }
+
 
     private static void AdvanceCurrentTurnIndex()
     {
@@ -106,11 +114,29 @@ public class CombatManager : Singleton<CombatManager>
         }
     }
 
-    private static CombatUnit GetRandomLivingEnemy()
+    public static CombatUnit GetRandomLivingEnemy()
     {
         List<CombatUnit> livingEnemies = allCombatants.FindAll((enemy) => enemy.IsAlive);
+        if (!player.IsAlive) {
+            return livingEnemies[0];
+        }
         return livingEnemies[Random.Range(1, livingEnemies.Count)];
 
+    }
+
+
+    public static bool CheckCombatIsOver() {
+        if (player == null || !player.IsAlive) {
+            return true;
+        }
+
+        List<CombatUnit> combatants = allCombatants.FindAll((combatant) => combatant.IsAlive);
+
+        if (combatants.Count == 1 && (combatants[0].IsAlive && combatants[0] == player)) { // Checks if all enemies are dead and only play left alive.
+            return true;
+        }
+
+        return false;
     }
 
     public static void StartCombat(CombatUnit player = null, params CombatUnit[] enemies)
@@ -144,6 +170,23 @@ public class CombatManager : Singleton<CombatManager>
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();
         isDone = true;
+    }
+
+    public static void EndCombat()
+    {
+        Player.CanMove = true;
+        CombatUIManager.DeactivateCombatUI();
+        CombatUIManager.CombatUIActive = false;
+        
+        if (player.IsAlive)
+        {
+            gameStatus = GameState.Win;
+        }
+        else
+        {
+            gameStatus = GameState.Lose;
+            LevelLoader._instance.LoadLevel(SceneManager.GetActiveScene());
+        }
     }
 }
 

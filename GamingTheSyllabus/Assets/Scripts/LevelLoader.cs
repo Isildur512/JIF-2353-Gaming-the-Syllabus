@@ -9,6 +9,14 @@ public class LevelLoader : MonoBehaviour
 {
     public Animator transition;
     [SerializeField] private string curLevel;
+    [SerializeField] private int transitionTime;
+
+    public static LevelLoader _instance {get; private set;}
+
+    void Awake()
+    {
+        _instance = this;
+    }
 
     // Update is called once per frame
     void Update()
@@ -25,8 +33,6 @@ public class LevelLoader : MonoBehaviour
             SceneManager.LoadScene("TestLevel");
         }
         Debug.Log("Y position" + GameObject.Find("Player").transform.position.y);  */
-        
-
     }
 
     public void LoadLevel(Scene toLoad) {
