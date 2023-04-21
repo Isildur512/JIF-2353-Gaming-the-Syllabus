@@ -76,10 +76,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -229,10 +229,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: RiddleUI
       objectReference: {fileID: 0}
-    - target: {fileID: 1543056790827560542, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -263,11 +259,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 1099.2
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -299,11 +295,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.000030518
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: 0.009185791
       objectReference: {fileID: 0}
     - target: {fileID: 1543056790827560543, guid: 29d6361ae7062f542addd635996bc0d8, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -335,46 +331,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1181911769835452927}
     m_Modifications:
-    - target: {fileID: -7239227810847626552, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: actionBoxGameObject
-      value: 
-      objectReference: {fileID: 1181911769742820576}
-    - target: {fileID: 2308160880999908943, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_IsActive
-      value: 0
+    - target: {fileID: 1181911770739383437, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
+      propertyPath: playerHealthbarPosition.y
+      value: -250
       objectReference: {fileID: 0}
-    - target: {fileID: 7093053816914954440, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_IsActive
-      value: 1
+    - target: {fileID: 1181911770739383437, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
+      propertyPath: firstEnemyHealthbarPosition.y
+      value: -250
       objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+    - target: {fileID: 1181911770739383437, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
+      propertyPath: xDistanceBetweenEnemyHealthbars
+      value: 500
       objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1181911769440520634}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ShowAbilityPage
-      objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: CombatActionButton, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156493, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 7093053817217156498, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-      propertyPath: actionBox
-      value: 
-      objectReference: {fileID: 1181911769742820576}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -405,11 +373,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 1920
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 1099.2
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_LocalPosition.x
@@ -441,11 +409,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: -0.000091553
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -0.0016327
       objectReference: {fileID: 0}
     - target: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -465,58 +433,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
---- !u!114 &1181911769440520634 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7093053817217156498, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-  m_PrefabInstance: {fileID: 8217214047602215976}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15cee0b1f5ff144eb8251b8af6c007b5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1181911769742820576 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7093053816914954440, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-  m_PrefabInstance: {fileID: 8217214047602215976}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1181911770739383426 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7093053818030002346, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-  m_PrefabInstance: {fileID: 8217214047602215976}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1181911770739383427 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7093053818030002347, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-  m_PrefabInstance: {fileID: 8217214047602215976}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1181911770739383437
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1181911770739383427}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 93d6d8e02b58ba041b435a8a005878d9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthbarPrefab: {fileID: 8743101883529904996, guid: af615368735d05840ac01f912e62d871, type: 3}
-  actionBox: {fileID: 1181911769742820576}
-  abilityPage: {fileID: 1181911770993947094}
-  combatUIObject: {fileID: 5909097318876826215}
-  firstEnemyHealthbarPosition: {x: -250, y: 50}
-  xDistanceBetweenEnemyHealthbars: 300
-  playerHealthbarPosition: {x: 450, y: 50}
---- !u!1 &1181911770993947094 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7093053817811140094, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
-  m_PrefabInstance: {fileID: 8217214047602215976}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &5909097318876826215 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2308160880999908943, guid: 47ba8b33c9468a9418e57acf08609532, type: 3}
   m_PrefabInstance: {fileID: 8217214047602215976}
   m_PrefabAsset: {fileID: 0}
