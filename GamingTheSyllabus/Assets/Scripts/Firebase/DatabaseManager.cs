@@ -8,6 +8,7 @@ using Firebase.Storage;
 using Firebase.Extensions;
 using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
@@ -48,9 +49,20 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         Directory.CreateDirectory(Files.EnemiesFolder);
 
-        yield return _instance.StartCoroutine(GetPlayerXmlFromDB("Player.xml"));
-        yield return _instance.StartCoroutine(GetEnemyXmlFromDB("FinalBoss.xml"));
-        yield return _instance.StartCoroutine(GetEnemyXmlFromDB("Goblin.xml"));
+        StorageReference enemiesFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Enemies");
+        Task task = DownloadFile(enemiesFolder.Child("manifest.xml"), Path.Combine(Files.EnemiesFolder, "manifest.xml").ToString());
+
+        yield return new WaitWhile(() => !task.IsCompleted);
+
+        DownloadManifest manifest = new DownloadManifest(Path.Combine(Files.EnemiesFolder, "manifest.xml").ToString());
+
+        foreach (string path in manifest.RelativeDownloadPaths)
+        {
+            task = DownloadFile(enemiesFolder.Child(path), Path.Combine(Files.EnemiesFolder, path));
+            yield return new WaitWhile(() => !task.IsCompleted);
+        }
+
+        yield return new WaitWhile(() => !task.IsCompleted);
 
         OnEnemiesLoaded?.Invoke();
         EnemiesHaveBeenLoaded = true;
@@ -61,39 +73,34 @@ public class DatabaseManager : Singleton<DatabaseManager>
         Directory.CreateDirectory(Files.RiddlesFolder);
 
         StorageReference riddlesFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Riddles");
-
-        Task task = riddlesFolder.Child("TAs.xml").GetFileAsync(Path.Combine(Files.RiddlesFolder, "TAs.xml").ToString()).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log("TAs.xml Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+        Task task = DownloadFile(riddlesFolder.Child("manifest.xml"), Path.Combine(Files.RiddlesFolder, "manifest.xml").ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
+
+        DownloadManifest manifest = new DownloadManifest(Path.Combine(Files.RiddlesFolder, "manifest.xml").ToString());
+
+        foreach (string path in manifest.RelativeDownloadPaths)
+        {
+            task = DownloadFile(riddlesFolder.Child(path), Path.Combine(Files.RiddlesFolder, path));
+            yield return new WaitWhile(() => !task.IsCompleted);
+        }
 
         OnRiddlesLoaded?.Invoke();
         RiddlesHaveBeenLoaded = true;
     }
 
-
-    public static IEnumerator GetEnemyXmlFromDB(string enemyXmlFileName) {
-        StorageReference enemyFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Enemies");
-        Task task = enemyFolder.Child($"{enemyXmlFileName}").GetFileAsync(Path.Combine(Files.EnemiesFolder, enemyXmlFileName).ToString()).ContinueWithOnMainThread(task => {
+    private static Task DownloadFile(StorageReference storageReference, string filePathToSaveAt) 
+    {
+        return storageReference.GetFileAsync(filePathToSaveAt).ContinueWithOnMainThread(task => {
             if (!task.IsFaulted && !task.IsCanceled)
             {
-                Debug.Log($"{enemyXmlFileName} Downloaded");
+                Debug.Log($"Download to {filePathToSaveAt} completed");
             }
             else
             {
                 Debug.Log(task.Exception);
             }
         });
-
-        yield return new WaitWhile(() => !task.IsCompleted);
     }
 
     public static IEnumerator GetPlayerXmlFromDB(string playerXmlFileName) {
