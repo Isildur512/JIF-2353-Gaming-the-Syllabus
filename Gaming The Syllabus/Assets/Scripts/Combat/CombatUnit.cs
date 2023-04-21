@@ -15,7 +15,8 @@ public class CombatUnit : IXmlSerializable
 {
     public string UnitName { get; private set; }
     public int MaximumHealth { get; private set; }
-    public int CurrentHealth { get; private set; }
+    // public int CurrentHealth { get; private set; }
+    public int CurrentHealth;
 
     public string dialogueColor { get; private set; }
 
