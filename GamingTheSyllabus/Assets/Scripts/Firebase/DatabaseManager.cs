@@ -42,10 +42,11 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         // TODO: We need to load all the enemy and riddle files eventually. This is kind of a pain since there isn't just a "download folder" option.
         _instance.StartCoroutine(LoadRiddles());
-        _instance.StartCoroutine(LoadPlayerAndEnemies());
+        _instance.StartCoroutine(LoadPlayer());
+        _instance.StartCoroutine(LoadEnemies());
     }
 
-    private static IEnumerator LoadPlayerAndEnemies()
+    private static IEnumerator LoadEnemies()
     {
         Directory.CreateDirectory(Files.EnemiesFolder);
 
@@ -103,12 +104,12 @@ public class DatabaseManager : Singleton<DatabaseManager>
         });
     }
 
-    public static IEnumerator GetPlayerXmlFromDB(string playerXmlFileName) {
+    public static IEnumerator LoadPlayer() {
         StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
-        Task task = playerFolder.Child($"{playerXmlFileName}").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
+        Task task = playerFolder.Child($"Player.xml").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
             if (!task.IsFaulted && !task.IsCanceled)
             {
-                Debug.Log($"{playerXmlFileName} Downloaded");
+                Debug.Log($"Player.xml Downloaded");
             }
             else
             {

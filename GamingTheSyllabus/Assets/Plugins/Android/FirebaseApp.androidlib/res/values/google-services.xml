@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:keep="@string/firebase_database_url,@string/gcm_defaultSenderId,@string/google_storage_bucket,@string/project_id,@string/google_api_key,@string/google_crash_reporting_api_key,@string/google_app_id,@string/default_android_client_id,@string/default_web_client_id">
+  <string name="firebase_database_url" translatable="false">https://gamingthesyllabustest-default-rtdb.firebaseio.com</string>
+  <string name="gcm_defaultSenderId" translatable="false">575623898016</string>
+  <string name="google_storage_bucket" translatable="false">gamingthesyllabustest.appspot.com</string>
+  <string name="project_id" translatable="false">gamingthesyllabustest</string>
+  <string name="google_api_key" translatable="false">AIzaSyCoGylCcek9rGFErPvuoFCkRFzlahRgWPM</string>
+  <string name="google_crash_reporting_api_key" translatable="false">AIzaSyCoGylCcek9rGFErPvuoFCkRFzlahRgWPM</string>
+  <string name="google_app_id" translatable="false">1:575623898016:android:dc75a48b044efa038afac5</string>
+  <string name="default_android_client_id" translatable="false">575623898016-jb6k36oukc4020dp3rea1pkbnh340ngm.apps.googleusercontent.com</string>
+  <string name="default_web_client_id" translatable="false">575623898016-gu7p1iugplors19svcitdfvkkpesos5j.apps.googleusercontent.com</string>
+</resources>
