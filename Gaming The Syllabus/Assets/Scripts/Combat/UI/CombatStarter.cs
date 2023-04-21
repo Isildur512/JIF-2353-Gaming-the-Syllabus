@@ -28,7 +28,7 @@ public class CombatStarter : MonoBehaviour
 
     void Update()
     {
-        if (CombatManager.CheckCombatIsOver() && CombatManager.player.IsAlive)
+        if (CombatManager.player != null && CombatManager.CheckCombatIsOver())
         {
             gameObject.SetActive(false);
         }

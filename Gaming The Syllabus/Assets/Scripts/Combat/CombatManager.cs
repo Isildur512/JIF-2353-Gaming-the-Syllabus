@@ -126,7 +126,7 @@ public class CombatManager : Singleton<CombatManager>
 
 
     public static bool CheckCombatIsOver() {
-        if (!player.IsAlive) {
+        if (player == null || !player.IsAlive) {
             return true;
         }
 
