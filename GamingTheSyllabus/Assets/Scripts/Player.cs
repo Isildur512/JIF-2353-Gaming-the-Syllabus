@@ -13,7 +13,8 @@ public class Player : Singleton<Player>
 
     [Header("Movement")]
     [SerializeField] private float movementSpeed = 5;
-    public static bool CanMove = true;
+    [SerializeField] private bool canMoveBeforeLoadingIsComplete = false;
+    public static bool CanMove = false;
 
     private Vector2 movementDirection;
     private List<IInteractable> interactablesWithinRange = new();
@@ -47,7 +48,10 @@ public class Player : Singleton<Player>
 
     private void Awake()
     {
+        // This is in case we want to override waiting for the DBManager to load everything for testing or whatever
+        CanMove = canMoveBeforeLoadingIsComplete;
         InitializeSingleton();
+        DatabaseManager.OnAllLoadingCompleted += () => { CanMove = true; };
     }
 
     private void FixedUpdate()
