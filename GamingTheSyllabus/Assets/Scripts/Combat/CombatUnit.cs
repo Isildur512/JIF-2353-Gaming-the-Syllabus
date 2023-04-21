@@ -107,8 +107,6 @@ public class CombatUnit : IXmlSerializable
             reader.ReadToNextSibling("action");
             reader.ReadToNextSibling("action");
         }
-
-        
     }
 
     public void WriteXml(XmlWriter writer)
