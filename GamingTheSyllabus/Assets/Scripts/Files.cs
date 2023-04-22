@@ -8,6 +8,7 @@ public class Files
     public static string EnemiesFolder { get => $"{CorrectDataPath}/XML/Enemies"; }
     public static string CombatsFolder { get => $"{CorrectDataPath}/XML/Combats"; }
     public static string PlayerXml { get => $"{CorrectDataPath}/XML/Player.xml"; }
+    public static string SyllabusInformationXml { get => $"{CorrectDataPath}/XML/syllabus-info.xml"; }
 
     /// <summary>
     /// This returns the relative path from the Resources folder.

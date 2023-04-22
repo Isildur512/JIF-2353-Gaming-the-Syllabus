@@ -14,11 +14,11 @@ public class DownloadManifest
 
     public DownloadManifest(string filePathToXmlManifest)
     {
-        XmlDocument abilityDataXml = new XmlDocument();
+        XmlDocument xml = new XmlDocument();
         StreamReader reader = new StreamReader(filePathToXmlManifest);
-        abilityDataXml.Load(reader);
+        xml.Load(reader);
 
-        XmlNodeList items = abilityDataXml.GetElementsByTagName("item");
+        XmlNodeList items = xml.GetElementsByTagName("item");
         for (int i = 0; i < items.Count; i++)
         {
             _relativeDownloadPaths.Add(items[i].InnerXml);

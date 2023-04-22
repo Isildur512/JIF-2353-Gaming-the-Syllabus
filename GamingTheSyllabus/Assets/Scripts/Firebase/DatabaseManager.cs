@@ -86,6 +86,21 @@ public class DatabaseManager : Singleton<DatabaseManager>
         }
     }
 
+    public static void AttemptToDownloadSyllabusInformation(Action onDownloadSucceeded, Action onDownloadFailed)
+    {
+        rootDirectory.Child($"{CurrentSyllabusCode}/syllabus-info.xml").GetFileAsync(Files.SyllabusInformationXml).ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                onDownloadSucceeded?.Invoke();
+            }
+            else
+            {
+                onDownloadFailed?.Invoke();
+            }
+        });
+    }
+
+
     public static void LoadFromDatabase()
     {
         _instance.StartCoroutine(LoadPlayer());
