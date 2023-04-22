@@ -1,6 +1,7 @@
 <manifest>
-  <item>Enemy.png</item>
-  <item>Goblin.png</item>
-  <item>FinalBoss.png</item>
-  <item>Player.png</item>
+  <item>goblinWorld.png</item>
+  <item>goblinCombat.png</item>
+  <item>finalBossCombat.png</item>
+  <item>muddlemukCombat.png</item>
+  <item>player.png</item>
 </manifest>
