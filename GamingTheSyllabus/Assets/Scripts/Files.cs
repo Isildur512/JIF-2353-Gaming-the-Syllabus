@@ -6,6 +6,7 @@ public class Files
 {
     public static string RiddlesFolder { get => $"{CorrectDataPath}/XML/Riddles"; }
     public static string EnemiesFolder { get => $"{CorrectDataPath}/XML/Enemies"; }
+    public static string CombatsFolder { get => $"{CorrectDataPath}/XML/Combats"; }
     public static string PlayerXml { get => $"{CorrectDataPath}/XML/Player.xml"; }
 
     /// <summary>
