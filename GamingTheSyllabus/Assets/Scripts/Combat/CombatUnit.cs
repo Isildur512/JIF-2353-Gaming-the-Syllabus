@@ -86,8 +86,12 @@ public class CombatUnit : IXmlSerializable
         dialogueColor = reader.GetAttribute("dialogueColor");
         if (reader.GetAttribute("sprite") != null)
         {
-            // Don't forget we don't use file extensions when loading from the resources folder
-            Sprite = Resources.Load<Sprite>(Path.Combine(Files.SpritesFolderRelative, reader.GetAttribute("sprite")));
+            byte[] fileContents = File.ReadAllBytes(Path.Combine(Files.SpritesFolderAbsolute, reader.GetAttribute("sprite")));
+
+            Texture2D texture = new Texture2D(1, 1);
+            texture.LoadImage(fileContents);
+
+            Sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width, texture.height), new Vector2(0.5f, 0.5f), 100.0f);
         }
 
         actions = new List<UnitAction>();

@@ -145,17 +145,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     }
 
     public static IEnumerator LoadPlayer() {
-        StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
-        Task task = playerFolder.Child($"Player.xml").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log($"Player.xml Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+        Task task = DownloadFile(rootDirectory.Child($"{CurrentSyllabusCode}/Player.xml"), Files.PlayerXml);
 
         yield return new WaitWhile(() => !task.IsCompleted);
 

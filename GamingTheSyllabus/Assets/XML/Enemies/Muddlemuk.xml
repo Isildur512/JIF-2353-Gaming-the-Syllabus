@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<CombatUnit xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Muddlemuk" maximumHealth="10"
+    dialogueColor="orange" currentHealth="10" sprite="muddlemukCombat.png">
+  <actions>
+    <action name="basicAttack">
+      <effect delayInSecondsBeforeEffects="0.5" delayInSecondsAfterEffects="0.5" type="DamageTarget" target="Player" damageAmount="5"/>
+    </action>
+  </actions>
+</CombatUnit>

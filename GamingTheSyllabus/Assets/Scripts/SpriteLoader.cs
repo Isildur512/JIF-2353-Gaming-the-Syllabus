@@ -23,6 +23,12 @@ public class SpriteLoader : MonoBehaviour
 
     private void SetSprite()
     {
-        GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(Path.Combine(Files.SpritesFolderRelative, relativePathFromSpritesFolder));
+        byte[] fileContents = File.ReadAllBytes(Path.Combine(Files.SpritesFolderAbsolute, relativePathFromSpritesFolder));
+
+        Texture2D texture = new Texture2D(1, 1);
+        texture.LoadImage(fileContents);
+
+        GetComponent<SpriteRenderer>().sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width,
+            texture.height), new Vector2(0.5f, 0.5f), 100.0f);
     }
 }
