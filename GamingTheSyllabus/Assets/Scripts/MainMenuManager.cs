@@ -24,10 +24,19 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DatabaseManager.CurrentUserEmail = email;
         DatabaseManager.CurrentSyllabusCode = syllabusCode;
 
-        DatabaseManager.LoadFromDatabase();
+        DatabaseManager.AttemptToDownloadSyllabusInformation(ContinueToGame, ShowDownloadFailure);
+    }
 
+    private static void ContinueToGame()
+    {
         SceneManager.sceneLoaded += LoadFromDatabase;
         SceneManager.LoadScene(_instance.startSceneName);
+    }
+
+    private static void ShowDownloadFailure()
+    {
+        InvalidSyllabusCodeAlertManager.ShowAlert();
+        Debug.LogError("Syllabus code was invalid or the download failed");
     }
 
     private static void LoadFromDatabase(Scene _, LoadSceneMode __)

@@ -48,6 +48,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Demos/Sprint3.unity
     guid: 46eddc86570e092449e04cc4158c55c7
   - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 8db8a16e9c00626459c49b5616be7cee
+  - enabled: 1
     path: Assets/Scenes/Final/FinalDemo.unity
     guid: 0ac619c2d3314ef4fab6d5b34e9b5540
   m_configObjects: {}
