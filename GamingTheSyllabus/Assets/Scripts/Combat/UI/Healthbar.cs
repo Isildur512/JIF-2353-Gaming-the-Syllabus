@@ -18,7 +18,6 @@ public class Healthbar : MonoBehaviour
                                     healthChangeText.alpha, 
                                     0f, 
                                     0.65f * Time.deltaTime);
-        
     }
 
     public void UpdateHealthbarValue(float currentValue, float maxValue = -1)

@@ -87,7 +87,7 @@ public class CombatUnit : IXmlSerializable
         if (reader.GetAttribute("sprite") != null)
         {
             // Don't forget we don't use file extensions when loading from the resources folder
-            Sprite = Resources.Load<Sprite>(Path.Combine(Files.SpritesFolder, reader.GetAttribute("sprite")));
+            Sprite = Resources.Load<Sprite>(Path.Combine(Files.SpritesFolderRelative, reader.GetAttribute("sprite")));
         }
 
         actions = new List<UnitAction>();

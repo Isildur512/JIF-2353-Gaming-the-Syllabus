@@ -8,7 +8,8 @@ public class CombatStarter : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (DatabaseManager.EnemiesHaveBeenLoaded)
+        if (DatabaseManager.GetLoadingStatus(DatabaseManager.Loadable.Enemies) 
+         && DatabaseManager.GetLoadingStatus(DatabaseManager.Loadable.Player))
         {
             StartCombat();
         }

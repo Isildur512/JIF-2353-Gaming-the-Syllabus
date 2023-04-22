@@ -11,7 +11,9 @@ public class Files
     /// <summary>
     /// This returns the relative path from the Resources folder.
     /// </summary>
-    public static string SpritesFolder { get => $"Sprites"; }
+    public static string SpritesFolderRelative { get => $"Sprites"; }
+
+    public static string SpritesFolderAbsolute { get => $"{CorrectDataPath}/Resources/Sprites"; }
 
     /// <summary>
     /// If in editor, returns dataPath. Otherwise, returns persistentDataPath.

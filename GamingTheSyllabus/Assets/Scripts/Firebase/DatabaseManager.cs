@@ -9,20 +9,41 @@ using Firebase.Extensions;
 using System.Threading.Tasks;
 using System.IO;
 using System.Xml;
+using System.Linq;
 
 public class DatabaseManager : Singleton<DatabaseManager>
 {
     public static Action OnRiddlesLoaded;
     public static Action OnEnemiesLoaded;
+    public static Action OnSpritesLoaded;
+    public static Action OnAllLoadingCompleted;
 
-    public static bool RiddlesHaveBeenLoaded { get; private set; }
-    public static bool EnemiesHaveBeenLoaded { get; private set; }
+    private static Dictionary<Loadable, bool> loadingStatus = new Dictionary<Loadable, bool>();
 
     private static FirebaseStorage databaseStorage;
     private static StorageReference rootDirectory;
 
+    public enum Loadable
+    {
+        Player,
+        Enemies,
+        Riddles,
+        Sprites
+    }
+
+    /// <returns>Whether the loadable has finished downloading or not</returns>
+    public static bool GetLoadingStatus(Loadable loadableToCheck)
+    {
+        return loadingStatus[loadableToCheck];
+    }
+
     private void Awake()
     {
+        loadingStatus[Loadable.Player] = false;
+        loadingStatus[Loadable.Enemies] = false;
+        loadingStatus[Loadable.Riddles] = false;
+        loadingStatus[Loadable.Sprites] = false;
+
         InitializeSingleton();
 
         AppOptions options = new AppOptions();
@@ -40,12 +61,13 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     private void Start()
     {
-        // TODO: We need to load all the enemy and riddle files eventually. This is kind of a pain since there isn't just a "download folder" option.
         _instance.StartCoroutine(LoadRiddles());
-        _instance.StartCoroutine(LoadPlayerAndEnemies());
+        _instance.StartCoroutine(LoadPlayer());
+        _instance.StartCoroutine(LoadEnemies());
+        _instance.StartCoroutine(LoadSprites());
     }
 
-    private static IEnumerator LoadPlayerAndEnemies()
+    private static IEnumerator LoadEnemies()
     {
         Directory.CreateDirectory(Files.EnemiesFolder);
 
@@ -64,8 +86,26 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
         yield return new WaitWhile(() => !task.IsCompleted);
 
+        SetLoadingStatus(Loadable.Enemies, true);
         OnEnemiesLoaded?.Invoke();
-        EnemiesHaveBeenLoaded = true;
+    }
+
+    public static IEnumerator LoadPlayer() {
+        StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
+        Task task = playerFolder.Child($"Player.xml").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                Debug.Log($"Player.xml Downloaded");
+            }
+            else
+            {
+                Debug.Log(task.Exception);
+            }
+        });
+
+        yield return new WaitWhile(() => !task.IsCompleted);
+
+        SetLoadingStatus(Loadable.Player, true);
     }
 
     private static IEnumerator LoadRiddles()
@@ -85,11 +125,32 @@ public class DatabaseManager : Singleton<DatabaseManager>
             yield return new WaitWhile(() => !task.IsCompleted);
         }
 
+        SetLoadingStatus(Loadable.Riddles, true);
         OnRiddlesLoaded?.Invoke();
-        RiddlesHaveBeenLoaded = true;
     }
 
-    private static Task DownloadFile(StorageReference storageReference, string filePathToSaveAt) 
+    private static IEnumerator LoadSprites()
+    {
+        Directory.CreateDirectory(Files.SpritesFolderAbsolute);
+
+        StorageReference spritesFolder = rootDirectory.Child("cs1332/fs29fh2d39823/Sprites");
+        Task task = DownloadFile(spritesFolder.Child("manifest.xml"), Path.Combine(Files.SpritesFolderAbsolute, "manifest.xml").ToString());
+
+        yield return new WaitWhile(() => !task.IsCompleted);
+
+        DownloadManifest manifest = new DownloadManifest(Path.Combine(Files.SpritesFolderAbsolute, "manifest.xml").ToString());
+
+        foreach (string path in manifest.RelativeDownloadPaths)
+        {
+            task = DownloadFile(spritesFolder.Child(path), Path.Combine(Files.SpritesFolderAbsolute, path));
+            yield return new WaitWhile(() => !task.IsCompleted);
+        }
+
+        SetLoadingStatus(Loadable.Sprites, true);
+        OnSpritesLoaded?.Invoke();
+    }
+
+    private static Task DownloadFile(StorageReference storageReference, string filePathToSaveAt)
     {
         return storageReference.GetFileAsync(filePathToSaveAt).ContinueWithOnMainThread(task => {
             if (!task.IsFaulted && !task.IsCanceled)
@@ -103,19 +164,18 @@ public class DatabaseManager : Singleton<DatabaseManager>
         });
     }
 
-    public static IEnumerator GetPlayerXmlFromDB(string playerXmlFileName) {
-        StorageReference playerFolder = rootDirectory.Child("cs1332/fs29fh2d39823/");
-        Task task = playerFolder.Child($"{playerXmlFileName}").GetFileAsync(Files.PlayerXml).ContinueWithOnMainThread(task => {
-            if (!task.IsFaulted && !task.IsCanceled)
-            {
-                Debug.Log($"{playerXmlFileName} Downloaded");
-            }
-            else
-            {
-                Debug.Log(task.Exception);
-            }
-        });
+    private static void CheckIfAllLoadingIsCompleted()
+    {
+        // If none are incomplete
+        if (loadingStatus.Values.ToList().FindAll((isCompleted) => !isCompleted).Count == 0)
+        {
+            OnAllLoadingCompleted?.Invoke();
+        }
+    }
 
-        yield return new WaitWhile(() => !task.IsCompleted);
+    private static void SetLoadingStatus(Loadable loadable, bool value)
+    {
+        loadingStatus[loadable] = true;
+        CheckIfAllLoadingIsCompleted();
     }
 }
