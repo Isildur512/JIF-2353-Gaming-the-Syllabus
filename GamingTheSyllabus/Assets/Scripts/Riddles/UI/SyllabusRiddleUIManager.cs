@@ -25,6 +25,8 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
     [Header("Answer Element Prefabs")]
     [SerializeField] private GameObject buttonAnswerElementPrefab;
 
+    private List<GameObject> currentAnswers = new();
+
     public static bool UIIsActive { get => _instance.uiPanel.activeInHierarchy; }
 
     private void Awake()
@@ -40,6 +42,8 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
 
     public static void DisplayRiddle(Riddle riddle)
     {
+        _instance.currentAnswers.ForEach((GameObject obj) => Destroy(obj));
+
         SetUIActive(true);
         _instance.question.text = riddle.Question;
 
@@ -51,13 +55,16 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         }
         for (int i = 0; i < riddle.Answers.Length; i++)
         {
-            CreateAnswerElement
+            _instance.currentAnswers.Add
             (
-                _instance.buttonAnswerElementPrefab,
-                _instance.uiPanel.transform,
-                _instance.firstAnswerPosition + new Vector2(0, -(_instance.yDistanceBetweenAnswerElements * i)),
-                riddle,
-                riddle.Answers[i]
+                CreateAnswerElement
+                (
+                    _instance.buttonAnswerElementPrefab,
+                    _instance.uiPanel.transform,
+                    _instance.firstAnswerPosition + new Vector2(0, -(_instance.yDistanceBetweenAnswerElements * i)),
+                    riddle,
+                    riddle.Answers[i]
+                )
             );
         }
     }
@@ -67,7 +74,7 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         DisplayRiddle(SyllabusRiddleManager.Riddles[indexOfRiddle]);
     }
 
-    private static void CreateAnswerElement(GameObject prefab, Transform containingPanel, Vector2 position, Riddle riddle, RiddleAnswer answer)
+    private static GameObject CreateAnswerElement(GameObject prefab, Transform containingPanel, Vector2 position, Riddle riddle, RiddleAnswer answer)
     {
         GameObject answerElement = Instantiate(prefab, _instance.transform);
         answerElement.GetComponent<IRiddleAnswerUIElement>().Initialize(riddle, answer);
@@ -76,5 +83,7 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         answerElementTransform.anchoredPosition = position;
 
         answerElement.transform.SetParent(containingPanel);
+
+        return answerElement;
     }
 }

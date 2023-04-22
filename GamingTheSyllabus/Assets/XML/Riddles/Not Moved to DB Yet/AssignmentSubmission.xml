@@ -1,8 +1,0 @@
-<Riddle xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TAs" 
-		question="You should submit all assignments to TurnItIn for plagiarism checking." 
-		reward="XML/UnlockableAbilities/HealthPotion.xml">
-	<answers numberOfAnswers="2">
-		<answer text="True" isCorrect="false"/>
-		<answer text="False" isCorrect="true"/>
-	</answers>
-</Riddle>

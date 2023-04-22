@@ -1,15 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 using UnityEngine;
 
 public class CombatStarter : MonoBehaviour
 {
-    [SerializeField] private List<string> enemyFileNames;
+    [SerializeField] private string combatFileName;
+
+    private List<string> enemyFileNames;
 
     void OnCollisionEnter2D(Collision2D col)
     {
-        if (DatabaseManager.GetLoadingStatus(DatabaseManager.Loadable.Enemies) 
-         && DatabaseManager.GetLoadingStatus(DatabaseManager.Loadable.Player))
+        if (DatabaseManager.ContentIsLoaded(DatabaseManager.Loadable.Enemies) 
+         && DatabaseManager.ContentIsLoaded(DatabaseManager.Loadable.Player))
         {
             StartCombat();
         }
@@ -17,11 +21,27 @@ public class CombatStarter : MonoBehaviour
 
     public void StartCombat()
     {
-        List<CombatUnit> combatUnits = new(enemyFileNames.Count);
+        /*List<CombatUnit> combatUnits = new(enemyFileNames.Count);
         
         foreach(string enemyFileName in enemyFileNames)
         {
             combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(System.IO.Path.Combine(Files.EnemiesFolder, enemyFileName)));
+        }
+
+        CombatManager.StartCombat(enemies: combatUnits.ToArray());*/
+        enemyFileNames = new();
+
+        List<CombatUnit> combatUnits = new();
+
+        XmlDocument combatDataXml = new XmlDocument();
+        StreamReader reader = new StreamReader(Path.Combine(Files.CombatsFolder, combatFileName));
+        combatDataXml.Load(reader);
+
+        XmlNodeList items = combatDataXml.GetElementsByTagName("Unit");
+        for (int i = 0; i < items.Count; i++)
+        {
+            string enemyFileName = items[i].InnerXml;
+            combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(Path.Combine(Files.EnemiesFolder, enemyFileName)));
         }
 
         CombatManager.StartCombat(enemies: combatUnits.ToArray());

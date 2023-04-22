@@ -30,18 +30,21 @@ public class Player : Singleton<Player>
 
     private void OnTap(Finger finger)
     {
-        Vector2 tappedLocation = Camera.main.ScreenToWorldPoint(finger.screenPosition);
-
-        destination = tappedLocation;
-
-        Collider2D interactableCollider = Physics2D.OverlapPoint(tappedLocation, LayerMask.GetMask("Interactable"));
-
-        if (interactableCollider != null)
+        if (!SyllabusRiddleUIManager.UIIsActive)
         {
-            IInteractable interactable = interactableCollider.GetComponent<IInteractable>();
-            if (interactablesWithinRange.Contains(interactable))
+            Vector2 tappedLocation = Camera.main.ScreenToWorldPoint(finger.screenPosition);
+
+            destination = tappedLocation;
+
+            Collider2D interactableCollider = Physics2D.OverlapPoint(tappedLocation, LayerMask.GetMask("Interactable"));
+
+            if (interactableCollider != null)
             {
-                interactable.Interact();
+                IInteractable interactable = interactableCollider.GetComponent<IInteractable>();
+                if (interactablesWithinRange.Contains(interactable))
+                {
+                    interactable.Interact();
+                }
             }
         }
     }
