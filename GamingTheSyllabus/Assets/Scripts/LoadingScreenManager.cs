@@ -9,7 +9,13 @@ public class LoadingScreenManager : MonoBehaviour
 
     private void Awake()
     {
-        DatabaseManager.OnAllLoadingCompleted += HidePanel;
+        if (DatabaseManager.ContentIsLoaded(DatabaseManager.Loadable.Everything))
+        {
+            HidePanel();
+        } else
+        {
+            DatabaseManager.OnAllLoadingCompleted += HidePanel;
+        }
     }
 
     private void HidePanel()
@@ -24,6 +30,10 @@ public class LoadingScreenManager : MonoBehaviour
             loadingPanel.alpha -= Time.deltaTime * 0.5f;
             yield return null;
         }
-        loadingPanel.gameObject.SetActive(false);
+        if (loadingPanel)
+        {
+            loadingPanel.gameObject.SetActive(false);
+            Player.CanMove = true;
+        }
     }
 }
