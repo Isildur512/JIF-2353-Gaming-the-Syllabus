@@ -34,7 +34,11 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         if (result && solvedRiddles != null)
         {
             solvedRiddles.Add(riddle);
-            roomsCompleted.Add(SceneManager.GetActiveScene());
+            if (SceneManager.GetActiveScene().name != "Hub") // need this for boss fight
+            {
+                roomsCompleted.Add(SceneManager.GetActiveScene());
+                FeedbackUI.NotifyUser($"Rooms left: {roomsCompleted.Count} / 6");
+            }
         }
         AnswerSubmissionManager.isCorrect = result;
         return result;

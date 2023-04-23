@@ -11,6 +11,8 @@ public class FeedbackUI : Singleton<FeedbackUI>
     void Awake()
     {
         InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        feedbackStrings.Clear();
+        feedbackText.text = "";
     }
 
     public static void AddStringTofeedback(string strToAdd) {

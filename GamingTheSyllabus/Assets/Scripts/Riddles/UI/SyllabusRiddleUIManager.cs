@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Singleton class responsible for displaying riddles by instantiating and initializing answer elements at runtime.
@@ -38,6 +39,11 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
     public static void SetUIActive(bool isActive)
     {
         _instance.uiPanel.SetActive(isActive);
+        if (SceneManager.GetActiveScene().name == "Hub")
+        {
+            Player.CanMove = false;
+            return;
+        }
         Player.CanMove = !isActive;
     }
 
