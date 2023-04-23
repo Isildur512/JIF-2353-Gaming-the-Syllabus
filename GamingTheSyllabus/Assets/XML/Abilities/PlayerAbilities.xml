@@ -18,7 +18,7 @@
     <hitMessage> Used Fire Blast and dealt </hitMessage>
     <missMessage> Tried using Fire Blast but missed! </missMessage>
   </PlayerAbility>
-  <PlayerAbility name="Damaging Regeneration" type="attack" default="true">
+  <PlayerAbility name="Damaging Regeneration" type="attack" default="false">
     <AbilityDesc> Unleash a lethal low accuracy but high damage attack that also heals you. </AbilityDesc>
     <hitChance>30</hitChance>
     <Effects>

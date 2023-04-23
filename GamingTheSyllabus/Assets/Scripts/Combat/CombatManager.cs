@@ -183,6 +183,7 @@ public class CombatManager : Singleton<CombatManager>
         {
             gameStatus = GameState.Win;
             FeedbackUI.NotifyUser("YOU WON!");
+            AbilityController.GiveRandomAbility(CombatManager.player);
         }
         else
         {
