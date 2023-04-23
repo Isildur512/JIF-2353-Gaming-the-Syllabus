@@ -184,6 +184,8 @@ public class CombatManager : Singleton<CombatManager>
         CombatUIManager.DeactivateCombatUI();
         CombatUIManager.CombatUIActive = false;
 
+        CombatUIManager.RemoveAllHealthbars();
+
         onCombatCompleted?.Invoke();
 
         if (player.IsAlive)

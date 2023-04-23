@@ -39,7 +39,7 @@ public class CombatUIManager : Singleton<CombatUIManager>
         combatUIObject.SetActive(false);
     }
 
-    private static void RemoveAllHealthbars()
+    public static void RemoveAllHealthbars()
     {
         foreach (Healthbar healthbar in combatUnitToHealthbar.Values)
         {
@@ -51,8 +51,6 @@ public class CombatUIManager : Singleton<CombatUIManager>
 
     public static void InitializeHealthbars(CombatUnit player, params CombatUnit[] allEnemies)
     {
-        RemoveAllHealthbars();
-
         combatUnitToHealthbar = new();
 
         combatUnitToHealthbar.Add(player, CreateHealthbar(player, _instance.playerHealthbarPosition));
