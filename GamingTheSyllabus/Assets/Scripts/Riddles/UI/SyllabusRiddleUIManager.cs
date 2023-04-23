@@ -20,6 +20,7 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
     [Header("References")]
     [SerializeField] private GameObject uiPanel;
     [SerializeField] private TextMeshProUGUI question;
+    [SerializeField] private TextMeshProUGUI FeedbackText;
     private List<IRiddleAnswerUIElement> riddleAnswerUIElements;
 
     [Header("Answer Element Prefabs")]
@@ -85,5 +86,22 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
         answerElement.transform.SetParent(containingPanel);
 
         return answerElement;
+    }
+
+    public IEnumerator RiddleUITransition(bool answerIsCorrect)
+    {
+        if (answerIsCorrect)
+        {
+            _instance.FeedbackText.text = "WRONG!";
+        }
+        else
+        {
+            _instance.FeedbackText.text = "CORRECT!";
+        }
+        
+        yield return new WaitForSeconds(2);
+
+        _instance.FeedbackText.text = "";
+        SetUIActive(false);
     }
 }

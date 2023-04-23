@@ -37,10 +37,13 @@ public class AnswerSubmissionManager : Singleton<AnswerSubmissionManager>
         }
     }
 
+
     public void SubmitAnswer()
     {
-        selectedAnswers.ForEach((answerElement) => SyllabusRiddleManager.AttemptAnswer(answerElement.AssociatedRiddle, answerElement.GetAnswer()));
+        bool answerIsCorrect = false;
+        selectedAnswers.ForEach((answerElement) => answerIsCorrect = SyllabusRiddleManager.AttemptAnswer(answerElement.AssociatedRiddle, answerElement.GetAnswer()));
         isSubmitted = true;
-        SyllabusRiddleUIManager.SetUIActive(false);
+        SyllabusRiddleUIManager._instance.StartCoroutine(SyllabusRiddleUIManager._instance.RiddleUITransition(answerIsCorrect));
+        // SyllabusRiddleUIManager.SetUIActive(false);
     }
 }
