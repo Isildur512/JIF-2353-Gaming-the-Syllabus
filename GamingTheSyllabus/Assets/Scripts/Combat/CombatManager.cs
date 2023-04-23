@@ -181,6 +181,7 @@ public class CombatManager : Singleton<CombatManager>
         if (player.IsAlive)
         {
             gameStatus = GameState.Win;
+            AbilityController.GiveRandomAbility(CombatManager.player);
         }
         else
         {
