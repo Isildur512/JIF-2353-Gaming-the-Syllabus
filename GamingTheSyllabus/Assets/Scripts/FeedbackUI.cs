@@ -21,6 +21,12 @@ public class FeedbackUI : Singleton<FeedbackUI>
     }
 
     private void UpdateFeedback() {
+
+        if (feedbackStrings.Count >= 4)
+        {
+            feedbackStrings.RemoveFirst();
+        }
+
         string newText = "";
         foreach (string str in feedbackStrings) {
             newText += " - " + str + "\n";
@@ -41,7 +47,7 @@ public class FeedbackUI : Singleton<FeedbackUI>
     {
         _instance.UpdateFeedback();
         yield return new WaitForSeconds(5);
-        feedbackStrings.Clear();
-        _instance.feedbackText.text = "";
+        feedbackStrings.RemoveLast();
+        _instance.UpdateFeedback();
     }
 }

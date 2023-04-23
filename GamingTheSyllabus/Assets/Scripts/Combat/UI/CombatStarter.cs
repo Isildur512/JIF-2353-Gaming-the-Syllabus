@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CombatStarter : MonoBehaviour
 {
@@ -57,11 +58,13 @@ public class CombatStarter : MonoBehaviour
             combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(Path.Combine(Files.EnemiesFolder, enemyFileName)));
         }
 
-        if (TargetIsBoss(combatUnits[0]) && isCorridorsComplete())
+        if (TargetIsBoss(combatUnits[0]))
         {
-            CombatManager.StartCombat(enemies: combatUnits.ToArray());
+            if (isCorridorsComplete())
+                CombatManager.StartCombat(enemies: combatUnits.ToArray());
         }
-        // CombatManager.StartCombat(enemies: combatUnits.ToArray());
+        else if (SceneManager.GetActiveScene().name != "Hub")
+            CombatManager.StartCombat(enemies: combatUnits.ToArray());
     }
 
     void Update()
