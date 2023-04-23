@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Player : Singleton<Player>
 {
@@ -54,6 +55,14 @@ public class Player : Singleton<Player>
         // This is in case we want to override waiting for the DBManager to load everything for testing or whatever
         CanMove = canMoveBeforeLoadingIsComplete;
         InitializeSingleton();
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            SceneManager.LoadScene("Main Menu");
+        }
     }
 
     private void FixedUpdate()
