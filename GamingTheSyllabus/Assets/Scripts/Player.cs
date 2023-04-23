@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using System.Linq;
 using UnityEngine.InputSystem.EnhancedTouch;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 
 public class Player : Singleton<Player>
 {
@@ -55,6 +56,14 @@ public class Player : Singleton<Player>
         CanMove = canMoveBeforeLoadingIsComplete;
         InitializeSingleton();
         DatabaseManager.OnAllLoadingCompleted += () => { CanMove = true; };
+    }
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.R)) {
+            SceneManager.LoadScene("Main Menu");
+        }
     }
 
     private void FixedUpdate()
