@@ -64,14 +64,6 @@ public class CombatStarter : MonoBehaviour
                 CombatManager.StartCombat(enemies: combatUnits.ToArray());
         }
         else if (SceneManager.GetActiveScene().name != "Hub")
-            CombatManager.StartCombat(enemies: combatUnits.ToArray());
-    }
-
-    void Update()
-    {
-        if (CombatManager.player != null && CombatManager.CheckCombatIsOver())
-        {
-            gameObject.SetActive(false);
-        }
+            CombatManager.StartCombat(enemies: combatUnits.ToArray(), onCombatCompleted: () => gameObject.SetActive(false));
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using System;
 
 /// <summary>
 /// Singleton class for handling everything related to combat.
@@ -28,6 +29,8 @@ public class CombatManager : Singleton<CombatManager>
     public static bool isDone { get; private set; } // Checks if this script is done running.
 
     public static bool IsPlayerTurn { get; private set; }
+
+    private static Action onCombatCompleted;
 
     private void Awake()
     {
@@ -121,7 +124,7 @@ public class CombatManager : Singleton<CombatManager>
         if (!player.IsAlive) {
             return livingEnemies[0];
         }
-        return livingEnemies[Random.Range(1, livingEnemies.Count)];
+        return livingEnemies[UnityEngine.Random.Range(1, livingEnemies.Count)];
 
     }
 
@@ -136,11 +139,11 @@ public class CombatManager : Singleton<CombatManager>
         if (combatants.Count == 1 && (combatants[0].IsAlive && combatants[0] == player)) { // Checks if all enemies are dead and only play left alive.
             return true;
         }
-
+        
         return false;
     }
 
-    public static void StartCombat(CombatUnit player = null, params CombatUnit[] enemies)
+    public static void StartCombat(CombatUnit player = null, Action onCombatCompleted = null, params CombatUnit[] enemies)
     {
         CombatManager.enemies = enemies;
         CombatManager.player = player;
@@ -167,6 +170,8 @@ public class CombatManager : Singleton<CombatManager>
 
         gameStatus = GameState.Ongoing;
 
+        CombatManager.onCombatCompleted = onCombatCompleted;
+
         // NextTurn advances our actingCombatantIndex so we want to start at -1 so the player goes first
         indexOfCombatantWithCurrentTurn = -1;
         NextTurn();
@@ -178,7 +183,9 @@ public class CombatManager : Singleton<CombatManager>
         Player.CanMove = true;
         CombatUIManager.DeactivateCombatUI();
         CombatUIManager.CombatUIActive = false;
-        
+
+        onCombatCompleted?.Invoke();
+
         if (player.IsAlive)
         {
             gameStatus = GameState.Win;
