@@ -90,7 +90,7 @@ public class SyllabusRiddleUIManager : Singleton<SyllabusRiddleUIManager>
 
     public IEnumerator RiddleUITransition(bool answerIsCorrect)
     {
-        if (answerIsCorrect)
+        if (!answerIsCorrect)
         {
             _instance.FeedbackText.text = "WRONG!";
         }
