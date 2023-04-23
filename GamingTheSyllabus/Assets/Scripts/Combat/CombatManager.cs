@@ -182,6 +182,7 @@ public class CombatManager : Singleton<CombatManager>
         if (player.IsAlive)
         {
             gameStatus = GameState.Win;
+            FeedbackUI.NotifyUser("YOU WON!");
         }
         else
         {
