@@ -6,6 +6,7 @@ using System;
 using Firebase;
 using Firebase.Storage;
 using Firebase.Extensions;
+using Firebase.Database;
 using System.Threading.Tasks;
 using System.IO;
 using System.Linq;
@@ -19,8 +20,10 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     private static Dictionary<Loadable, bool> loadingStatus = new Dictionary<Loadable, bool>();
 
-    private static FirebaseStorage databaseStorage;
-    private static StorageReference rootDirectory;
+    private static FirebaseStorage firebaseStorage;
+    private static StorageReference storageRootDirectory;
+    private static FirebaseDatabase firebaseDatabase;
+    private static DatabaseReference databaseRootDirectory;
 
     /// <summary>
     /// The email the current user entered from the main menu. Used to save their completion of the game to the database.
@@ -70,11 +73,15 @@ public class DatabaseManager : Singleton<DatabaseManager>
         options.MessageSenderId = "575623898016-e15ti1nv1paa2o67395124hqqlkmp4u3.apps.googleusercontent.com";
         options.ProjectId = "gamingthesyllabustest";
         options.StorageBucket = "gamingthesyllabustest.appspot.com";
+        options.DatabaseUrl = new Uri("https://gamingthesyllabustest-default-rtdb.firebaseio.com");
 
         var app = FirebaseApp.Create(options);
 
-        databaseStorage = FirebaseStorage.DefaultInstance;
-        rootDirectory = databaseStorage.GetReferenceFromUrl("gs://gamingthesyllabustest.appspot.com/");
+        firebaseStorage = FirebaseStorage.DefaultInstance;
+        storageRootDirectory = firebaseStorage.GetReferenceFromUrl("gs://gamingthesyllabustest.appspot.com/");
+
+        firebaseDatabase = FirebaseDatabase.DefaultInstance;
+        databaseRootDirectory = firebaseDatabase.RootReference;
     }
 
     private void Start()
@@ -84,11 +91,12 @@ public class DatabaseManager : Singleton<DatabaseManager>
             CurrentSyllabusCode = defaultSyllabusCode;
             LoadFromDatabase();
         }
+
     }
 
     public static void AttemptToDownloadSyllabusInformation(Action onDownloadSucceeded, Action onDownloadFailed)
     {
-        rootDirectory.Child($"{CurrentSyllabusCode}/syllabus-info.xml").GetFileAsync(Files.SyllabusInformationXml).ContinueWithOnMainThread(task => {
+        storageRootDirectory.Child($"{CurrentSyllabusCode}/syllabus-info.xml").GetFileAsync(Files.SyllabusInformationXml).ContinueWithOnMainThread(task => {
             if (!task.IsFaulted && !task.IsCanceled)
             {
                 onDownloadSucceeded?.Invoke();
@@ -114,7 +122,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         Directory.CreateDirectory(directoryToSaveTo);
 
-        StorageReference firebaseFolder = rootDirectory.Child($"{CurrentSyllabusCode}/{directoryToDownloadFrom}");
+        StorageReference firebaseFolder = storageRootDirectory.Child($"{CurrentSyllabusCode}/{directoryToDownloadFrom}");
         Task task = DownloadFile(firebaseFolder.Child("manifest.xml"), Path.Combine(directoryToSaveTo, "manifest.xml").ToString());
 
         yield return new WaitWhile(() => !task.IsCompleted);
@@ -145,7 +153,7 @@ public class DatabaseManager : Singleton<DatabaseManager>
     }
 
     public static IEnumerator LoadPlayer() {
-        Task task = DownloadFile(rootDirectory.Child($"{CurrentSyllabusCode}/Player.xml"), Files.PlayerXml);
+        Task task = DownloadFile(storageRootDirectory.Child($"{CurrentSyllabusCode}/Player.xml"), Files.PlayerXml);
 
         yield return new WaitWhile(() => !task.IsCompleted);
 
@@ -166,5 +174,46 @@ public class DatabaseManager : Singleton<DatabaseManager>
     {
         loadingStatus[loadable] = true;
         CheckIfAllLoadingIsCompleted();
+    }
+
+    private static void WriteToDatabase(Action onDownloadSucceeded, Action onDownloadFailed, bool status) {
+        DatabaseReference firebaseFolder = databaseRootDirectory.Child(CurrentSyllabusCode);
+        string username = CurrentUserEmail.Substring(0, CurrentUserEmail.IndexOf("@"));
+        firebaseFolder.Child(username).SetValueAsync(status).ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                Debug.Log($"Data saved to ${CurrentSyllabusCode} from user: {username}");
+                AttemptToDownloadSyllabusInformation(onDownloadSucceeded, onDownloadFailed);
+            }
+            else
+            {
+                Debug.Log(task.Exception);
+                onDownloadFailed?.Invoke();
+            }
+        });
+    }
+
+    public static void VerifyAndWriteToDatabase(Action onDownloadSucceeded, Action onDownloadFailed, bool status) {
+        DatabaseReference firebaseFolder = databaseRootDirectory.Child(CurrentSyllabusCode);
+        // check if this folder path actually exists in the database
+        firebaseFolder.GetValueAsync().ContinueWithOnMainThread(task => {
+            if (task.IsFaulted || task.IsCanceled)
+            {
+                Debug.Log(task.Exception);
+
+            } else if (task.IsCompleted)
+            {
+                DataSnapshot snapShot = task.Result;
+                if (snapShot.Value != null) {
+                    int separator = CurrentUserEmail.IndexOf("@");
+                    if (separator == -1) {
+                        onDownloadFailed?.Invoke();
+                    }
+                    WriteToDatabase(onDownloadSucceeded, onDownloadFailed, status);
+                } else {
+                    onDownloadFailed?.Invoke();
+                }
+            }
+        });
     }
 }
