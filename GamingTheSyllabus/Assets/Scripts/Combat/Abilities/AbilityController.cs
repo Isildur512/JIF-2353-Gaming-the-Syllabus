@@ -15,7 +15,8 @@ public class AbilityController : Singleton<AbilityController>
 
     private void Awake()
     {
-        InitializeSingleton();
+        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        DontDestroyOnLoad(gameObject);
         LoadAllAbilities();
     }
 

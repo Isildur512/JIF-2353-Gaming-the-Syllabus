@@ -58,36 +58,45 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     private void Awake()
     {
-        loadingStatus[Loadable.Everything] = false;
-        loadingStatus[Loadable.Player] = false;
-        loadingStatus[Loadable.Combats] = false;
-        loadingStatus[Loadable.Enemies] = false;
-        loadingStatus[Loadable.Riddles] = false;
-        loadingStatus[Loadable.Sprites] = false;
+        if (_instance == null)
+        {
+            InitializeSingleton();
+            DontDestroyOnLoad(gameObject);
 
-        InitializeSingleton();
+            loadingStatus[Loadable.Everything] = false;
+            loadingStatus[Loadable.Player] = false;
+            loadingStatus[Loadable.Combats] = false;
+            loadingStatus[Loadable.Enemies] = false;
+            loadingStatus[Loadable.Riddles] = false;
+            loadingStatus[Loadable.Sprites] = false;
 
-        AppOptions options = new AppOptions();
-        options.ApiKey = "AIzaSyA-vRiqVfQKPj18OfZOMol-BnsARDUqSk4";
-        options.AppId = "1:575623898016:ios:51daf5d9dbebffd08afac5";
-        options.MessageSenderId = "575623898016-e15ti1nv1paa2o67395124hqqlkmp4u3.apps.googleusercontent.com";
-        options.ProjectId = "gamingthesyllabustest";
-        options.StorageBucket = "gamingthesyllabustest.appspot.com";
-        options.DatabaseUrl = new Uri("https://gamingthesyllabustest-default-rtdb.firebaseio.com");
+            AppOptions options = new AppOptions();
+            options.ApiKey = "AIzaSyA-vRiqVfQKPj18OfZOMol-BnsARDUqSk4";
+            options.AppId = "1:575623898016:ios:51daf5d9dbebffd08afac5";
+            options.MessageSenderId = "575623898016-e15ti1nv1paa2o67395124hqqlkmp4u3.apps.googleusercontent.com";
+            options.ProjectId = "gamingthesyllabustest";
+            options.StorageBucket = "gamingthesyllabustest.appspot.com";
+            options.DatabaseUrl = new Uri("https://gamingthesyllabustest-default-rtdb.firebaseio.com");
 
-        var app = FirebaseApp.Create(options);
+            var app = FirebaseApp.Create(options);
 
-        firebaseStorage = FirebaseStorage.DefaultInstance;
-        storageRootDirectory = firebaseStorage.GetReferenceFromUrl("gs://gamingthesyllabustest.appspot.com/");
+            firebaseStorage = FirebaseStorage.DefaultInstance;
+            storageRootDirectory = firebaseStorage.GetReferenceFromUrl("gs://gamingthesyllabustest.appspot.com/");
 
-        firebaseDatabase = FirebaseDatabase.DefaultInstance;
-        databaseRootDirectory = firebaseDatabase.RootReference;
+            firebaseDatabase = FirebaseDatabase.DefaultInstance;
+            databaseRootDirectory = firebaseDatabase.RootReference;
+        } else
+        {
+            Destroy(gameObject);
+        }
+        
     }
 
     private void Start()
     {
         if (loadFilesOnStartup)
         {
+            Debug.Log("Loading files on startup (this should not happen in release builds!)");
             CurrentSyllabusCode = defaultSyllabusCode;
             LoadFromDatabase();
         }
@@ -111,11 +120,15 @@ public class DatabaseManager : Singleton<DatabaseManager>
 
     public static void LoadFromDatabase()
     {
+        if (loadingStatus[Loadable.Everything])
+        {
+            return;
+        }
         _instance.StartCoroutine(LoadPlayer());
         _instance.StartCoroutine(IDownloadDirectory("Combats", Files.CombatsFolder, () => { SetLoadingStatus(Loadable.Combats, true); }));
         _instance.StartCoroutine(IDownloadDirectory("Enemies", Files.EnemiesFolder, () => { SetLoadingStatus(Loadable.Enemies, true); OnEnemiesLoaded?.Invoke(); }));
         _instance.StartCoroutine(IDownloadDirectory("Riddles", Files.RiddlesFolder, () => { SetLoadingStatus(Loadable.Riddles, true); OnRiddlesLoaded?.Invoke(); }));
-        _instance.StartCoroutine(IDownloadDirectory("Sprites", Files.SpritesFolderAbsolute, () => { SetLoadingStatus(Loadable.Sprites, true); OnSpritesLoaded?.Invoke(); }));
+        _instance.StartCoroutine(IDownloadDirectory("Sprites", Files.SpritesFolderAbsolute, () => {SetLoadingStatus(Loadable.Sprites, true); OnSpritesLoaded?.Invoke(); }));
     }
 
     private static IEnumerator IDownloadDirectory(string directoryToDownloadFrom, string directoryToSaveTo, Action onDownloadComplete = null)
@@ -134,6 +147,8 @@ public class DatabaseManager : Singleton<DatabaseManager>
             task = DownloadFile(firebaseFolder.Child(path), Path.Combine(directoryToSaveTo, path));
             yield return new WaitWhile(() => !task.IsCompleted);
         }
+
+        yield return new WaitForEndOfFrame();
 
         onDownloadComplete?.Invoke();
     }
