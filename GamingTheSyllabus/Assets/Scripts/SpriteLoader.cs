@@ -9,16 +9,19 @@ public class SpriteLoader : MonoBehaviour
 
     private void Awake()
     {
-        DatabaseManager.OnSpritesLoaded += SetSprite;
-    }
-
-    private void Start()
-    {
         // We might have cases where the DBManager loads everything before the SpriteLoader is loaded (e.g. switching scenes)
-        if (DatabaseManager.ContentIsLoaded(DatabaseManager.Loadable.Everything))
+        if (DatabaseManager.ContentIsLoaded(DatabaseManager.Loadable.Sprites))
         {
             SetSprite();
+        } else
+        {
+            DatabaseManager.OnSpritesLoaded += SetSprite;
         }
+    }
+
+    private void OnDestroy()
+    {
+        DatabaseManager.OnSpritesLoaded -= SetSprite;
     }
 
     private void SetSprite()
@@ -28,7 +31,9 @@ public class SpriteLoader : MonoBehaviour
         Texture2D texture = new Texture2D(1, 1);
         texture.LoadImage(fileContents);
 
-        GetComponent<SpriteRenderer>().sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width,
+        Sprite sprite = Sprite.Create(texture, new Rect(0.0f, 0.0f, texture.width,
             texture.height), new Vector2(0.5f, 0.5f), 100.0f);
+
+        GetComponent<SpriteRenderer>().sprite = sprite;
     }
 }

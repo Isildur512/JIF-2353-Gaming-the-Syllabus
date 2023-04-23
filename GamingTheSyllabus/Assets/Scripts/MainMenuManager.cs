@@ -24,7 +24,8 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DatabaseManager.CurrentUserEmail = email;
         DatabaseManager.CurrentSyllabusCode = syllabusCode;
 
-        DatabaseManager.AttemptToDownloadSyllabusInformation(ContinueToGame, ShowDownloadFailure);
+        DatabaseManager.VerifyAndWriteToDatabase(ContinueToGame, ShowDownloadFailure, false);
+        // DatabaseManager.AttemptToDownloadSyllabusInformation(ContinueToGame, ShowDownloadFailure);
     }
 
     private static void ContinueToGame()
@@ -36,11 +37,12 @@ public class MainMenuManager : Singleton<MainMenuManager>
     private static void ShowDownloadFailure()
     {
         InvalidSyllabusCodeAlertManager.ShowAlert();
-        Debug.LogError("Syllabus code was invalid or the download failed");
+        Debug.LogError("Syllabus code or email was invalid or the download failed");
     }
 
     private static void LoadFromDatabase(Scene _, LoadSceneMode __)
     {
+        Debug.LogError("a");
         DatabaseManager.LoadFromDatabase();
         SceneManager.sceneLoaded -= LoadFromDatabase;
     }

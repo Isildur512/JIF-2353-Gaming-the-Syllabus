@@ -55,7 +55,6 @@ public class Player : Singleton<Player>
         // This is in case we want to override waiting for the DBManager to load everything for testing or whatever
         CanMove = canMoveBeforeLoadingIsComplete;
         InitializeSingleton();
-        DatabaseManager.OnAllLoadingCompleted += () => { CanMove = true; };
     }
 
 
@@ -72,10 +71,10 @@ public class Player : Singleton<Player>
         {
             if (destination == null)
             {
-                rigidBody.MovePosition((Vector2)transform.position + movementDirection * movementSpeed * Time.deltaTime);
+                rigidBody.MovePosition((Vector2)transform.position + movementDirection * movementSpeed * Time.fixedDeltaTime);
             } else
             {
-                rigidBody.MovePosition(Vector2.MoveTowards(transform.position, (Vector2) destination, movementSpeed * Time.deltaTime));
+                rigidBody.MovePosition(Vector2.MoveTowards(transform.position, (Vector2) destination, movementSpeed * Time.fixedDeltaTime));
             }
         }
     }

@@ -3,6 +3,7 @@
     "com.google.external-dependency-manager": "file:../Assets/FirebasePackages/com.google.external-dependency-manager-1.2.175.tgz",
     "com.google.firebase.app": "file:../Assets/FirebasePackages/com.google.firebase.app-10.7.0.tgz",
     "com.google.firebase.auth": "file:../Assets/FirebasePackages/com.google.firebase.auth-10.7.0.tgz",
+    "com.google.firebase.database": "file:../Assets/FirebasePackages/com.google.firebase.database-10.7.0.tgz",
     "com.google.firebase.storage": "file:../Assets/FirebasePackages/com.google.firebase.storage-10.7.0.tgz",
     "com.h8man.2d.navmeshplus": "https://github.com/h8man/NavMeshPlus.git",
     "com.unity.2d.sprite": "1.0.0",

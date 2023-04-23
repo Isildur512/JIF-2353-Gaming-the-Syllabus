@@ -97,7 +97,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cdd96e49f7bae1343aba2b585d7e466b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  relativePathFromSpritesFolder: goblinWorld
+  relativePathFromSpritesFolder: goblinWorld.png
 --- !u!1 &862953061116987346
 GameObject:
   m_ObjectHideFlags: 0
