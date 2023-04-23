@@ -19,6 +19,27 @@ public class CombatStarter : MonoBehaviour
         }
     }
 
+    private bool TargetIsBoss(CombatUnit target) 
+    {
+        if (target.UnitName != "FinalBoss")
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
+    private bool isCorridorsComplete()
+    {
+        if (SyllabusRiddleManager.roomsCompleted.Count != 6)
+        {
+            FeedbackUI.NotifyUser("You have not completed all the rooms yet to fight the final boss!");
+            return false;
+        }
+
+        return true;
+    }
+
     public void StartCombat()
     {
         enemyFileNames = new();
@@ -36,7 +57,11 @@ public class CombatStarter : MonoBehaviour
             combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(Path.Combine(Files.EnemiesFolder, enemyFileName)));
         }
 
-        CombatManager.StartCombat(enemies: combatUnits.ToArray());
+        if (TargetIsBoss(combatUnits[0]) && isCorridorsComplete())
+        {
+            CombatManager.StartCombat(enemies: combatUnits.ToArray());
+        }
+        // CombatManager.StartCombat(enemies: combatUnits.ToArray());
     }
 
     void Update()
