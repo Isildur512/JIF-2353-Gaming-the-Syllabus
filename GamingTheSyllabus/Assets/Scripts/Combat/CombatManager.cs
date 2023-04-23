@@ -32,7 +32,7 @@ public class CombatManager : Singleton<CombatManager>
     private void Awake()
     {
         isDone = false;
-        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this.gameObject);
         DontDestroyOnLoad(gameObject);
     }
 

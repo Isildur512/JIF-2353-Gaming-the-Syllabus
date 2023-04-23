@@ -29,7 +29,7 @@ public abstract class Singleton<T> : MonoBehaviour
         {
             if (overrideExistingInstanceWith != _instance)
             {
-                Destroy(_instance);
+                Destroy(_instance.gameObject);
                 _instance = overrideExistingInstanceWith;
                 return true;
             }

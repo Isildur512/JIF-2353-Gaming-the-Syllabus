@@ -14,7 +14,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
     public static Riddle[]? Riddles { get => riddles?.ToArray(); }
     private void Awake()
     {
-        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this.gameObject);
         DontDestroyOnLoad(gameObject);
 
         DatabaseManager.OnRiddlesLoaded += () => { LoadRiddlesFromXML(Files.RiddlesFolder); };
