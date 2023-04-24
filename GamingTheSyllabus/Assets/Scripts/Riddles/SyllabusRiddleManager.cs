@@ -18,7 +18,7 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
 
     private void Awake()
     {
-        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this.gameObject);
         DontDestroyOnLoad(gameObject);
 
         DatabaseManager.OnRiddlesLoaded += () => { LoadRiddlesFromXML(Files.RiddlesFolder); };

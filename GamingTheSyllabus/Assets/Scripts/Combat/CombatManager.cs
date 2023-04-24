@@ -35,7 +35,7 @@ public class CombatManager : Singleton<CombatManager>
     private void Awake()
     {
         isDone = false;
-        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this);
+        InitializeSingleton(ifInstanceAlreadySetThenDestroy: this.gameObject);
         DontDestroyOnLoad(gameObject);
     }
 
@@ -185,12 +185,14 @@ public class CombatManager : Singleton<CombatManager>
         CombatUIManager.CombatUIActive = false;
 
         CombatUIManager.RemoveAllHealthbars();
+        AbilityPageUIManager.DestroyAbilityButtons();
 
         onCombatCompleted?.Invoke();
 
         if (player.IsAlive)
         {
             gameStatus = GameState.Win;
+            FeedbackUI.NotifyUser("YOU WON!");
             AbilityController.GiveRandomAbility(CombatManager.player);
         }
         else

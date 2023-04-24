@@ -12,7 +12,7 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
 
     [SerializeField] private GameObject abilitiesGameObject;
 
-
+    private static List<GameObject> abilityButtons = new();
 
     private void Awake()
     {
@@ -36,9 +36,20 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
 
             abilityButton.GetComponent<Tooltip>().setMessage(ability.AbilityDesc);
             abilityButton.GetComponentInChildren<TMP_Text>().text = ability.AbilityName;
+
+            abilityButtons.Add(abilityButton);
         }
 
         _instance.abilityPage.SetActive(false);
+    }
+
+    public static void DestroyAbilityButtons()
+    {
+        foreach (GameObject button in abilityButtons)
+        {
+            Destroy(button);
+        }
+        abilityButtons.Clear();
     }
 
     public static void AppendAbilityToPage(PlayerAbility ability)
@@ -54,6 +65,8 @@ public class AbilityPageUIManager : Singleton<AbilityPageUIManager>
         button.onClick.AddListener(() => {AbilityController.UseAttackAbility(ability);
                                             TooltipManager.HideToolTip();
                                             _instance.abilityPage.SetActive(false);});
+
+        abilityButtons.Add(abilityButton);
     }
 
 }

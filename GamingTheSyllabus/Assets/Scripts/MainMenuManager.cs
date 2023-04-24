@@ -25,7 +25,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DatabaseManager.CurrentSyllabusCode = syllabusCode;
 
         DatabaseManager.VerifyAndWriteToDatabase(ContinueToGame, ShowDownloadFailure, false);
-        // DatabaseManager.AttemptToDownloadSyllabusInformation(ContinueToGame, ShowDownloadFailure);
     }
 
     private static void ContinueToGame()
@@ -42,7 +41,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private static void LoadFromDatabase(Scene _, LoadSceneMode __)
     {
-        Debug.LogError("a");
         DatabaseManager.LoadFromDatabase();
         SceneManager.sceneLoaded -= LoadFromDatabase;
     }
