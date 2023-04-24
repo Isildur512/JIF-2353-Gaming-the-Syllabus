@@ -27,13 +27,12 @@ public abstract class Singleton<T> : MonoBehaviour
     {
         if (overrideExistingInstanceWith != null)
         {
-            if (overrideExistingInstanceWith != _instance)
+            if (_instance != null && _instance != overrideExistingInstanceWith)
             {
                 Destroy(_instance.gameObject);
-                _instance = overrideExistingInstanceWith;
-                return true;
             }
-            return false;
+            _instance = overrideExistingInstanceWith;
+            return true;
         }
         else
         {

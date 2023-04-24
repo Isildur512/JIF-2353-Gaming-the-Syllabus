@@ -13,7 +13,10 @@ public class InstructionsScreenManager : Singleton<InstructionsScreenManager>
 
     public static void SetScreenActive(bool isActive)
     {
-        _instance.instructionsScreen.SetActive(isActive);
-        Player.CanMove = !isActive;
+        if (!CombatUIManager.CombatUIActive && !SyllabusRiddleUIManager.UIIsActive)
+        {
+            _instance.instructionsScreen.SetActive(isActive);
+            Player.CanMove = !isActive;
+        }
     }
 }
