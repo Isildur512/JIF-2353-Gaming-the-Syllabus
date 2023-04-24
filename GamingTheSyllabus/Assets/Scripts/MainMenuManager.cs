@@ -41,7 +41,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
 
     private static void LoadFromDatabase(Scene _, LoadSceneMode __)
     {
-        Debug.LogError("a");
         DatabaseManager.LoadFromDatabase();
         SceneManager.sceneLoaded -= LoadFromDatabase;
     }
