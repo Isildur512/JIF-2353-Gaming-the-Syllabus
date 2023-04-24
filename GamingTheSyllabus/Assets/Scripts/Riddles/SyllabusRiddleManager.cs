@@ -5,6 +5,7 @@ using System.Xml;
 using System.Xml.Serialization;
 using System.IO;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 #nullable enable
 public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
@@ -12,6 +13,9 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
     private static List<Riddle>? riddles;
     private static HashSet<Riddle> solvedRiddles = new HashSet<Riddle>();
     public static Riddle[]? Riddles { get => riddles?.ToArray(); }
+
+    public static HashSet<Scene> roomsCompleted = new HashSet<Scene>();
+
     private void Awake()
     {
         InitializeSingleton(ifInstanceAlreadySetThenDestroy: this.gameObject);
@@ -30,6 +34,11 @@ public class SyllabusRiddleManager : Singleton<SyllabusRiddleManager>
         if (result && solvedRiddles != null)
         {
             solvedRiddles.Add(riddle);
+            if (SceneManager.GetActiveScene().name != "Hub") // need this for boss fight
+            {
+                roomsCompleted.Add(SceneManager.GetActiveScene());
+                FeedbackUI.NotifyUser($"Rooms left: {roomsCompleted.Count} / 6");
+            }
         }
         AnswerSubmissionManager.isCorrect = result;
         return result;

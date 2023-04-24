@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class CombatStarter : MonoBehaviour
 {
@@ -17,6 +18,27 @@ public class CombatStarter : MonoBehaviour
         {
             StartCombat();
         }
+    }
+
+    private bool TargetIsBoss(CombatUnit target) 
+    {
+        if (target.UnitName != "FinalBoss")
+        {
+            return false;
+        }
+        
+        return true;
+    }
+
+    private bool isCorridorsComplete()
+    {
+        if (SyllabusRiddleManager.roomsCompleted.Count != 6)
+        {
+            FeedbackUI.NotifyUser("You have not completed all the rooms yet to fight the final boss!");
+            return false;
+        }
+
+        return true;
     }
 
     public void StartCombat()
@@ -36,14 +58,12 @@ public class CombatStarter : MonoBehaviour
             combatUnits.Add(XmlUtilities.Deserialize<CombatUnit>(Path.Combine(Files.EnemiesFolder, enemyFileName)));
         }
 
-        CombatManager.StartCombat(enemies: combatUnits.ToArray());
-    }
-
-    void Update()
-    {
-        if (CombatManager.player != null && CombatManager.CheckCombatIsOver())
+        if (TargetIsBoss(combatUnits[0]))
         {
-            gameObject.SetActive(false);
+            if (isCorridorsComplete())
+                CombatManager.StartCombat(enemies: combatUnits.ToArray());
         }
+        else if (SceneManager.GetActiveScene().name != "Hub")
+            CombatManager.StartCombat(enemies: combatUnits.ToArray(), onCombatCompleted: () => gameObject.SetActive(false));
     }
 }

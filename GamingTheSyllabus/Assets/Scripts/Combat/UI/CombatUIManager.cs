@@ -29,7 +29,7 @@ public class CombatUIManager : Singleton<CombatUIManager>
     [SerializeField] private Vector2 playerHealthbarPosition;
     private Vector2 nextHealthbarPosition;
 
-    private static Dictionary<CombatUnit, Healthbar> combatUnitToHealthbar;
+    private static Dictionary<CombatUnit, Healthbar> combatUnitToHealthbar = new();
 
     private void Awake()
     {
@@ -37,6 +37,16 @@ public class CombatUIManager : Singleton<CombatUIManager>
         nextHealthbarPosition = firstEnemyHealthbarPosition;
 
         combatUIObject.SetActive(false);
+    }
+
+    public static void RemoveAllHealthbars()
+    {
+        foreach (Healthbar healthbar in combatUnitToHealthbar.Values)
+        {
+            Destroy(healthbar.gameObject);
+        }
+
+        _instance.nextHealthbarPosition = _instance.firstEnemyHealthbarPosition;
     }
 
     public static void InitializeHealthbars(CombatUnit player, params CombatUnit[] allEnemies)

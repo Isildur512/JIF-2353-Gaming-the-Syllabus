@@ -75,12 +75,12 @@ public class AbilityController : Singleton<AbilityController>
     public static void GiveRandomAbility(CombatUnit target)
     {
         foreach (PlayerAbility ability in allAbilities)
-        {;
+        {
             if (!target.abilities.Contains(ability))
             {
                 target.abilities.Add(ability);
                 AbilityPageUIManager.AppendAbilityToPage(ability);
-                Debug.Log($"{target.UnitName} was given the ability: {ability.AbilityName}");
+                FeedbackUI.NotifyUser($"You were given the ability: {ability.AbilityName}");
                 return;
             }
         }
