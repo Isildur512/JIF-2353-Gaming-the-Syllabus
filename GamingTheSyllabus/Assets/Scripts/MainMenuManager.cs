@@ -25,7 +25,6 @@ public class MainMenuManager : Singleton<MainMenuManager>
         DatabaseManager.CurrentSyllabusCode = syllabusCode;
 
         DatabaseManager.VerifyAndWriteToDatabase(ContinueToGame, ShowDownloadFailure, false);
-        // DatabaseManager.AttemptToDownloadSyllabusInformation(ContinueToGame, ShowDownloadFailure);
     }
 
     private static void ContinueToGame()

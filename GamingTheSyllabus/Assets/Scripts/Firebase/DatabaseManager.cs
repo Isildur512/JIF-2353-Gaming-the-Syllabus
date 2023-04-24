@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using System;
 
@@ -220,15 +221,25 @@ public class DatabaseManager : Singleton<DatabaseManager>
             {
                 DataSnapshot snapShot = task.Result;
                 if (snapShot.Value != null) {
-                    int separator = CurrentUserEmail.IndexOf("@");
-                    if (separator == -1) {
+                    if (!IsValidEmail(CurrentUserEmail)) {
                         onDownloadFailed?.Invoke();
+                    } else {
+                        WriteToDatabase(onDownloadSucceeded, onDownloadFailed, status);
                     }
-                    WriteToDatabase(onDownloadSucceeded, onDownloadFailed, status);
                 } else {
                     onDownloadFailed?.Invoke();
                 }
             }
         });
+    }
+
+    private static bool IsValidEmail(string email) {
+        string validEmailPattern = @"^(?!\.)(""([^""\r\\]|\\[""\r\\])*""|"
+            + @"([-a-z0-9!#$%&'*+/=?^_`{|}~]|(?<!\.)\.)*)(?<!\.)"
+            + @"@[a-z0-9][\w\.-]*[a-z0-9]\.[a-z][a-z\.]*[a-z]$";
+
+        Regex validEmailRegex = new Regex(validEmailPattern, RegexOptions.IgnoreCase);
+
+        return validEmailRegex.IsMatch(email);
     }
 }
