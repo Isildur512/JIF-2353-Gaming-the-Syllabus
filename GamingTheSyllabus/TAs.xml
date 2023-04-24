@@ -1,9 +1,0 @@
-<Riddle xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="TAs" 
-		question="How many TAs are there for this course?" 
-		reward="XML/UnlockableAbilities/HealthPotion.xml">
-	<answers numberOfAnswers="3">
-		<answer text="2" isCorrect="false"/>
-		<answer text="4" isCorrect="true"/>
-		<answer text="8" isCorrect="false"/>
-	</answers>
-</Riddle>
