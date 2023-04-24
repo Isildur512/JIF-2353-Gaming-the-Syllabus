@@ -194,7 +194,12 @@ public class CombatManager : Singleton<CombatManager>
         if (player.IsAlive)
         {
             gameStatus = GameState.Win;
-            FeedbackUI.NotifyUser("YOU WON!");
+            string message = "YOU WON!";
+            if (CombatManager.enemies.Length == 1 && CombatManager.enemies[0].UnitName == "FinalBoss") {
+                DatabaseManager.VerifyAndWriteToDatabase(null, null, true);
+                message= "YOU COMPLETED THE GAME!";
+            } 
+            FeedbackUI.NotifyUser(message);
             AbilityController.GiveRandomAbility(CombatManager.player);
         }
         else
