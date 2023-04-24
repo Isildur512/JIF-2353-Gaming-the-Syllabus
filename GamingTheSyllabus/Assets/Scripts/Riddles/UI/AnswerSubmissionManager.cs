@@ -15,7 +15,7 @@ public class AnswerSubmissionManager : Singleton<AnswerSubmissionManager>
 
     private void Awake()
     {
-        InitializeSingleton();
+        InitializeSingleton(overrideExistingInstanceWith:this);
         isSubmitted = false;
         isCorrect = false;
     }
