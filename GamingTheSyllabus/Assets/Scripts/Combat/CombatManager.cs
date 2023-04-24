@@ -180,6 +180,8 @@ public class CombatManager : Singleton<CombatManager>
 
     public static void EndCombat()
     {
+        Debug.LogError("ending");
+
         Player.CanMove = true;
         CombatUIManager.DeactivateCombatUI();
         CombatUIManager.CombatUIActive = false;
