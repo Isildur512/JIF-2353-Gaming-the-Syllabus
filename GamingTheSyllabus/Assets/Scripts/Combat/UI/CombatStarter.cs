@@ -32,7 +32,7 @@ public class CombatStarter : MonoBehaviour
 
     private bool isCorridorsComplete()
     {
-        if (SyllabusRiddleManager.roomsCompleted.Count != 6)
+        if (SyllabusRiddleManager.roomsCompleted.Count != 1)
         {
             FeedbackUI.NotifyUser("You have not completed all the rooms yet to fight the final boss!");
             return false;
