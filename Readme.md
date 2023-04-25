@@ -22,7 +22,7 @@ Unity Hub is a tool that lets you manage multiple Unity installations and projec
 4. Click on **Download Unity Hub**.
 5. Follow the instructions to download and install Unity Hub.
 
-###Step 3: Install Unity
+### Step 3: Install Unity
 After installing Unity Hub, you can use it to install Unity.
 
 1. Open Unity Hub.
@@ -34,7 +34,7 @@ After installing Unity Hub, you can use it to install Unity.
 7. Review the installation details and click on **Done**.
 8. Wait for Unity to download and install.
 
-###Step 4: Activate Unity
+### Step 4: Activate Unity
 After installing Unity, you'll need to activate it with a license. If you don't have a license, you can use Unity Personal, which is free for personal and small business use.
 
 1. Open Unity Hub.
@@ -44,6 +44,8 @@ After installing Unity, you'll need to activate it with a license. If you don't 
 5. Choose a name and location for your project and click on **Create**.
 6. Unity will launch. If this is your first time using Unity, you'll be prompted to activate it.
 7. If you have a license, enter your license key and click on **Activate**. If you don't have a license, select **Unity Personal** and click on **Continue**.
+
+
 Congratulations! You have successfully installed and activated Unity. Now you can start creating your own games and applications.
 
 ## Release Notes
