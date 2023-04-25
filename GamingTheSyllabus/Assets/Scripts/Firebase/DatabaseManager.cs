@@ -132,6 +132,30 @@ public class DatabaseManager : Singleton<DatabaseManager>
         _instance.StartCoroutine(IDownloadDirectory("Sprites", Files.SpritesFolderAbsolute, () => {SetLoadingStatus(Loadable.Sprites, true); OnSpritesLoaded?.Invoke(); }));
     }
 
+    public static void UploadDirectory(string syllabusCode, string directoryToUploadFrom, string directoryToUploadTo)
+    {
+        StorageReference databaseDirectory = storageRootDirectory.Child($"{syllabusCode}/{directoryToUploadTo}");
+        FileInfo[] filesInDirectory = new DirectoryInfo(directoryToUploadFrom).GetFiles();
+        foreach (FileInfo file in filesInDirectory)
+        {
+            UploadFile(databaseDirectory.Child(file.Name), file.FullName);
+        }
+    }
+
+    public static Task UploadFile(StorageReference storageReference, string filePathToUploadFrom)
+    {
+        return storageReference.PutFileAsync(filePathToUploadFrom).ContinueWithOnMainThread(task => {
+            if (!task.IsFaulted && !task.IsCanceled)
+            {
+                Debug.Log($"Upload from {filePathToUploadFrom} completed");
+            }
+            else
+            {
+                Debug.Log(task.Exception);
+            }
+        });
+    }
+
     private static IEnumerator IDownloadDirectory(string directoryToDownloadFrom, string directoryToSaveTo, Action onDownloadComplete = null)
     {
         Directory.CreateDirectory(directoryToSaveTo);
