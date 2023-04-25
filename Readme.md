@@ -45,8 +45,31 @@ After installing Unity, you'll need to activate it with a license. If you don't 
 6. Unity will launch. If this is your first time using Unity, you'll be prompted to activate it.
 7. If you have a license, enter your license key and click on **Activate**. If you don't have a license, select **Unity Personal** and click on **Continue**.
 
+### Step 5: Build and Run the game
 
-Congratulations! You have successfully installed and activated Unity.
+1. Open your Unity project in Unity Editor.
+2. Make sure the project is set up the way you want it to be played.
+3. Click on File > Build Settings.
+4. In the Build Settings window, select PC, Mac & Linux Standalone as the target platform.
+5. Select the desired architecture (x86, x64, or both).
+6. Click on the Player Settings button.
+7. In the Player Settings window, make sure the following settings are configured:
+
+    * **Product Name**: The name of your game or application.
+    * **Company Name**: Your company name.
+    * **Default Icon**: The icon that represents your game or application.
+    * **Resolution and Presentation**: The screen resolution and window size.
+    * **Splash Image**: An image that appears while your game or application is launching.
+    * **Other Settings**: Any other settings that you want to configure, such as the scripting backend, optimization settings, or graphics quality.
+8. Click on Build.
+9. In the Save As window, select a location to save the exported project and give it a name.
+10. Click on Save.
+11. Wait for Unity to export the project.
+12. Once the export is complete, navigate to the exported project directory and find the executable file (.exe) for your game or application.
+13. Double-click on the executable file to launch your game or application.
+
+
+Congratulations! You have successfully installed and activated Unity. Now you can start to play the game.
 
 ## Release Notes
 
