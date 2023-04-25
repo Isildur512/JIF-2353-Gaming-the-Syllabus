@@ -46,7 +46,7 @@ After installing Unity, you'll need to activate it with a license. If you don't 
 7. If you have a license, enter your license key and click on **Activate**. If you don't have a license, select **Unity Personal** and click on **Continue**.
 
 
-Congratulations! You have successfully installed and activated Unity. Now you can start creating your own games and applications.
+Congratulations! You have successfully installed and activated Unity.
 
 ## Release Notes
 
